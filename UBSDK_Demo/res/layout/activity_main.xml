@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tq_startbg" >
+
+    <LinearLayout
+        android:id="@+id/lin_left"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="登录" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="注销" />
+
+        <Button
+            android:id="@+id/btn_pay"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="支付" />
+
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="退出游戏" />
+
+        <Button
+            android:id="@+id/btn_createRole"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="创建角色" />
+
+        <Button
+            android:id="@+id/btn_commitRoleInfo"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="提交角色数据" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/lin_left"
+        android:layout_marginLeft="20dp"
+        android:textColor="#800080"
+        android:layout_marginTop="5dp" />
+
+</RelativeLayout>
