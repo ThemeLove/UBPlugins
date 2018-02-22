@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<param name="PRODUCTCODE" value="9" />
+<param name="PRODUCTKEY" value="8e9041a398534d37a169e63be5e55b6d" />
+<param name="GAMEKEY" value="cPsRg6pBc3hCcPoOcz5Ad3hAdmdxejlCcmkOejoVdP9BczwN" />
+<param name="VAS_ORIENTATION" value="0" /><!-- 1为竖屏 0为横屏 -->
+<param name="UB_GAMEID" value="1123" />
+<param name="UB_PLATFORMID" value="80" />
+<param name="UB_SUBPLATFORMID" value="0" />
+<param name="UB_CHANNELID" value="1" />
+<param name="UB_SUBCHANNEL_ID" value="1" />
+<plugins>
+	<plugin name="com.umbrella.game.ubsdk.demo.plugin.DemoUserPlugin" type="1" />
+	<plugin name="com.umbrella.game.ubsdk.demo.plugin.DemoPayPlugin"  type="2"/>
+	<plugin name="com.umbrella.game.ubsdk.demo.plugin.DemoSettingPlugin"  type="3"/>
+</plugins>
+<applications>
+	 <application name="com.umbrella.game.ubsdk.demo.plugin.DemoApplication"/>
+</applications>
+</config>
