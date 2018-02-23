@@ -27,7 +27,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UBSDKGameMainActivity extends Activity
+public class UBSDK_Demo_MainActivity extends Activity
 {
 
     private Activity mActivity;
@@ -60,26 +60,7 @@ public class UBSDKGameMainActivity extends Activity
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
         setSDKlistener();
-        UBSDK.getInstance().init(mActivity);
-        UBSDK.getInstance().onCreate(savedInstanceState);
-        
-    }
-
-    private void initView()
-    {
-        mLoginBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_login"));
-        mLogoutBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_logout"));
-        mPayBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_pay"));
-        mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
-        mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
-        mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
-        mInfoTv = (TextView) findViewById(ResUtil.getViewID(this, "tv_info"));
-    }
-
-    private void setSDKlistener()
-    {
-        // 设置初始化通知(必接)
-    	UBSDK.getInstance().setUBInitCallback(new UBInitCallback()
+        UBSDK.getInstance().init(mActivity,new UBInitCallback()
         {
 
             @Override
@@ -100,98 +81,23 @@ public class UBSDKGameMainActivity extends Activity
                 mInfoTv.setText(failStr);
             }
         });
-        // 设置登录通知(必接)
-    	UBSDK.getInstance().setUBLoginCallback(new UBLoginCallback()
-        {
-
-            @Override
-            public void onSuccess(UBUserInfo ubUserInfo)
-            {
-            	String loginSuccessStr="login success:" + "\n\r" + "UserID:  " + ubUserInfo.getUid() + "\n\r" + "UserName:  "
-                        + ubUserInfo.getUserName() + "\n\r" + "Token:  " + ubUserInfo.getToken() + "\n\r"+"extra:" + ubUserInfo.getExtra();
-            	UBLogUtil.logI(TAG,loginSuccessStr);
-                mInfoTv.setText(loginSuccessStr);
-                
-                int platfromId = UBSDK.getInstance().getPlatformId();
-                int subPlatformId = UBSDK.getInstance().getSubPlatformId();
-            	UBLogUtil.logI(TAG,"platfromId : " + platfromId);
-            	UBLogUtil.logI(TAG,"subPlatformId : " + subPlatformId);
-                
-//              TODO 去2次登录验签
-                
-            }
-
-            @Override
-            public void onFailed(String msg, String trace)
-            {
-            	String loginFailStr="login fail:" + "\n\r" + "msg :  " + msg + "\n\r" + "trace:  "
-                        + trace;
-            	UBLogUtil.logI(TAG,loginFailStr);
-                mInfoTv.setText(loginFailStr);
-            }
-
-            @Override
-            public void onCancel()
-            {
-                mInfoTv.setText("cancel by user");
-            	UBLogUtil.logI(TAG,"cancel by user");
-            }
-        });
-    	
-        // 设置注销通知(必接)
-        UBSDK.getInstance().setUBLogoutCallback(new UBLogoutCallback()
-        {
-
-            @Override
-            public void onSuccess()
-            {
-                //注意：收到注销回调需要回到游戏首页，重新登录
-                mInfoTv.setText("logout success");
-                UBLogUtil.logI(TAG,"logout success");
-            }
-
-            @Override
-            public void onFailed(String msg, String trace)
-            {
-            	String loginFailStr="logout fail ： " + "\n\r" + "msg : " + msg +"\n\r"+  "trace : " + trace;
-                mInfoTv.setText(loginFailStr);
-                UBLogUtil.logI(TAG,loginFailStr);
-            }
-        });
-        // 设置支付通知(必接)
-        UBSDK.getInstance().setUBPayCallback(new UBPayCallback()
-        {
-
-            @Override
-            public void onSuccess(String sdkOrderID, String cpOrderID, String extrasParams)
-            {
-            	String paySuccessStr="pay success：" + "\n\r" + "sdkOrderID : " + sdkOrderID + "\n\r" + "cpOrderID : " + cpOrderID
-                        + "\n\r" + "extrasParams : " + extrasParams;
-            	
-                mInfoTv.setText(paySuccessStr);
-                UBLogUtil.logI(TAG,paySuccessStr);
-                
-//                TODO 
-            }
-
-            @Override
-            public void onFailed(String cpOrderID, String msg, String trace)
-            {
-            	String payFailStr="pay fail：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "msg : " + msg
-                        + "\n\r" + "trace : " + trace;
-                mInfoTv.setText(payFailStr);
-                UBLogUtil.logI(TAG,payFailStr);
-            }
-
-            @Override
-            public void onCancel(String cpOrderID)
-            {
-            	String payCancelStr="pay cancel：" + "\n\r" + "cpOrderID : " + cpOrderID;
-                mInfoTv.setText(payCancelStr);
-                UBLogUtil.logI(TAG,payCancelStr);
-            }
-        });
+        UBSDK.getInstance().onCreate(savedInstanceState);
         
+    }
+
+    private void initView()
+    {
+        mLoginBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_login"));
+        mLogoutBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_logout"));
+        mPayBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_pay"));
+        mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
+        mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
+        mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
+        mInfoTv = (TextView) findViewById(ResUtil.getViewID(this, "tv_info"));
+    }
+
+    private void setSDKlistener()
+    {
         // 设置切换账号通知(必接)
         UBSDK.getInstance().setUBSwitchAccountCallback(new UBSwitchAccountCallback()
         {
@@ -221,36 +127,6 @@ public class UBSDKGameMainActivity extends Activity
                 UBLogUtil.logI(TAG,"switchAccount cancel");
             }
         });
-        
-        // 设置退出通知(必接)
-        UBSDK.getInstance().setUBExitCallback(new UBExitCallback()
-        {
-
-			@Override
-			public void onExit() {
-                mInfoTv.setText("exit :exit");
-                UBLogUtil.logI(TAG,"exit :exit");
-				
-                // 游戏本身的退出操作
-                mActivity.finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(0);
-			}
-
-			@Override
-			public void onCancel(String message, String trace) {
-                mInfoTv.setText("exit:cancel by user");
-                UBLogUtil.logI(TAG,"exit:cancel by user");
-			}
-
-			@Override
-			public void noImplement() {
-				// TODO 对接的该渠道没有实现退出弹出框，cp自己去实现
-				UBSDK.getInstance().showExitDialog();
-                mInfoTv.setText("exit:channel noImplement");
-                UBLogUtil.logI(TAG,"exit:channel noImplement");
-			}
-        });
 
     }
 
@@ -262,7 +138,42 @@ public class UBSDKGameMainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                UBSDK.getInstance().login();
+                UBSDK.getInstance().login(new UBLoginCallback()
+                {
+
+                    @Override
+                    public void onSuccess(UBUserInfo ubUserInfo)
+                    {
+                    	String loginSuccessStr="login success:" + "\n\r" + "UserID:  " + ubUserInfo.getUid() + "\n\r" + "UserName:  "
+                                + ubUserInfo.getUserName() + "\n\r" + "Token:  " + ubUserInfo.getToken() + "\n\r"+"extra:" + ubUserInfo.getExtra();
+                    	UBLogUtil.logI(TAG,loginSuccessStr);
+                        mInfoTv.setText(loginSuccessStr);
+                        
+                        int platfromId = UBSDK.getInstance().getPlatformId();
+                        int subPlatformId = UBSDK.getInstance().getSubPlatformId();
+                    	UBLogUtil.logI(TAG,"platfromId : " + platfromId);
+                    	UBLogUtil.logI(TAG,"subPlatformId : " + subPlatformId);
+                        
+//                      TODO 去2次登录验签
+                        
+                    }
+
+                    @Override
+                    public void onFailed(String msg, String trace)
+                    {
+                    	String loginFailStr="login fail:" + "\n\r" + "msg :  " + msg + "\n\r" + "trace:  "
+                                + trace;
+                    	UBLogUtil.logI(TAG,loginFailStr);
+                        mInfoTv.setText(loginFailStr);
+                    }
+
+                    @Override
+                    public void onCancel()
+                    {
+                        mInfoTv.setText("cancel by user");
+                    	UBLogUtil.logI(TAG,"cancel by user");
+                    }
+                });
             }
         });
         
@@ -272,7 +183,25 @@ public class UBSDKGameMainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-            	UBSDK.getInstance().logout();
+            	UBSDK.getInstance().logout(new UBLogoutCallback()
+                {
+
+                    @Override
+                    public void onSuccess()
+                    {
+                        //注意：收到注销回调需要回到游戏首页，重新登录
+                        mInfoTv.setText("logout success");
+                        UBLogUtil.logI(TAG,"logout success");
+                    }
+
+                    @Override
+                    public void onFailed(String msg, String trace)
+                    {
+                    	String loginFailStr="logout fail ： " + "\n\r" + "msg : " + msg +"\n\r"+  "trace : " + trace;
+                        mInfoTv.setText(loginFailStr);
+                        UBLogUtil.logI(TAG,loginFailStr);
+                    }
+                });
             }
         });
         
@@ -373,7 +302,38 @@ public class UBSDKGameMainActivity extends Activity
         orderInfo.setGoodsDesc("商品描述");//必传
         orderInfo.setExtrasParams("extra"); // 透传参数，游戏自定义的参数
         orderInfo.setCallbackUrl("http://TAGx/notify");//客户端可以不传，通知回调(需要在我们后台配置)
-        UBSDK.getInstance().pay(roleInfo,orderInfo);
+        UBSDK.getInstance().pay(roleInfo,orderInfo,new UBPayCallback()
+        {
+
+            @Override
+            public void onSuccess(String sdkOrderID, String cpOrderID, String extrasParams)
+            {
+            	String paySuccessStr="pay success：" + "\n\r" + "sdkOrderID : " + sdkOrderID + "\n\r" + "cpOrderID : " + cpOrderID
+                        + "\n\r" + "extrasParams : " + extrasParams;
+            	
+                mInfoTv.setText(paySuccessStr);
+                UBLogUtil.logI(TAG,paySuccessStr);
+                
+//                TODO 
+            }
+
+            @Override
+            public void onFailed(String cpOrderID, String msg, String trace)
+            {
+            	String payFailStr="pay fail：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "msg : " + msg
+                        + "\n\r" + "trace : " + trace;
+                mInfoTv.setText(payFailStr);
+                UBLogUtil.logI(TAG,payFailStr);
+            }
+
+            @Override
+            public void onCancel(String cpOrderID)
+            {
+            	String payCancelStr="pay cancel：" + "\n\r" + "cpOrderID : " + cpOrderID;
+                mInfoTv.setText(payCancelStr);
+                UBLogUtil.logI(TAG,payCancelStr);
+            }
+        });
     }
 
     /**
@@ -381,7 +341,34 @@ public class UBSDKGameMainActivity extends Activity
      */
     private void exit()
     {
-        UBSDK.getInstance().exit();
+        UBSDK.getInstance().exit(new UBExitCallback()
+        {
+
+			@Override
+			public void onExit() {
+                mInfoTv.setText("exit :exit");
+                UBLogUtil.logI(TAG,"exit :exit");
+				
+                // 游戏本身的退出操作
+                mActivity.finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
+			}
+
+			@Override
+			public void onCancel(String message, String trace) {
+                mInfoTv.setText("exit:cancel by user");
+                UBLogUtil.logI(TAG,"exit:cancel by user");
+			}
+
+			@Override
+			public void noImplement() {
+				// TODO 对接的该渠道没有实现退出弹出框，cp自己去实现
+				UBSDK.getInstance().showExitDialog();
+                mInfoTv.setText("exit:channel noImplement");
+                UBLogUtil.logI(TAG,"exit:channel noImplement");
+			}
+        });
     }
 
  

@@ -2,12 +2,17 @@ package com.ubsdk.vivo.plugin;
 
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 
+import android.app.Activity;
+
 public class VIVOSettingPlugin implements IUBSettingPlugin {
+	private Activity mActivity;
+	private VIVOSettingPlugin (Activity activity){
+		this.mActivity=activity;
+	}
 
 	@Override
 	public void exit() {
-		// TODO Auto-generated method stub
-		
+		VIVOSDK.getInstance().exit();
 	}
 
 	@Override
