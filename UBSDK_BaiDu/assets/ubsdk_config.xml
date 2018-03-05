@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="VIVO_STOREID" value="9" />
+<param name="BaiDu_Game_Orientation" value="landscape" />
 <param name="VIVO_APPID" value="8e9041a398534d37a169e63be5e55b6d" />
 <param name="VIVO_VERSION" value=""/>
 <param name="VAS_ORIENTATION" value="0" /><!-- 1为竖屏 0为横屏 -->
