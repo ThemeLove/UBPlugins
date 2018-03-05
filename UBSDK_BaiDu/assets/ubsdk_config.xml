@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<param name="VIVO_STOREID" value="9" />
+<param name="VIVO_APPID" value="8e9041a398534d37a169e63be5e55b6d" />
+<param name="VIVO_VERSION" value=""/>
+<param name="VAS_ORIENTATION" value="0" /><!-- 1为竖屏 0为横屏 -->
+<param name="UB_GAMEID" value="1123" />
+<param name="UB_PLATFORMID" value="80" />
+<param name="UB_SUBPLATFORMID" value="0" />
+<param name="UB_CHANNELID" value="1" />
+<param name="UB_SUBCHANNEL_ID" value="1" />
+<plugins>
+	<plugin name="com.ubsdk.baidu.plugin.BaiDuUserPlugin" type="1" />
+	<plugin name="com.ubsdk.baidu.plugin.BaiDuPayPlugin"  type="2"/>
+	<plugin name="com.ubsdk.baidu.plugin.BaiDuSettingPlugin"  type="3"/>
+</plugins>
+<applications>
+	 <application name="com.ubsdk.baidu.plugin.BaiDuApplication"/>
+</applications>
+</config>
