@@ -50,4 +50,6 @@
 
     <color name="dk_dark_gray">#ff333333</color>
     <color name="dk_deep_gray">#ff666666</color>
+    
+    <color name="gc_white">#FFFFFF</color>
 </resources>

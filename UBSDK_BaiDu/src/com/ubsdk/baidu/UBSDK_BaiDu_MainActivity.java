@@ -19,7 +19,6 @@ import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -301,16 +300,20 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         orderInfo.setCallbackUrl("http://TAGx/notify");//客户端可以不传，通知回调(需要在我们后台配置)
         UBSDK.getInstance().pay(roleInfo,orderInfo,new UBPayCallback()
         {
-
-            @Override
-            public void onSuccess(String sdkOrderID, String cpOrderID, String extrasParams)
-            {
-            	String paySuccessStr="pay success：" + "\n\r" + "sdkOrderID : " + sdkOrderID + "\n\r" + "cpOrderID : " + cpOrderID
-                        + "\n\r" + "extrasParams : " + extrasParams;
+        	@Override
+			public void onSuccess(String cpOrderID, String orderID, String goodsId, String goodsName, String goodsPrice,
+					String extrasParams) {
+				// TODO Auto-generated method stub
+            	String paySuccessStr="pay success：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "orderID : " + orderID
+                        + "\n\r"
+            			+"goodsId:"+goodsId
+            			+"goodsName:"+goodsName
+            			+"goodsPrice:"+goodsPrice
+            			+"extrasParams : " + extrasParams;
                 mInfoTv.setText(paySuccessStr);
                 UBLogUtil.logI(TAG,paySuccessStr);
-//                TODO 
-            }
+			}
+
             @Override
             public void onFailed(String cpOrderID, String msg, String trace)
             {
@@ -326,6 +329,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                 mInfoTv.setText(payCancelStr);
                 UBLogUtil.logI(TAG,payCancelStr);
             }
+			
         });
     }
 

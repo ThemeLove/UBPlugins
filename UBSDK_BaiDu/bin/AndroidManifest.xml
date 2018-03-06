@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.baidu"
+    package="com.umbrella.downthemountain.baidu"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -33,12 +33,7 @@
     <uses-permission android:name="android.webkit.permission.PLUGIN" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <!-- 咪咕基地所需权限 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS" />
+
 
     <!-- push sdk start -->
     <!-- 富媒体需要声明的权限 -->
@@ -78,22 +73,22 @@
     <!-- dksdk_appid表示从开发者平台申请的APPID，一定要填写正确 -->
     <meta-data
         android:name="dksdk_appid"
-        android:value="开发者平台申请的APPID" />
+        android:value="10871023" />		<!-- Down The Mountain -->
 
     <!-- dksdk_appkey表示从开发者平台申请的APPKEY，一定要填写正确 -->
     <meta-data
         android:name="dksdk_appkey"
-        android:value="开发者平台申请的APPKEY" />
+        android:value="SlUcCVoVqNDioc6GKIqsOfZn" />
 
     <!-- dksdk_appsecret表示从开发者平台申请的APPSECRET，一定要填写正确 -->
     <meta-data
         android:name="dksdk_appsecret"
-        android:value="开发者平台申请的APPSECRET" />
+        android:value="KCGfhZ2jA98yZqmsY51kqVDEQdhsDYBd" />
 
     <!-- dksdk_channel表示渠道,百度手机助手13744，百度多酷12999，91（福建博锐）14076，百度贴吧14146 -->
     <meta-data
         android:name="dksdk_channel"
-        android:value="渠道号ID" />
+        android:value="13744" />
 
     <!-- dksdk_ver表示sdk版本,此版本为 221 -->
     <meta-data
@@ -109,12 +104,13 @@
             android:value="3.7.5" />
 
     <application
+        android:name="com.umbrella.game.ubsdk.ui.UBApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".UBSDK_BaiDu_MainActivity"
+            android:name="com.ubsdk.baidu.UBSDK_BaiDu_MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -241,7 +237,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/DK.Theme.NoBackGround.NoAnimation" >
         </activity>
-        <activity>
+        <activity
     		android:name="com.alipay.sdk.app.H5PayActivity"
     		android:screenOrientation="portrait" >
         </activity>
@@ -263,34 +259,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 微信支付 end -->
-        <!-- cp联通沃商店Start -->
-        <receiver android:name="com.unicom.xiaowo.SecurityReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.unicom.xiaowo.security.RECEIVER_CMD" />
-            </intent-filter>
-        </receiver>
 
-        <service android:name="com.unicom.wostore.unipay.paysecurity.SecurityServiceFramework" />
-
-        <activity
-            android:name="com.unicom.wostore.unipay.paysecurity.SecurityActivity"
-            android:configChanges="screenSize|orientation"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="com.unicom.wostore.unipay.paysecurity.PayActivity"
-            android:configChanges="screenSize|orientation"
-            android:exported="true"
-            android:launchMode="standard" >
-        </activity>
-        <!-- cp联通沃商店End -->
 
 
         <!-- ↓↓↓ 实名认证 ↓↓↓ -->
@@ -301,89 +270,6 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/DK.Theme.NoBackGround.NoAnimation" />
-
-        <!-- 登陆模块配置start -->
-        <activity
-            android:name="com.duoku.platform.single.bdpass.DKAccountContainerActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"
-            android:theme="@style/DK.Theme.NoBackGround.NoAnimation" >
-        </activity>
-        <!-- ↓↓↓ SDK ↓↓↓ -->
-
-
-        <activity
-            android:name="com.baidu.platformsdk.LoginActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.AssistActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.ConcertActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.BindPhoneActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.WebActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.baidu.platformsdk.ModifyPasswordActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.ThirdPartyLoginActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.baidu.platformsdk.VisitorBindActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.SapiWebActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent" />
-        <activity
-            android:name="com.baidu.platformsdk.SapiLoginProxyActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:exported="false"
-            android:theme="@style/bdp_dialog_style_fullscreen"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.baidu.platformsdk.AuthenticateActivity"
-            android:configChanges="orientation|navigation|screenSize|keyboard|keyboardHidden"
-            android:exported="false"
-            android:theme="@style/dk_bdp_style_transparent"
-            android:windowSoftInputMode="adjustPan" />
-
-        <service
-            android:name="com.baidu.platformsdk.BDPlatformService"
-            android:exported="false" />
-
-        <!-- ↑↑↑ SDK ↑↑↑ -->
-        <!-- 登陆模块配置end -->
 
     </application>
 
