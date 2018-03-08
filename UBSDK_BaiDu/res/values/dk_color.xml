@@ -51,5 +51,9 @@
     <color name="dk_dark_gray">#ff333333</color>
     <color name="dk_deep_gray">#ff666666</color>
     
-    <color name="gc_white">#FFFFFF</color>
+	<color name="gc_green">#52C60D</color>
+	<color name="gc_light_green">#A5D687</color>
+	<color name="gc_white">#FFFFFF</color>
+	<color name="gc_gray">#CFCFD1</color>
+    <color name="gc_black">#000000</color>
 </resources>

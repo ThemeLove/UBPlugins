@@ -45,4 +45,9 @@ public class VIVOSettingPlugin implements IUBSettingPlugin {
 		return null;
 	}
 
+	@Override
+	public void gamePause() {
+		
+	}
+
 }

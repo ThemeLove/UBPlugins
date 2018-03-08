@@ -7,6 +7,7 @@ import com.umbrella.game.ubsdk.bean.UBOrderInfo;
 import com.umbrella.game.ubsdk.bean.UBRoleInfo;
 import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.callback.UBExitCallback;
+import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
 import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
@@ -37,6 +38,8 @@ public class UBSDK_BaiDu_MainActivity extends Activity
     private Button mLogoutBtn;
 
     private Button mPayBtn;
+    
+    private Button mGamePauseBtn;
 
     private Button mExitBtn;
 
@@ -54,9 +57,8 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         super.onCreate(savedInstanceState);
         mActivity = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(ResUtil.getLayoutId(this, "activity_main_demo"));
-        initView();
-        setListener();
+
+        
         setSDKlistener();
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
@@ -69,6 +71,11 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             	String successStr="init success";
             	UBLogUtil.logI(TAG,successStr);
                 Toast.makeText(mActivity,successStr, Toast.LENGTH_SHORT).show();
+                
+                setContentView(ResUtil.getLayoutId(UBSDK_BaiDu_MainActivity.this, "activity_main_demo"));
+                initView();
+                setListener();
+                
                 mInfoTv.setText(successStr);
             }
 
@@ -90,6 +97,8 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         mLoginBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_login"));
         mLogoutBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_logout"));
         mPayBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_pay"));
+        
+        mGamePauseBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_gamePause"));
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
@@ -215,6 +224,14 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             }
         });
         
+        mGamePauseBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				gamePause();
+			}
+		});
+        
         mExitBtn.setOnClickListener(new OnClickListener()
         {
 
@@ -261,12 +278,12 @@ public class UBSDK_BaiDu_MainActivity extends Activity
      * UBRoleInfo所有字段均不能传null，游戏没有的字段请传一个默认值
      * @param roleType
      */
-    public void setGameDataInfo(DataType roleType){
+    public void setGameDataInfo(int roleType){
         UBRoleInfo roleInfo = new UBRoleInfo();
-        roleInfo.setServerId("1");// 服务器ID
+        roleInfo.setServerID("1");// 服务器ID
         roleInfo.setServerName("服务器1");// 服务器名称
         roleInfo.setRoleName("冰上上的王者");// 角色名称
-        roleInfo.setRoleId("2666255");// 角色ID
+        roleInfo.setRoleID("2666255");// 角色ID
         roleInfo.setRoleLevel("8");// 等级
         roleInfo.setVipLevel("Vip1");// VIP等级
         roleInfo.setGameBalance("300");// 角色现有金额
@@ -280,21 +297,21 @@ public class UBSDK_BaiDu_MainActivity extends Activity
     private void pay()
     {
         UBRoleInfo roleInfo = new UBRoleInfo();
-        roleInfo.setServerId("1");// 服务器ID，其值必须为数字字符串
+        roleInfo.setServerID("1");// 服务器ID，其值必须为数字字符串
         roleInfo.setServerName("serverName");// 服务器名称
         roleInfo.setRoleName("roleName");// 角色名称
-        roleInfo.setRoleId("6855625");// 角色ID
+        roleInfo.setRoleID("6855625");// 角色ID
         roleInfo.setRoleLevel("8");// 等级
         roleInfo.setVipLevel("Vip1");// VIP等级
         roleInfo.setGameBalance("300");// 角色现有金额
         roleInfo.setPartyName("partName");// 公会名字
 
         UBOrderInfo orderInfo = new UBOrderInfo();
-        orderInfo.setCpOrderId(UUID.randomUUID().toString().replace("-", ""));// 游戏订单号
-        orderInfo.setGoodsName("钻石");// 产品名称
+        orderInfo.setCpOrderID(UUID.randomUUID().toString().replace("-", ""));// 游戏订单号
+        orderInfo.setGoodsName("Remove Ads");// 产品名称
         orderInfo.setCount(1);// 购买数量，默认为1
-        orderInfo.setAmount(6); // 总金额（单位为元）
-        orderInfo.setGoodsId("101"); // 产品ID，用来识别购买的产品
+        orderInfo.setAmount(4.9); // 总金额（单位为元）
+        orderInfo.setGoodsID("1"); // 产品ID，用来识别购买的产品
         orderInfo.setGoodsDesc("商品描述");//必传
         orderInfo.setExtrasParams("extra"); // 透传参数，游戏自定义的参数
         orderInfo.setCallbackUrl("http://TAGx/notify");//客户端可以不传，通知回调(需要在我们后台配置)
@@ -437,5 +454,18 @@ public class UBSDK_BaiDu_MainActivity extends Activity
     public void onBackPressed()
     {
         UBSDK.getInstance().onBackPressed();
+        exit();
     }
+    
+    protected void gamePause() {
+  		UBSDK.getInstance().gamePause(new UBGamePauseCallback() {
+  			
+  			@Override
+  			public void onGamePause() {
+  				UBLogUtil.logI(TAG,"gamePause");
+  				 mInfoTv.setText("gamePause");
+  			}
+  		});
+  		
+  	}
 }

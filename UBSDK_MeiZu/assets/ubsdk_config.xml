@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<param name="MeiZu_AppID" value="landscape" />
+<param name="MeiZu_AppKey" value="10871023" />
+<param name="MeiZu_GameID" value=""/>
+<param name="MeiZu_AppSecret" value=""/>
+<param name="UB_ORIENTATION" value="0" /><!-- 1为竖屏 0为横屏 -->
+<param name="UB_GAMEID" value="1123" />
+<param name="UB_PLATFORMID" value="80" />
+<param name="UB_SUBPLATFORMID" value="0" />
+<param name="UB_CHANNELID" value="1" />
+<param name="UB_SUBCHANNEL_ID" value="1" />
+<plugins>
+	<plugin name="com.ubsdk.meizu.plugin.MeiZuUserPlugin" type="1" />
+	<plugin name="com.ubsdk.meizu.plugin.MeiZuPayPlugin"  type="2"/>
+	<plugin name="com.ubsdk.meizu.plugin.MeiZuSettingPlugin"  type="3"/>
+</plugins>
+<applications>
+	<application name="com.ubsdk.meizu.plugin.MeiZuApplication"/>
+</applications>
+</config>

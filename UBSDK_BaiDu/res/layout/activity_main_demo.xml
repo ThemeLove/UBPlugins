@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tq_startbg" >
+    android:background="@drawable/demo_startbg" >
 
     <LinearLayout
         android:id="@+id/lin_left"
@@ -14,42 +14,49 @@
             android:id="@+id/btn_login"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="登录" />
+            android:text="login" />
 
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="注销" />
+            android:text="logout" />
 
         <Button
             android:id="@+id/btn_pay"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="支付" />
+            android:text="pay" />
+        
+        <Button
+            android:id="@+id/btn_gamePause"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="gamePause" />
 
         <Button
             android:id="@+id/btn_exit"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="退出游戏" />
+            android:text="exit" />
 
         <Button
             android:id="@+id/btn_createRole"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="创建角色" />
+            android:text="createRole" />
 
         <Button
             android:id="@+id/btn_commitRoleInfo"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="提交角色数据" />
+            android:text="setGameDataInfo" />
     </LinearLayout>
     <TextView
         android:id="@+id/tv_info"

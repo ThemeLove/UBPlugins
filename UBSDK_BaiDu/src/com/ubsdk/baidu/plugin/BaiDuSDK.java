@@ -7,14 +7,12 @@ import com.duoku.platform.single.DKPlatformSettings.SdkMode;
 import com.duoku.platform.single.DkErrorCode;
 import com.duoku.platform.single.DkProtocolKeys;
 import com.duoku.platform.single.callback.IDKSDKCallBack;
-import com.duoku.platform.single.item.DKCMGBData;
-import com.duoku.platform.single.item.DKCMMMData;
-import com.duoku.platform.single.item.DKCpWoStoreData;
 import com.duoku.platform.single.item.GamePropsInfo;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.bean.DataType;
 import com.umbrella.game.ubsdk.bean.UBOrderInfo;
 import com.umbrella.game.ubsdk.bean.UBRoleInfo;
+import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.utils.TextUtil;
@@ -44,86 +42,92 @@ public class BaiDuSDK {
 	}
 
 	public void init() {
-		mActivity = UBSDKConfig.getInstance().getGameActivity();
-		if (mActivity==null) {
-			Log.w(TAG, "aaaaaaaaaaaaaaaaaaaaaaaaa");
-		}
-		String orientation = UBSDKConfig.getInstance().getParamsMap().get("BaiDu_Game_Orientation");
-		Log.w(TAG, orientation);
-		if (TextUtil.equalsIgnoreCase("portrait", orientation)) {
-			baiDu_Game_isLandscape = false;
-		}
-
-		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl() {
-
-			@Override
-			public void onCreate(Bundle savedInstanceState) {
-				super.onCreate(savedInstanceState);
+		UBLogUtil.logI(TAG,"init");
+		try {
+			mActivity = UBSDKConfig.getInstance().getGameActivity();
+			if (mActivity==null) {
+				UBLogUtil.logW("the mAcitivity is null");
+				return;
+			}
+			String orientation = UBSDKConfig.getInstance().getParamsMap().get("BaiDu_Game_Orientation");
+			Log.w(TAG, orientation);
+			if (TextUtil.equalsIgnoreCase("portrait", orientation)) {
+				baiDu_Game_isLandscape = false;
 			}
 
-			@Override
-			public void onPause() {
-				super.onPause();
-				DKPlatform.getInstance().stopSuspenstionService(mActivity);//品宣对应
-				DKPlatform.getInstance().pauseBaiduMobileStatistic(mActivity);//统计接口
-			}
+			UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl() {
 
-			@Override
-			public void onResume() {
-				super.onResume();
-				initPingXuan();//初始化品选
-				gamePause();//游戏暂停
-				DKPlatform.getInstance().resumeBaiduMobileStatistic(mActivity);//统计接口
-			}
+				@Override
+				public void onCreate(Bundle savedInstanceState) {
+					super.onCreate(savedInstanceState);
+				}
 
-			@Override
-			public void onBackPressed() {
-				super.onBackPressed();
-				exit();
-			}
+				@Override
+				public void onPause() {
+					super.onPause();
+//				DKPlatform.getInstance().stopSuspenstionService(mActivity);//品宣对应
+					DKPlatform.getInstance().pauseBaiduMobileStatistic(mActivity);//统计接口
+				}
 
-		});
-		UBSDK.getInstance().runOnUIThread(new Runnable() {
+				@Override
+				public void onResume() {
+					super.onResume();
+//				initPingXuan();//初始化品选
+//				gamePause();//游戏暂停
+					DKPlatform.getInstance().resumeBaiduMobileStatistic(mActivity);//统计接口
+				}
+
+				@Override
+				public void onBackPressed() {
+					super.onBackPressed();
+				}
+			});
 			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					// SDK初始化
-					DKPlatform.getInstance().init(mActivity, baiDu_Game_isLandscape, SdkMode.SDK_PAY, // 接入模式，支付版
-							null, // DKCMMMData,移动MM初始化参数
-							null, // DKCMGBData,移动基地初始化参数
-							null, // DKCpWoStoreDaa,Cp版沃商店初始化数据
-							new IDKSDKCallBack() {
+			UBSDK.getInstance().runOnUIThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						
+						UBLogUtil.logI(TAG,"thread:"+Thread.currentThread().getName());
+						
+						// SDK初始化
+						DKPlatform.getInstance().init(mActivity, baiDu_Game_isLandscape, SdkMode.SDK_PAY, // 接入模式，支付版
+								null, // DKCMMMData,移动MM初始化参数
+								null, // DKCMGBData,移动基地初始化参数
+								null, // DKCpWoStoreDaa,Cp版沃商店初始化数据
+								new IDKSDKCallBack() {
 
-								@Override
-								public void onResponse(String paramString) {
-									UBLogUtil.logI(TAG,"init:onResponse----->success");
-									try {
-										JSONObject jsonObject = new JSONObject(paramString);
-										// 返回的操作状态码
-										int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
-										// 初始化完成
-										if (mFunctionCode == DkErrorCode.BDG_CROSSRECOMMEND_INIT_FINSIH) {
-											UBSDK.getInstance().getUBInitCallback().onSuccess();
-											
+									@Override
+									public void onResponse(String paramString) {
+										UBLogUtil.logI(TAG,"init:onResponse----->success");
+										try {
+											JSONObject jsonObject = new JSONObject(paramString);
+											// 返回的操作状态码
+											int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
+											// 初始化完成
+											if (mFunctionCode == DkErrorCode.BDG_CROSSRECOMMEND_INIT_FINSIH) {
+												UBSDK.getInstance().getUBInitCallback().onSuccess();
+												
 											initPingXuan();//初始化品宣
 											callSupplement();//补单接口
+											}
+										} catch (Exception e) {
+											e.printStackTrace();
 										}
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
 
-								}
-							});
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+									}
+								});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					
 				}
-				
-				
-			}
-		});
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -144,6 +148,7 @@ public class BaiDuSDK {
 	 * 游戏暂停
 	 */
 	public void gamePause() {
+		UBLogUtil.logI(TAG,"gamePause");
 		DKPlatform.getInstance().bdgamePause(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
@@ -154,20 +159,21 @@ public class BaiDuSDK {
 	}
 
 	public void login() {
-		UBLogUtil.logI(TAG,"login:success----->empty implementation");
-		UBSDK.getInstance().getUBLoginCallback().onSuccess(null);
+		UBLogUtil.logI(TAG,"login:success----->simulation empty implementation");
+		UBSDK.getInstance().getUBLoginCallback().onSuccess(new UBUserInfo());
 	}
 
 	public void logout() {
-		UBLogUtil.logI("logout:success");
+		UBLogUtil.logI("logout:success----->simulation success");
 		UBSDK.getInstance().getUBLogoutCallback().onSuccess();
 	}
 
-	public void setGameDataInfo(Object obj, DataType dataType) {
-		UBLogUtil.logI(TAG,"setGameDataInfo----->empty implementation");
+	public void setGameDataInfo(Object obj, int dataType) {
+		UBLogUtil.logI(TAG,"setGameDataInfo----->simulation empty implementation");
 	}
 
 	public void exit() {
+		UBLogUtil.logI(TAG,"exit");
 		DKPlatform.getInstance().bdgameExit(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
@@ -175,16 +181,34 @@ public class BaiDuSDK {
 				UBSDK.getInstance().getUBExitCallback().onExit();
 			}
 		});
-
 	}
 
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
+		UBLogUtil.logI(TAG,"pay");
+		
+		String billingId="";
+		String billingPrice="";
+		String billingName="";
 
+		if (TextUtil.equalsIgnoreCase("1",ubOrderInfo.getGoodsID())) {
+			billingId="43638";
+			billingPrice="4.9";
+			billingName="Remove Ads";
+		}else if(TextUtil.equalsIgnoreCase("2", ubOrderInfo.getGoodsID())){
+			billingId="43639";
+			billingPrice="4.9";
+			billingName="4 Keys";
+		}else if(TextUtil.equalsIgnoreCase("3", ubOrderInfo.getGoodsID())){
+			billingId="43640";
+			billingPrice="4.9";
+			billingName="Desert Theme";
+		}
+		
 		GamePropsInfo gamePropsInfo = new GamePropsInfo(
-				"",//百度计费点id
-				"",//计费点价格
-				"",//计费点名称
-				"");//透传字段
+				billingId,//百度计费点id
+				billingPrice,//计费点价格
+				billingName,//计费点名称
+				ubOrderInfo.getExtrasParams());//透传字段
 		gamePropsInfo.setThirdPay("qpfangshua");//只接入微信支付宝
 		DKPlatform.getInstance().invokePayCenterActivity(mActivity, gamePropsInfo, null, null, null, null, null,
 				RechargeCallback);
@@ -195,7 +219,7 @@ public class BaiDuSDK {
 		@Override
 		public void onResponse(String paramString) {
 			// TODO Auto-generated method stub
-			Log.d("GamePropsActivity", paramString);
+			UBLogUtil.logI(TAG,"pay:onResponse----->"+paramString);
 			try {
 				JSONObject jsonObject = new JSONObject(paramString);
 				// 支付状态码

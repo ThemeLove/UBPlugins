@@ -34,7 +34,7 @@ public class BaiDuUserPlugin implements IUBUserPlugin{
 	}
 
 	@Override
-	public void setGameDataInfo(Object obj, DataType dataType) {
+	public void setGameDataInfo(Object obj, int dataType) {
 		BaiDuSDK.getInstance().setGameDataInfo(obj,dataType);
 		UBLogUtil.logI(TAG,"setGameDataInfo");
 	}

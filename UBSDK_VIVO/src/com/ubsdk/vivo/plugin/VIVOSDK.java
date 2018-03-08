@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.bean.DataType;
 import com.umbrella.game.ubsdk.bean.UBOrderInfo;
 import com.umbrella.game.ubsdk.bean.UBRoleInfo;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
@@ -100,7 +99,7 @@ public class VIVOSDK {
 		
 	}
 	
-	public void setGameDataInfo(Object obj, DataType dataType) {
+	public void setGameDataInfo(Object obj, int dataType) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -138,7 +137,7 @@ public class VIVOSDK {
         params.put("storeId",mVIVO_StoreId);//商户ID
         params.put("appId", mVIVO_AppId);                  //APPID
 //        params.put("storeOrder", UUID.randomUUID().toString().replaceAll("-", ""));//商户订单号
-        params.put("storeOrder",ubOrderInfo.getOrderId());//商户订单号
+        params.put("storeOrder",ubOrderInfo.getOrderID());//商户订单号
         params.put("version", "1.0");
         String str = VivoSignUtils.getVivoSign(params,mVIVO_StoreId);//signkey
         params.put("signature", str);
@@ -149,7 +148,7 @@ public class VIVOSDK {
 
 			@Override
 			public void onFailed(int what, String arg1, Object arg2, Exception e, int arg4, long arg5) {
-				UBSDK.getInstance().getUBPayCallback().onFailed(ubOrderInfo.getCpOrderId(), "创建订单失败！", null);
+				UBSDK.getInstance().getUBPayCallback().onFailed(ubOrderInfo.getCpOrderID(), "创建订单失败！", null);
 			}
 
 			@Override
@@ -170,15 +169,15 @@ public class VIVOSDK {
 						String orderAmount = jsob.optString("orderAmount");
 						String vivoSignature = jsob.optString("vivoSignature");
 						String vivoOrder = jsob.optString("vivoOrder");
-						ubOrderInfo.setOrderId(vivoOrder);
+						ubOrderInfo.setOrderID(vivoOrder);
 						VivoPayInfo vivoPayInfo = new VivoPayInfo(ubOrderInfo.getGoodsName(),ubOrderInfo.getGoodsDesc(),orderAmount,vivoSignature, mVIVO_AppId,vivoOrder, null);
 						VivoUnionSDK.pay(mActivity, vivoPayInfo, new VivoPayCallback() {
 							@Override
 							public void onVivoPayResult(String transNo, boolean isSuccess, String errorCode) {
 								if (isSuccess) {
-									UBSDK.getInstance().getUBPayCallback().onSuccess(ubOrderInfo.getOrderId(), ubOrderInfo.getCpOrderId(), ubOrderInfo.getExtrasParams());
+									UBSDK.getInstance().getUBPayCallback().onSuccess(ubOrderInfo.getCpOrderID(),ubOrderInfo.getOrderID(),"", "","",ubOrderInfo.getExtrasParams());
 								}else{
-									UBSDK.getInstance().getUBPayCallback().onFailed(ubOrderInfo.getCpOrderId(), errorCode, null);
+									UBSDK.getInstance().getUBPayCallback().onFailed(ubOrderInfo.getCpOrderID(), errorCode, null);
 								}
 							}
 						});

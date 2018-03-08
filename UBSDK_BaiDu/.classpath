@@ -5,5 +5,6 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.andmore.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="libs/DKSingleSDK2_2_1_online_final.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

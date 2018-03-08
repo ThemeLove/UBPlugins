@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="BaiDu_Game_Orientation" value="landscape" />
+<param name="BaiDu_Game_Orientation" value="portrait" />
 <param name="BaiDu_AppId" value="10871023" />
 <param name="BaiDu_AppKey" value="SlUcCVoVqNDioc6GKIqsOfZn"/>
 <param name="VAS_ORIENTATION" value="0" /><!-- 1为竖屏 0为横屏 -->
