@@ -1,6 +1,5 @@
 package com.ubsdk.baidu.plugin;
 
-import com.umbrella.game.ubsdk.bean.DataType;
 import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.iplugin.IUBUserPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
@@ -12,8 +11,6 @@ public class BaiDuUserPlugin implements IUBUserPlugin{
 	private Activity mActivity;
 	private BaiDuUserPlugin(Activity activity){
 		this.mActivity=activity;
-		BaiDuSDK.getInstance().init();
-		UBLogUtil.logI(TAG,"init");
 	}
 
 	@Override
@@ -30,13 +27,14 @@ public class BaiDuUserPlugin implements IUBUserPlugin{
 
 	@Override
 	public UBUserInfo getUserInfo() {
+		UBLogUtil.logI(TAG,"getUserInfo");
 		return null;
 	}
 
 	@Override
 	public void setGameDataInfo(Object obj, int dataType) {
-		BaiDuSDK.getInstance().setGameDataInfo(obj,dataType);
 		UBLogUtil.logI(TAG,"setGameDataInfo");
+		BaiDuSDK.getInstance().setGameDataInfo(obj,dataType);
 	}
 
 }

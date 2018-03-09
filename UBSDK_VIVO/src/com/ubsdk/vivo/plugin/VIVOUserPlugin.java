@@ -1,6 +1,5 @@
 package com.ubsdk.vivo.plugin;
 
-import com.umbrella.game.ubsdk.bean.DataType;
 import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.iplugin.IUBUserPlugin;
 
@@ -30,7 +29,7 @@ public class VIVOUserPlugin implements IUBUserPlugin{
 	}
 
 	@Override
-	public void setGameDataInfo(Object obj, DataType dataType) {
+	public void setGameDataInfo(Object obj, int dataType) {
 		VIVOSDK.getInstance().setGameDataInfo(obj,dataType);
 	}
 

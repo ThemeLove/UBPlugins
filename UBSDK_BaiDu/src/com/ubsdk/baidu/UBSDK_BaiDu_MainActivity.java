@@ -7,12 +7,11 @@ import com.umbrella.game.ubsdk.bean.UBOrderInfo;
 import com.umbrella.game.ubsdk.bean.UBRoleInfo;
 import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.callback.UBExitCallback;
-import com.umbrella.game.ubsdk.callback.UBInitCallback;
+import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
 import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
 import com.umbrella.game.ubsdk.callback.UBPayCallback;
 import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
-import com.umbrella.game.ubsdk.utils.AssetUtil;
 import com.umbrella.game.ubsdk.utils.ResUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -25,7 +24,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class UBSDK_BaiDu_MainActivity extends Activity
 {
@@ -37,6 +35,8 @@ public class UBSDK_BaiDu_MainActivity extends Activity
     private Button mLogoutBtn;
 
     private Button mPayBtn;
+    
+    private Button mGamePauseBtn;
 
     private Button mExitBtn;
 
@@ -46,7 +46,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
 
     private TextView mInfoTv;
     
-    public final String TAG =getClass().getSimpleName();
+    public final String TAG =UBSDK_BaiDu_MainActivity.class.getSimpleName();
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,21 +54,23 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         super.onCreate(savedInstanceState);
         mActivity = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(ResUtil.getLayoutId(this, "activity_main_demo"));
+        setContentView(ResUtil.getLayoutId(UBSDK_BaiDu_MainActivity.this, "activity_main_demo"));
         initView();
         setListener();
+        
         setSDKlistener();
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
-        UBSDK.getInstance().init(mActivity,new UBInitCallback()
+/*        UBSDK.getInstance().init(mActivity,new UBInitCallback()
         {
 
             @Override
             public void onSuccess()
             {
             	String successStr="init success";
-            	UBLogUtil.logI(TAG,successStr);
+            	UBLogUtil.logI(TAG+"----->"+successStr);
                 Toast.makeText(mActivity,successStr, Toast.LENGTH_SHORT).show();
+                
                 mInfoTv.setText(successStr);
             }
 
@@ -76,11 +78,11 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             public void onFailed(String msg, String trace)
             {
             	String failStr="init onFailed : msg = " + msg + ",trace = " + trace;
-            	UBLogUtil.logI(TAG, failStr);
+            	UBLogUtil.logI(TAG+"----->"+failStr);
                 Toast.makeText(mActivity,failStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(failStr);
             }
-        });
+        });*/
         
         UBSDK.getInstance().onCreate(savedInstanceState);
     }
@@ -90,6 +92,8 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         mLoginBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_login"));
         mLogoutBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_logout"));
         mPayBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_pay"));
+        
+        mGamePauseBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_gamePause"));
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
@@ -109,7 +113,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             	String switchAccountSuccessStr="switchAccount success:" + "\n\r" + "UserID:  " + ubUserInfo.getUid() + "\n\r" + "UserName:  "
                         + ubUserInfo.getUserName() + "\n\r" + "Token:  " + ubUserInfo.getToken();
                 mInfoTv.setText(switchAccountSuccessStr);
-                UBLogUtil.logI(TAG,switchAccountSuccessStr);
+                UBLogUtil.logI(TAG+"----->"+switchAccountSuccessStr);
             }
 
             @Override
@@ -117,14 +121,14 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             {
             	String switchAccountFailStr="switchAccount fail:" + "\n\r" + "msg :  " + msg + "\n\r" + "trace:  " + trace;
                 mInfoTv.setText(switchAccountFailStr);
-                UBLogUtil.logI(TAG, switchAccountFailStr);
+                UBLogUtil.logI(TAG+"----->"+switchAccountFailStr);
             }
 
             @Override
             public void onCancel()
             {
                 mInfoTv.setText("switchAccount cancel");
-                UBLogUtil.logI(TAG,"switchAccount cancel");
+                UBLogUtil.logI(TAG+"----->"+"switchAccount cancel");
             }
         });
 
@@ -144,15 +148,16 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                     @Override
                     public void onSuccess(UBUserInfo ubUserInfo)
                     {
-                    	String loginSuccessStr="login success:" + "\n\r" + "UserID:  " + ubUserInfo.getUid() + "\n\r" + "UserName:  "
-                                + ubUserInfo.getUserName() + "\n\r" + "Token:  " + ubUserInfo.getToken() + "\n\r"+"extra:" + ubUserInfo.getExtra();
+                    	String loginSuccessStr="login success:" + "UserID=" + ubUserInfo.getUid() + ",UserName="
+                                + ubUserInfo.getUserName() + ",Token=" + ubUserInfo.getToken() + ",extra=" + ubUserInfo.getExtra();
                     	UBLogUtil.logI(TAG,loginSuccessStr);
                         mInfoTv.setText(loginSuccessStr);
                         
                         int platfromId = UBSDK.getInstance().getPlatformId();
                         int subPlatformId = UBSDK.getInstance().getSubPlatformId();
-                    	UBLogUtil.logI(TAG,"platfromId : " + platfromId);
-                    	UBLogUtil.logI(TAG,"subPlatformId : " + subPlatformId);
+                        
+                    	UBLogUtil.logI(TAG+"----->"+"platfromId : " + platfromId);
+                    	UBLogUtil.logI(TAG+"----->"+"subPlatformId : " + subPlatformId);
                         
 //                      TODO 去2次登录验签
                         
@@ -161,9 +166,8 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                     @Override
                     public void onFailed(String msg, String trace)
                     {
-                    	String loginFailStr="login fail:" + "\n\r" + "msg :  " + msg + "\n\r" + "trace:  "
-                                + trace;
-                    	UBLogUtil.logI(TAG,loginFailStr);
+                    	String loginFailStr="login fail:" + "msg=" + msg + ",trace="+ trace;
+                    	UBLogUtil.logI(TAG+"----->"+loginFailStr);
                         mInfoTv.setText(loginFailStr);
                     }
 
@@ -171,7 +175,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                     public void onCancel()
                     {
                         mInfoTv.setText("cancel by user");
-                    	UBLogUtil.logI(TAG,"cancel by user");
+                    	UBLogUtil.logI(TAG+"----->"+"cancel by user");
                     }
                 });
             }
@@ -191,15 +195,15 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                     {
                         //注意：收到注销回调需要回到游戏首页，重新登录
                         mInfoTv.setText("logout success");
-                        UBLogUtil.logI(TAG,"logout success");
+                        UBLogUtil.logI(TAG+"----->"+"logout success");
                     }
 
                     @Override
                     public void onFailed(String msg, String trace)
                     {
-                    	String loginFailStr="logout fail ： " + "\n\r" + "msg : " + msg +"\n\r"+  "trace : " + trace;
+                    	String loginFailStr="logout fail ： " + "msg=" + msg +",trace=" + trace;
                         mInfoTv.setText(loginFailStr);
-                        UBLogUtil.logI(TAG,loginFailStr);
+                        UBLogUtil.logI(TAG+"----->"+loginFailStr);
                     }
                 });
             }
@@ -214,6 +218,14 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                 pay();
             }
         });
+        
+        mGamePauseBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				gamePause();
+			}
+		});
         
         mExitBtn.setOnClickListener(new OnClickListener()
         {
@@ -231,6 +243,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             public void onClick(View v)
             {
                 setGameDataInfo(DataType.CREATE_ROLE);
+                mInfoTv.setText("createRole");
             }
         });
         
@@ -240,10 +253,9 @@ public class UBSDK_BaiDu_MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-            	String assetConfigStr = AssetUtil.getAssetConfigStr(mActivity,"ubsdk_config.xml");
-            	
-            	UBLogUtil.logI("configStr",assetConfigStr+"");
-            	
+                mInfoTv.setText("enterGame");
+                mInfoTv.setText("levelUp");
+                
                 //进入游戏的时候
             	setGameDataInfo(DataType.ENTER_GAME);
                 //角色升级的时候
@@ -291,10 +303,11 @@ public class UBSDK_BaiDu_MainActivity extends Activity
 
         UBOrderInfo orderInfo = new UBOrderInfo();
         orderInfo.setCpOrderID(UUID.randomUUID().toString().replace("-", ""));// 游戏订单号
-        orderInfo.setGoodsName("钻石");// 产品名称
+
+        orderInfo.setGoodsName("Remove Ads");// 产品名称
         orderInfo.setCount(1);// 购买数量，默认为1
-        orderInfo.setAmount(6); // 总金额（单位为元）
-        orderInfo.setGoodsID("101"); // 产品ID，用来识别购买的产品
+        orderInfo.setAmount(4.9); // 总金额（单位为元）
+        orderInfo.setGoodsID("1"); // 产品ID，用来识别购买的产品
         orderInfo.setGoodsDesc("商品描述");//必传
         orderInfo.setExtrasParams("extra"); // 透传参数，游戏自定义的参数
         orderInfo.setCallbackUrl("http://TAGx/notify");//客户端可以不传，通知回调(需要在我们后台配置)
@@ -304,30 +317,28 @@ public class UBSDK_BaiDu_MainActivity extends Activity
 			public void onSuccess(String cpOrderID, String orderID, String goodsId, String goodsName, String goodsPrice,
 					String extrasParams) {
 				// TODO Auto-generated method stub
-            	String paySuccessStr="pay success：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "orderID : " + orderID
-                        + "\n\r"
-            			+"goodsId:"+goodsId
-            			+"goodsName:"+goodsName
-            			+"goodsPrice:"+goodsPrice
-            			+"extrasParams : " + extrasParams;
+            	String paySuccessStr="pay success：" + "cpOrderID=" + cpOrderID + ",orderID=" + orderID
+                        + ",goodsId="+goodsId
+            			+",goodsName="+goodsName
+            			+",goodsPrice="+goodsPrice
+            			+",extrasParams=" + extrasParams;
                 mInfoTv.setText(paySuccessStr);
-                UBLogUtil.logI(TAG,paySuccessStr);
+                UBLogUtil.logI(TAG+"----->"+paySuccessStr);
 			}
 
             @Override
             public void onFailed(String cpOrderID, String msg, String trace)
             {
-            	String payFailStr="pay fail：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "msg : " + msg
-                        + "\n\r" + "trace : " + trace;
+            	String payFailStr="pay fail：" + "cpOrderID=" + cpOrderID + ",msg=" + msg+ ",trace=" + trace;
                 mInfoTv.setText(payFailStr);
-                UBLogUtil.logI(TAG,payFailStr);
+                UBLogUtil.logI(TAG+"----->"+payFailStr);
             }
             @Override
             public void onCancel(String cpOrderID)
             {
-            	String payCancelStr="pay cancel：" + "\n\r" + "cpOrderID : " + cpOrderID;
+            	String payCancelStr="pay cancel：" + "cpOrderID=" + cpOrderID;
                 mInfoTv.setText(payCancelStr);
-                UBLogUtil.logI(TAG,payCancelStr);
+                UBLogUtil.logI(TAG+"----->"+payCancelStr);
             }
 			
         });
@@ -344,7 +355,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
 			@Override
 			public void onExit() {
                 mInfoTv.setText("exit :exit");
-                UBLogUtil.logI(TAG,"exit :exit");
+                UBLogUtil.logI(TAG+"----->"+"exit :exit");
 				
                 // 游戏本身的退出操作
                 mActivity.finish();
@@ -355,7 +366,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
 			@Override
 			public void onCancel(String message, String trace) {
                 mInfoTv.setText("exit:cancel by user");
-                UBLogUtil.logI(TAG,"exit:cancel by user");
+                UBLogUtil.logI(TAG+"----->"+"exit:cancel by user");
 			}
 
 			@Override
@@ -363,7 +374,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
 				// TODO 对接的该渠道没有实现退出弹出框，cp自己去实现
 				UBSDK.getInstance().showExitDialog();
                 mInfoTv.setText("exit:channel noImplement");
-                UBLogUtil.logI(TAG,"exit:channel noImplement");
+                UBLogUtil.logI(TAG+"----->"+"exit:channel noImplement");
 			}
         });
     }
@@ -437,5 +448,18 @@ public class UBSDK_BaiDu_MainActivity extends Activity
     public void onBackPressed()
     {
         UBSDK.getInstance().onBackPressed();
+        exit();
     }
+    
+    protected void gamePause() {
+  		UBSDK.getInstance().gamePause(new UBGamePauseCallback() {
+  			
+  			@Override
+  			public void onGamePause() {
+  				UBLogUtil.logI(TAG+"----->"+"gamePause");
+  				 mInfoTv.setText("gamePause");
+  			}
+  		});
+  		
+  	}
 }
