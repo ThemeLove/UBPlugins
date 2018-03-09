@@ -163,7 +163,7 @@ public class BaiDuSDK {
 		UBSDK.getInstance().getUBLogoutCallback().onSuccess();
 	}
 
-	public void setGameDataInfo(Object obj, DataType dataType) {
+	public void setGameDataInfo(Object obj, int dataType) {
 		UBLogUtil.logI(TAG,"setGameDataInfo----->empty implementation");
 	}
 
