@@ -49,7 +49,7 @@ public class UBSDK_Demo_MainActivity extends Activity
 
     private TextView mInfoTv;
     
-    public final String TAG =getClass().getSimpleName();
+    public final String TAG =UBSDK_Demo_MainActivity.class.getSimpleName();
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,9 +57,7 @@ public class UBSDK_Demo_MainActivity extends Activity
         super.onCreate(savedInstanceState);
         mActivity = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(ResUtil.getLayoutId(this, "activity_main"));
-        initView();
-        setListener();
+    	UBLogUtil.logI(TAG+"----->"+"onCreate");
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
         setSDKlistener();
@@ -69,8 +67,12 @@ public class UBSDK_Demo_MainActivity extends Activity
             @Override
             public void onSuccess()
             {
+                setContentView(ResUtil.getLayoutId(mActivity, "activity_main"));
+                initView();
+                setListener();
+            	
             	String successStr="init success";
-            	UBLogUtil.logI(TAG,successStr);
+            	UBLogUtil.logI(TAG+"----->"+successStr);
                 Toast.makeText(mActivity,successStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(successStr);
             }
@@ -78,8 +80,12 @@ public class UBSDK_Demo_MainActivity extends Activity
             @Override
             public void onFailed(String msg, String trace)
             {
+                setContentView(ResUtil.getLayoutId(mActivity, "activity_main"));
+                initView();
+                setListener();
+            	
             	String failStr="init onFailed : msg = " + msg + ",trace = " + trace;
-            	UBLogUtil.logI(TAG, failStr);
+            	UBLogUtil.logI(TAG+"----->"+failStr);
                 Toast.makeText(mActivity,failStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(failStr);
             }
@@ -114,7 +120,7 @@ public class UBSDK_Demo_MainActivity extends Activity
             	String switchAccountSuccessStr="switchAccount success:" + "\n\r" + "UserID:  " + ubUserInfo.getUid() + "\n\r" + "UserName:  "
                         + ubUserInfo.getUserName() + "\n\r" + "Token:  " + ubUserInfo.getToken();
                 mInfoTv.setText(switchAccountSuccessStr);
-                UBLogUtil.logI(TAG,switchAccountSuccessStr);
+                UBLogUtil.logI(TAG+"----->"+switchAccountSuccessStr);
             }
 
             @Override
@@ -122,14 +128,14 @@ public class UBSDK_Demo_MainActivity extends Activity
             {
             	String switchAccountFailStr="switchAccount fail:" + "\n\r" + "msg :  " + msg + "\n\r" + "trace:  " + trace;
                 mInfoTv.setText(switchAccountFailStr);
-                UBLogUtil.logI(TAG, switchAccountFailStr);
+                UBLogUtil.logI(TAG+"----->"+switchAccountFailStr);
             }
 
             @Override
             public void onCancel()
             {
                 mInfoTv.setText("switchAccount cancel");
-                UBLogUtil.logI(TAG,"switchAccount cancel");
+                UBLogUtil.logI(TAG+"----->"+"switchAccount cancel");
             }
         });
 
@@ -151,13 +157,13 @@ public class UBSDK_Demo_MainActivity extends Activity
                     {
                     	String loginSuccessStr="login success:" + "\n\r" + "UserID:  " + ubUserInfo.getUid() + "\n\r" + "UserName:  "
                                 + ubUserInfo.getUserName() + "\n\r" + "Token:  " + ubUserInfo.getToken() + "\n\r"+"extra:" + ubUserInfo.getExtra();
-                    	UBLogUtil.logI(TAG,loginSuccessStr);
+                    	UBLogUtil.logI(TAG+"----->"+loginSuccessStr);
                         mInfoTv.setText(loginSuccessStr);
                         
                         int platfromId = UBSDK.getInstance().getPlatformId();
                         int subPlatformId = UBSDK.getInstance().getSubPlatformId();
-                    	UBLogUtil.logI(TAG,"platfromId : " + platfromId);
-                    	UBLogUtil.logI(TAG,"subPlatformId : " + subPlatformId);
+                    	UBLogUtil.logI(TAG+"----->"+"platfromId : " + platfromId);
+                    	UBLogUtil.logI(TAG+"----->"+"subPlatformId : " + subPlatformId);
                         
 //                      TODO 去2次登录验签
                         
@@ -168,7 +174,7 @@ public class UBSDK_Demo_MainActivity extends Activity
                     {
                     	String loginFailStr="login fail:" + "\n\r" + "msg :  " + msg + "\n\r" + "trace:  "
                                 + trace;
-                    	UBLogUtil.logI(TAG,loginFailStr);
+                    	UBLogUtil.logI(TAG+"----->"+loginFailStr);
                         mInfoTv.setText(loginFailStr);
                     }
 
@@ -176,7 +182,7 @@ public class UBSDK_Demo_MainActivity extends Activity
                     public void onCancel()
                     {
                         mInfoTv.setText("cancel by user");
-                    	UBLogUtil.logI(TAG,"cancel by user");
+                    	UBLogUtil.logI(TAG+"----->"+"cancel by user");
                     }
                 });
             }
@@ -196,7 +202,7 @@ public class UBSDK_Demo_MainActivity extends Activity
                     {
                         //注意：收到注销回调需要回到游戏首页，重新登录
                         mInfoTv.setText("logout success");
-                        UBLogUtil.logI(TAG,"logout success");
+                        UBLogUtil.logI(TAG+"----->"+"logout success");
                     }
 
                     @Override
@@ -204,7 +210,7 @@ public class UBSDK_Demo_MainActivity extends Activity
                     {
                     	String loginFailStr="logout fail ： " + "\n\r" + "msg : " + msg +"\n\r"+  "trace : " + trace;
                         mInfoTv.setText(loginFailStr);
-                        UBLogUtil.logI(TAG,loginFailStr);
+                        UBLogUtil.logI(TAG+"----->"+loginFailStr);
                     }
                 });
             }
@@ -254,10 +260,6 @@ public class UBSDK_Demo_MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-            	String assetConfigStr = AssetUtil.getAssetConfigStr(mActivity,"ubsdk_config.xml");
-            	
-            	UBLogUtil.logI("configStr",assetConfigStr+"");
-            	
                 //进入游戏的时候
             	setGameDataInfo(DataType.ENTER_GAME);
                 //角色升级的时候
@@ -274,7 +276,7 @@ public class UBSDK_Demo_MainActivity extends Activity
 			
 			@Override
 			public void onGamePause() {
-				UBLogUtil.logI(TAG,"gamePause");
+				UBLogUtil.logI(TAG+"----->"+"gamePause");
 				 mInfoTv.setText("gamePause");
 			}
 		});
@@ -341,7 +343,7 @@ public class UBSDK_Demo_MainActivity extends Activity
             			+ "extrasParams : " + extrasParams;
             	
                 mInfoTv.setText(paySuccessStr);
-                UBLogUtil.logI(TAG,paySuccessStr);
+                UBLogUtil.logI(TAG+"----->"+paySuccessStr);
                 
 //                TODO 
             }
@@ -352,7 +354,7 @@ public class UBSDK_Demo_MainActivity extends Activity
             	String payFailStr="pay fail：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "msg : " + msg
                         + "\n\r" + "trace : " + trace;
                 mInfoTv.setText(payFailStr);
-                UBLogUtil.logI(TAG,payFailStr);
+                UBLogUtil.logI(TAG+"----->"+payFailStr);
             }
 
             @Override
@@ -360,7 +362,7 @@ public class UBSDK_Demo_MainActivity extends Activity
             {
             	String payCancelStr="pay cancel：" + "\n\r" + "cpOrderID : " + cpOrderID;
                 mInfoTv.setText(payCancelStr);
-                UBLogUtil.logI(TAG,payCancelStr);
+                UBLogUtil.logI(TAG+"----->"+payCancelStr);
             }
         });
     }
@@ -376,7 +378,7 @@ public class UBSDK_Demo_MainActivity extends Activity
 			@Override
 			public void onExit() {
                 mInfoTv.setText("exit :exit");
-                UBLogUtil.logI(TAG,"exit :exit");
+                UBLogUtil.logI(TAG+"----->"+"exit :exit");
 				
                 // 游戏本身的退出操作
                 mActivity.finish();
@@ -387,7 +389,7 @@ public class UBSDK_Demo_MainActivity extends Activity
 			@Override
 			public void onCancel(String message, String trace) {
                 mInfoTv.setText("exit:cancel by user");
-                UBLogUtil.logI(TAG,"exit:cancel by user");
+                UBLogUtil.logI(TAG+"----->"+"exit:cancel by user");
 			}
 
 			@Override
@@ -395,7 +397,7 @@ public class UBSDK_Demo_MainActivity extends Activity
 				// TODO 对接的该渠道没有实现退出弹出框，cp自己去实现
 				UBSDK.getInstance().showExitDialog();
                 mInfoTv.setText("exit:channel noImplement");
-                UBLogUtil.logI(TAG,"exit:channel noImplement");
+                UBLogUtil.logI(TAG+"----->"+"exit:channel noImplement");
 			}
         });
     }
