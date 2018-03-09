@@ -14,37 +14,37 @@ public class BaiDuSettingPlugin implements IUBSettingPlugin{
 	
 	@Override
 	public void gamePause() {
-		BaiDuSDK.getInstance().gamePause();
 		UBLogUtil.logI(TAG,"gamePause");
+		BaiDuSDK.getInstance().gamePause();
 	}
 
 	@Override
 	public void exit() {
-		BaiDuSDK.getInstance().exit();
 		UBLogUtil.logI(TAG,"exit");
+		BaiDuSDK.getInstance().exit();
 	}
 
 	@Override
 	public int getPlatformId() {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG,"getPlatformId");
 		return 0;
 	}
 
 	@Override
 	public int getSubPlatformId() {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG,"getSubPlatformId");
 		return 0;
 	}
 
 	@Override
 	public String getExtrasConfig(String extras) {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG,"getExtrasConfig");
 		return null;
 	}
 
 	@Override
 	public boolean isFunctionSupported(int functionName) {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG,"isFunctionSupported");
 		return false;
 	}
 
