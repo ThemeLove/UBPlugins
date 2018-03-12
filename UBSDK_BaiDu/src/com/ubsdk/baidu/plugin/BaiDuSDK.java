@@ -22,13 +22,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class BaiDuSDK {
-	private final String TAG=BaiDuSDK.class.getSimpleName();
+	private final String TAG = BaiDuSDK.class.getSimpleName();
 	private static BaiDuSDK instance = null;
 	private Activity mActivity;
-	private boolean  baiDu_Game_isLandscape = true;//游戏是否是横屏
+	private boolean baiDu_Game_isLandscape = true;// 游戏是否是横屏
 
-	private BaiDuSDK() {}
-	
+	private BaiDuSDK() {
+	}
+
 	public static BaiDuSDK getInstance() {
 		if (instance == null) {
 			synchronized (BaiDuSDK.class) {
@@ -41,10 +42,10 @@ public class BaiDuSDK {
 	}
 
 	public void init() {
-		UBLogUtil.logI(TAG,"init");
+		UBLogUtil.logI(TAG, "init");
 		try {
 			mActivity = UBSDKConfig.getInstance().getGameActivity();
-			if (mActivity==null) {
+			if (mActivity == null) {
 				UBLogUtil.logW("the mAcitivity is null");
 				return;
 			}
@@ -64,16 +65,16 @@ public class BaiDuSDK {
 				@Override
 				public void onPause() {
 					super.onPause();
-//				DKPlatform.getInstance().stopSuspenstionService(mActivity);//品宣对应
-					DKPlatform.getInstance().pauseBaiduMobileStatistic(mActivity);//统计接口
+					// DKPlatform.getInstance().stopSuspenstionService(mActivity);//品宣对应
+					DKPlatform.getInstance().pauseBaiduMobileStatistic(mActivity);// 统计接口
 				}
 
 				@Override
 				public void onResume() {
 					super.onResume();
-//				initPingXuan();//初始化品选
-//				gamePause();//游戏暂停
-					DKPlatform.getInstance().resumeBaiduMobileStatistic(mActivity);//统计接口
+					// initPingXuan();//初始化品选
+					// gamePause();//游戏暂停
+					DKPlatform.getInstance().resumeBaiduMobileStatistic(mActivity);// 统计接口
 				}
 
 				@Override
@@ -81,15 +82,15 @@ public class BaiDuSDK {
 					super.onBackPressed();
 				}
 			});
-			
+
 			UBSDK.getInstance().runOnUIThread(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					try {
-						
-						UBLogUtil.logI(TAG,"thread:"+Thread.currentThread().getName());
-						
+
+						UBLogUtil.logI(TAG, "thread:" + Thread.currentThread().getName());
+
 						// SDK初始化
 						DKPlatform.getInstance().init(mActivity, baiDu_Game_isLandscape, SdkMode.SDK_PAY, // 接入模式，支付版
 								null, // DKCMMMData,移动MM初始化参数
@@ -99,7 +100,7 @@ public class BaiDuSDK {
 
 									@Override
 									public void onResponse(String paramString) {
-										UBLogUtil.logI(TAG,"init:onResponse----->success");
+										UBLogUtil.logI(TAG, "init:onResponse----->success");
 										try {
 											JSONObject jsonObject = new JSONObject(paramString);
 											// 返回的操作状态码
@@ -107,9 +108,9 @@ public class BaiDuSDK {
 											// 初始化完成
 											if (mFunctionCode == DkErrorCode.BDG_CROSSRECOMMEND_INIT_FINSIH) {
 												UBSDK.getInstance().getUBInitCallback().onSuccess();
-												
-											initPingXuan();//初始化品宣
-											callSupplement();//补单接口
+
+												initPingXuan();// 初始化品宣
+												callSupplement();// 补单接口
 											}
 										} catch (Exception e) {
 											e.printStackTrace();
@@ -120,14 +121,13 @@ public class BaiDuSDK {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
-					
+
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class BaiDuSDK {
 			@Override
 			public void onResponse(String paramString) {
 				Log.d("GameMainActivity", "bggameInit success");
-				UBLogUtil.logI(TAG,"initPingXuan:success----->bggameInit");
+				UBLogUtil.logI(TAG, "initPingXuan:success----->bggameInit");
 			}
 		});
 	}
@@ -147,18 +147,18 @@ public class BaiDuSDK {
 	 * 游戏暂停
 	 */
 	public void gamePause() {
-		UBLogUtil.logI(TAG,"gamePause");
+		UBLogUtil.logI(TAG, "gamePause");
 		DKPlatform.getInstance().bdgamePause(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
-				UBLogUtil.logI(TAG,"GamePause:success----->bdgamePause");
+				UBLogUtil.logI(TAG, "GamePause:success----->bdgamePause");
 				UBSDK.getInstance().getUBGamePauseCallback().onGamePause();
 			}
 		});
 	}
 
 	public void login() {
-		UBLogUtil.logI(TAG,"login:success----->simulation empty implementation");
+		UBLogUtil.logI(TAG, "login:success----->simulation empty implementation");
 		UBSDK.getInstance().getUBLoginCallback().onSuccess(new UBUserInfo());
 	}
 
@@ -169,47 +169,46 @@ public class BaiDuSDK {
 
 	public void setGameDataInfo(Object obj, int dataType) {
 
-		UBLogUtil.logI(TAG,"setGameDataInfo----->simulation empty implementation");
+		UBLogUtil.logI(TAG, "setGameDataInfo----->simulation empty implementation");
 	}
 
 	public void exit() {
-		UBLogUtil.logI(TAG,"exit");
+		UBLogUtil.logI(TAG, "exit");
 		DKPlatform.getInstance().bdgameExit(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
-				UBLogUtil.logI(TAG,"exit:onResponse----->exit");
+				UBLogUtil.logI(TAG, "exit:onResponse----->exit");
 				UBSDK.getInstance().getUBExitCallback().onExit();
 			}
 		});
 	}
 
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
-		UBLogUtil.logI(TAG,"pay");
-		
-		String billingId="";
-		String billingPrice="";
-		String billingName="";
+		UBLogUtil.logI(TAG, "pay");
 
-		if (TextUtil.equalsIgnoreCase("1",ubOrderInfo.getGoodsID())) {
-			billingId="43638";
-			billingPrice="4.9";
-			billingName="Remove Ads";
-		}else if(TextUtil.equalsIgnoreCase("2", ubOrderInfo.getGoodsID())){
-			billingId="43639";
-			billingPrice="4.9";
-			billingName="4 Keys";
-		}else if(TextUtil.equalsIgnoreCase("3", ubOrderInfo.getGoodsID())){
-			billingId="43640";
-			billingPrice="4.9";
-			billingName="Desert Theme";
+		String billingId = "";
+		String billingPrice = "";
+		String billingName = "";
+
+		if (TextUtil.equalsIgnoreCase("1", ubOrderInfo.getGoodsID())) {
+			billingId = "43638";
+			billingPrice = "4.9";
+			billingName = "Remove Ads";
+		} else if (TextUtil.equalsIgnoreCase("2", ubOrderInfo.getGoodsID())) {
+			billingId = "43639";
+			billingPrice = "4.9";
+			billingName = "4 Keys";
+		} else if (TextUtil.equalsIgnoreCase("3", ubOrderInfo.getGoodsID())) {
+			billingId = "43640";
+			billingPrice = "4.9";
+			billingName = "Desert Theme";
 		}
-		
-		GamePropsInfo gamePropsInfo = new GamePropsInfo(
-				billingId,//百度计费点id
-				billingPrice,//计费点价格
-				billingName,//计费点名称
-				ubOrderInfo.getExtrasParams());//透传字段
-		gamePropsInfo.setThirdPay("qpfangshua");//只接入微信支付宝
+
+		GamePropsInfo gamePropsInfo = new GamePropsInfo(billingId, // 百度计费点id
+				billingPrice, // 计费点价格
+				billingName, // 计费点名称
+				ubOrderInfo.getExtrasParams());// 透传字段
+		gamePropsInfo.setThirdPay("qpfangshua");// 只接入微信支付宝
 		DKPlatform.getInstance().invokePayCenterActivity(mActivity, gamePropsInfo, null, null, null, null, null,
 				RechargeCallback);
 	}
@@ -219,7 +218,7 @@ public class BaiDuSDK {
 		@Override
 		public void onResponse(String paramString) {
 			// TODO Auto-generated method stub
-			UBLogUtil.logI(TAG,"pay:onResponse----->"+paramString);
+			UBLogUtil.logI(TAG, "pay:onResponse----->" + paramString);
 			try {
 				JSONObject jsonObject = new JSONObject(paramString);
 				// 支付状态码
@@ -252,64 +251,65 @@ public class BaiDuSDK {
 						mOrderPayChannel = jsonObject.getString(DkProtocolKeys.BD_ORDER_PAY_CHANNEL);
 					}
 
-					String mOrderPriceOriginal="";
+					String mOrderPriceOriginal = "";
 					if (jsonObject.has(DkProtocolKeys.BD_ORDER_PAY_ORIGINAL)) { // 道具的原始价格，只有有打折信息该字段才有值
 						mOrderPriceOriginal = jsonObject.getString(DkProtocolKeys.BD_ORDER_PAY_ORIGINAL);
 					}
-					
+
 					int mNum = 0;
 					if ("".equals(mOrderPriceOriginal) || null == mOrderPriceOriginal) {
 						mNum = Integer.valueOf(mOrderPrice) * 10;
 					} else {
 						mNum = Integer.valueOf(mOrderPriceOriginal) * 10;
 					}
-					
-					UBLogUtil.logI(TAG,"pay:paySuccess");
-					UBSDK.getInstance().getUBPayCallback().onSuccess(mOrderId,mOrderId,mOrderProductId,"",mOrderProductId,"");
+
+					UBLogUtil.logI(TAG, "pay:paySuccess");
+					UBSDK.getInstance().getUBPayCallback().onSuccess(mOrderId, mOrderId, mOrderProductId, "",
+							mOrderProductId, "");
 				} else if (mStatusCode == DkErrorCode.BDG_RECHARGE_USRERDATA_ERROR) {
-					
-					UBLogUtil.logI(TAG,"pay:fail----->extras params illegal");
-					UBSDK.getInstance().getUBPayCallback().onFailed("", "extras params illegal",null);
+
+					UBLogUtil.logI(TAG, "pay:fail----->extras params illegal");
+					UBSDK.getInstance().getUBPayCallback().onFailed("", "extras params illegal", null);
 				} else if (mStatusCode == DkErrorCode.BDG_RECHARGE_ACTIVITY_CLOSED) {
-					
+
 					// 返回玩家手动关闭支付中心的状态码，开发者可以在此处理相应的逻辑
-					UBLogUtil.logI(TAG,"pay:fail----->user close the payment center");
-					UBSDK.getInstance().getUBPayCallback().onFailed("", "user close the payment center",null);
+					UBLogUtil.logI(TAG, "pay:fail----->user close the payment center");
+					UBSDK.getInstance().getUBPayCallback().onFailed("", "user close the payment center", null);
 				} else if (mStatusCode == DkErrorCode.BDG_RECHARGE_FAIL) {
-					
+
 					// 返回支付失败的状态码，开发者可以在此处理相应的逻辑
-					UBLogUtil.logI(TAG,"pay:fail----->Failed purchase");
-					UBSDK.getInstance().getUBPayCallback().onFailed("", "Failed purchase",null);
+					UBLogUtil.logI(TAG, "pay:fail----->Failed purchase");
+					UBSDK.getInstance().getUBPayCallback().onFailed("", "Failed purchase", null);
 				} else if (mStatusCode == DkErrorCode.BDG_RECHARGE_EXCEPTION) {
 
 					// 返回支付出现异常的状态码，开发者可以在此处理相应的逻辑
-					UBLogUtil.logI(TAG,"pay:fail----->purchase exception");
-					UBSDK.getInstance().getUBPayCallback().onFailed("", "purchase exception",null);
+					UBLogUtil.logI(TAG, "pay:fail----->purchase exception");
+					UBSDK.getInstance().getUBPayCallback().onFailed("", "purchase exception", null);
 				} else if (mStatusCode == DkErrorCode.BDG_RECHARGE_CANCEL) {
-					
+
 					// 返回取消支付的状态码，开发者可以在此处理相应的逻辑
-					UBLogUtil.logI(TAG,"pay:fail----->user cancel");
-					UBSDK.getInstance().getUBPayCallback().onFailed("","user cancel",null);
+					UBLogUtil.logI(TAG, "pay:fail----->user cancel");
+					UBSDK.getInstance().getUBPayCallback().onFailed("", "user cancel", null);
 				} else {
-					
-					UBLogUtil.logI(TAG,"pay:fail----->Unknown situation");
-					UBSDK.getInstance().getUBPayCallback().onFailed("","Unknown situation",null);
+
+					UBLogUtil.logI(TAG, "pay:fail----->Unknown situation");
+					UBSDK.getInstance().getUBPayCallback().onFailed("", "Unknown situation", null);
 				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				UBLogUtil.logI(TAG,"pay:fail----->Unknown situation");
-				UBSDK.getInstance().getUBPayCallback().onFailed("","Unknown situation",null);
+				UBLogUtil.logI(TAG, "pay:fail----->Unknown situation");
+				UBSDK.getInstance().getUBPayCallback().onFailed("", "Unknown situation", null);
 			}
 		}
 	};
-	
+
 	/**
 	 * 百度补单接口
 	 */
-	private void callSupplement(){
-		//回调函数
-		IDKSDKCallBack supplementlistener = new IDKSDKCallBack(){
+	private void callSupplement() {
+		// 回调函数
+		IDKSDKCallBack supplementlistener = new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
 				UBLogUtil.logI(TAG, paramString);
@@ -317,19 +317,20 @@ public class BaiDuSDK {
 					JSONObject jsonObject = new JSONObject(paramString);
 					// 返回的操作状态码
 					int mFunctionCode = jsonObject.getInt(DkProtocolKeys.FUNCTION_CODE);
-					
-					if(mFunctionCode == DkErrorCode.BDG_REORDER_CHECK){
+
+					if (mFunctionCode == DkErrorCode.BDG_REORDER_CHECK) {
 						// 订单ID 返回补单成功的状态码，可以补发道具
-						String mOrderId = jsonObject.getString(DkProtocolKeys.BD_ORDER_ID);		
+						String mOrderId = jsonObject.getString(DkProtocolKeys.BD_ORDER_ID);
 						// 道具ID
 						String mOrderProductId = jsonObject.getString(DkProtocolKeys.BD_ORDER_PRODUCT_ID);
 						// 道具价格
 						String mOrderPrice = jsonObject.getString(DkProtocolKeys.BD_ORDER_PRICE);
-						
-//						int mNum = Integer.valueOf(mOrderPrice) * 10;
-						
-						UBLogUtil.logI(TAG,"callSupplement:success----->orderId="+mOrderId);
-						UBSDK.getInstance().getUBPayCallback().onSuccess("",mOrderId,mOrderProductId,"",mOrderPrice,"");
+
+						// int mNum = Integer.valueOf(mOrderPrice) * 10;
+
+						UBLogUtil.logI(TAG, "callSupplement:success----->orderId=" + mOrderId);
+						UBSDK.getInstance().getUBPayCallback().onSuccess("", mOrderId, mOrderProductId, "", mOrderPrice,
+								"");
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -337,6 +338,6 @@ public class BaiDuSDK {
 			}
 		};
 
-		DKPlatform.getInstance().invokeSupplementDKOrderStatus(mActivity,supplementlistener);
+		DKPlatform.getInstance().invokeSupplementDKOrderStatus(mActivity, supplementlistener);
 	}
 }

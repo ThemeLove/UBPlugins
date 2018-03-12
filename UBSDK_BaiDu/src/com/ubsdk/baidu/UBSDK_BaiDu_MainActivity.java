@@ -8,6 +8,7 @@ import com.umbrella.game.ubsdk.bean.UBRoleInfo;
 import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.callback.UBExitCallback;
 import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
+import com.umbrella.game.ubsdk.callback.UBInitCallback;
 import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
 import com.umbrella.game.ubsdk.callback.UBPayCallback;
@@ -24,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UBSDK_BaiDu_MainActivity extends Activity
 {
@@ -61,7 +63,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         setSDKlistener();
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
-/*        UBSDK.getInstance().init(mActivity,new UBInitCallback()
+        UBSDK.getInstance().init(mActivity,new UBInitCallback()
         {
 
             @Override
@@ -82,7 +84,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                 Toast.makeText(mActivity,failStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(failStr);
             }
-        });*/
+        });
         
         UBSDK.getInstance().onCreate(savedInstanceState);
     }
