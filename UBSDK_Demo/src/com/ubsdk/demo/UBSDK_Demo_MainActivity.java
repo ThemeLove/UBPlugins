@@ -16,11 +16,14 @@ import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
 import com.umbrella.game.ubsdk.utils.AssetUtil;
 import com.umbrella.game.ubsdk.utils.ResUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
+import com.unity3d.player.UnityPlayerActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -28,7 +31,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UBSDK_Demo_MainActivity extends Activity
+public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
 {
 
     private Activity mActivity;
@@ -54,9 +57,9 @@ public class UBSDK_Demo_MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         mActivity = this;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
     	UBLogUtil.logI(TAG+"----->"+"onCreate");
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
@@ -472,5 +475,33 @@ public class UBSDK_Demo_MainActivity extends Activity
     {
         UBSDK.getInstance().onBackPressed();
         exit();
+    }
+    
+    
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent var1) {
+    	return super.dispatchKeyEvent(var1);
+//        return var1.getAction() == 2?this.mUnityPlayer.injectEvent(var1):super.dispatchKeyEvent(var1);
+    }
+    @Override
+    public boolean onKeyUp(int var1, KeyEvent var2) {
+//        return this.mUnityPlayer.injectEvent(var2);
+    	return super.onKeyUp(var1, var2);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+//        return this.mUnityPlayer.injectEvent(var2);
+    	if (keyCode==KeyEvent.KEYCODE_BACK) {
+    		UBSDK.getInstance().onBackPressed();
+			exit();
+		}
+    	return super.onKeyDown(keyCode, keyEvent);
+    	
+    	
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent var1) {
+//        return this.mUnityPlayer.injectEvent(var1);
+        return onTouchEvent(var1);
     }
 }

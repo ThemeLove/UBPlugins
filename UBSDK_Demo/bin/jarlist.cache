@@ -1,11 +1,11 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1519365362258 21086 25c137e5b475affeba99ace72e37f5ca9396646e E:\UBSDK\UBPlugins\UBSDK_Demo\libs\android-support-multidex.jar
-1520389675664 21086 25c137e5b475affeba99ace72e37f5ca9396646e E:\UBSDK\UBSDK\libs\android-support-multidex.jar
-1519365362265 150280 5af7ca42365d9ec86681150a0fbe0276d9d67a84 E:\UBSDK\UBPlugins\UBSDK_Demo\libs\nohttp1.0.2.jar
-1487832109816 150280 5af7ca42365d9ec86681150a0fbe0276d9d67a84 E:\UBSDK\UBSDK\libs\nohttp1.0.2.jar
-1519365362262 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 E:\UBSDK\UBPlugins\UBSDK_Demo\libs\android-support-v4.jar
-1508583000842 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 E:\UBSDK\UBSDK\libs\android-support-v4.jar
-1487832109815 29413 5d24fb4f0e1df1db7d63f9efa0c855b119598ade E:\UBSDK\UBSDK\libs\concurrentlinkedhashmap-1.0.1.jar
-1519365362263 29413 5d24fb4f0e1df1db7d63f9efa0c855b119598ade E:\UBSDK\UBPlugins\UBSDK_Demo\libs\concurrentlinkedhashmap-1.0.1.jar
+1520267542777 21086 25c137e5b475affeba99ace72e37f5ca9396646e E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBSDK\libs\android-support-multidex.jar
+1487832109810 21086 25c137e5b475affeba99ace72e37f5ca9396646e E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBPlugins\UBSDK_Demo\libs\android-support-multidex.jar
+1520267542785 150280 5af7ca42365d9ec86681150a0fbe0276d9d67a84 E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBSDK\libs\nohttp1.0.2.jar
+1487832109816 150280 5af7ca42365d9ec86681150a0fbe0276d9d67a84 E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBPlugins\UBSDK_Demo\libs\nohttp1.0.2.jar
+1508583000842 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBPlugins\UBSDK_Demo\libs\android-support-v4.jar
+1520267542782 621451 5896b0a4e377ac4242eb2bc785220c1c4fc052f4 E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBSDK\libs\android-support-v4.jar
+1487832109815 29413 5d24fb4f0e1df1db7d63f9efa0c855b119598ade E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBPlugins\UBSDK_Demo\libs\concurrentlinkedhashmap-1.0.1.jar
+1520267542783 29413 5d24fb4f0e1df1db7d63f9efa0c855b119598ade E:\WorkSpace\Eclipse\UmBrellaWorkspace\UBSDK\libs\concurrentlinkedhashmap-1.0.1.jar
