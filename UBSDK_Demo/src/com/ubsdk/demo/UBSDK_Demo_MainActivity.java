@@ -13,14 +13,15 @@ import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
 import com.umbrella.game.ubsdk.callback.UBPayCallback;
 import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
-import com.umbrella.game.ubsdk.utils.AssetUtil;
 import com.umbrella.game.ubsdk.utils.ResUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
+import com.unity3d.player.UnityPlayerActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -28,7 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UBSDK_Demo_MainActivity extends Activity
+public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
 {
 
     private Activity mActivity;
@@ -54,9 +55,9 @@ public class UBSDK_Demo_MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         mActivity = this;
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
     	UBLogUtil.logI(TAG+"----->"+"onCreate");
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
@@ -279,6 +280,11 @@ public class UBSDK_Demo_MainActivity extends Activity
 				UBLogUtil.logI(TAG+"----->"+"gamePause");
 				 mInfoTv.setText("gamePause");
 			}
+			@Override
+			public void onFail(String msg) {
+				UBLogUtil.logI(TAG+"----->gamePauseFail");
+				mInfoTv.setText("gamePauseFail");
+			}
 		});
 		
 	}
@@ -467,6 +473,15 @@ public class UBSDK_Demo_MainActivity extends Activity
         UBSDK.getInstance().onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+    	if (keyCode==KeyEvent.KEYCODE_BACK) {
+    		UBSDK.getInstance().onBackPressed();
+    		exit();
+		}
+    	return super.onKeyDown(keyCode, keyEvent);
+    }
+    
     @Override
     public void onBackPressed()
     {

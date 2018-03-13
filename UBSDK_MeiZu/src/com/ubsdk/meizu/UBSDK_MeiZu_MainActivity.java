@@ -462,6 +462,11 @@ public class UBSDK_MeiZu_MainActivity extends Activity
   				UBLogUtil.logI(TAG,"gamePause");
   				 mInfoTv.setText("gamePause");
   			}
+			@Override
+			public void onFail(String msg) {
+				UBLogUtil.logI(TAG+"----->gamePauseFail");
+				mInfoTv.setText("gamePauseFail");
+			}
   		});
   		
   	}

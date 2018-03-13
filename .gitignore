@@ -1,7 +1,7 @@
-/UBSDK_VIVO/.classpath
-/UBSDK_VIVO/.project
-/UBSDK_VIVO/.settings/
-/UBSDK_VIVO/bin/
-/UBSDK_VIVO/gen/
-/UBSDK_VIVO/proguard-project.txt
-/UBSDK_VIVO/project.properties
+**/.classpath
+**/.project
+**/.settings/
+**/bin/
+**/gen/
+**/proguard-project.txt
+**/project.properties
