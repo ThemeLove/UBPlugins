@@ -16,24 +16,24 @@ public class BaiDuUserPlugin implements IUBUserPlugin{
 	@Override
 	public void login() {
 		BaiDuSDK.getInstance().login();
-		UBLogUtil.logI(TAG,"login");
+		UBLogUtil.logI(TAG+"----->login");
 	}
 
 	@Override
 	public void logout() {
 		BaiDuSDK.getInstance().logout();
-		UBLogUtil.logI(TAG,"logout");
+		UBLogUtil.logI(TAG+"----->logout");
 	}
 
 	@Override
 	public UBUserInfo getUserInfo() {
-		UBLogUtil.logI(TAG,"getUserInfo");
+		UBLogUtil.logI(TAG+"----->getUserInfo");
 		return null;
 	}
 
 	@Override
 	public void setGameDataInfo(Object obj, int dataType) {
-		UBLogUtil.logI(TAG,"setGameDataInfo");
+		UBLogUtil.logI(TAG+"----->setGameDataInfo");
 		BaiDuSDK.getInstance().setGameDataInfo(obj,dataType);
 	}
 

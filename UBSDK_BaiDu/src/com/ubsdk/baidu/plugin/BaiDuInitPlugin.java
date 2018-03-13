@@ -15,7 +15,7 @@ public class BaiDuInitPlugin implements IUBInitPlugin{
 
 	@Override
 	public void initChannel() {
-		UBLogUtil.logI(TAG,"initChannel");
+		UBLogUtil.logI(TAG+"----->initChannel");
 		BaiDuSDK.getInstance().init();
 	}
 

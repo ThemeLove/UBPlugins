@@ -63,7 +63,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         setSDKlistener();
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
-/*        UBSDK.getInstance().init(mActivity,new UBInitCallback()
+        UBSDK.getInstance().init(mActivity,new UBInitCallback()
         {
 
             @Override
@@ -84,7 +84,7 @@ public class UBSDK_BaiDu_MainActivity extends Activity
                 Toast.makeText(mActivity,failStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(failStr);
             }
-        });*/
+        });
         
         UBSDK.getInstance().onCreate(savedInstanceState);
     }
@@ -457,9 +457,15 @@ public class UBSDK_BaiDu_MainActivity extends Activity
   			
   			@Override
   			public void onGamePause() {
-  				UBLogUtil.logI(TAG+"----->"+"gamePause");
+  				UBLogUtil.logI(TAG+"----->gamePause");
   				 mInfoTv.setText("gamePause");
   			}
+
+			@Override
+			public void onFail(String msg) {
+				UBLogUtil.logI(TAG+"----->gamePauseFail");
+				mInfoTv.setText("gamePauseFail");
+			}
   		});
   		
   	}
