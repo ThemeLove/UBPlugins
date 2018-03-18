@@ -7,6 +7,7 @@ import com.umbrella.game.ubsdk.bean.UBOrderInfo;
 import com.umbrella.game.ubsdk.bean.UBRoleInfo;
 import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.callback.UBExitCallback;
+import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
 import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
@@ -29,14 +30,15 @@ import android.widget.Toast;
 
 public class UBSDK_VIVO_MainActivity extends Activity
 {
-
-    private Activity mActivity;
+	private Activity mActivity;
 
     private Button mLoginBtn;
 
     private Button mLogoutBtn;
 
     private Button mPayBtn;
+    
+    private Button mGamePauseBtn;
 
     private Button mExitBtn;
 
@@ -54,9 +56,10 @@ public class UBSDK_VIVO_MainActivity extends Activity
         super.onCreate(savedInstanceState);
         mActivity = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(ResUtil.getLayoutId(this, "activity_main"));
+        setContentView(ResUtil.getLayoutId(UBSDK_VIVO_MainActivity.this, "activity_main_demo"));
         initView();
         setListener();
+        
         setSDKlistener();
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
@@ -70,6 +73,7 @@ public class UBSDK_VIVO_MainActivity extends Activity
             	UBLogUtil.logI(TAG,successStr);
                 Toast.makeText(mActivity,successStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(successStr);
+
             }
 
             @Override
@@ -90,6 +94,8 @@ public class UBSDK_VIVO_MainActivity extends Activity
         mLoginBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_login"));
         mLogoutBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_logout"));
         mPayBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_pay"));
+        
+        mGamePauseBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_gamePause"));
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
@@ -215,6 +221,14 @@ public class UBSDK_VIVO_MainActivity extends Activity
             }
         });
         
+        mGamePauseBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				gamePause();
+			}
+		});
+        
         mExitBtn.setOnClickListener(new OnClickListener()
         {
 
@@ -300,21 +314,20 @@ public class UBSDK_VIVO_MainActivity extends Activity
         orderInfo.setCallbackUrl("http://TAGx/notify");//客户端可以不传，通知回调(需要在我们后台配置)
         UBSDK.getInstance().pay(roleInfo,orderInfo,new UBPayCallback()
         {
-
-            @Override
-            public void onSuccess(String cpOrderId,String orderId,String goodsId,String goodsName,String goodsPrice, String extrasParams)
-            {
-            	String paySuccessStr="pay success：" + "\n\r" 
-            + "sdkOrderID : " + cpOrderId + "\n\r" 
-            + "cpOrderID : " + orderId+ "\n\r"
-            + "goodsId:"+goodsId
-            +"goodsName:"+goodsName
-            +"goodsPrice:"+goodsPrice
-            +"extrasParams:"+extrasParams;
+        	@Override
+			public void onSuccess(String cpOrderID, String orderID, String goodsId, String goodsName, String goodsPrice,
+					String extrasParams) {
+				// TODO Auto-generated method stub
+            	String paySuccessStr="pay success：" + "\n\r" + "cpOrderID : " + cpOrderID + "\n\r" + "orderID : " + orderID
+                        + "\n\r"
+            			+"goodsId:"+goodsId
+            			+"goodsName:"+goodsName
+            			+"goodsPrice:"+goodsPrice
+            			+"extrasParams : " + extrasParams;
                 mInfoTv.setText(paySuccessStr);
                 UBLogUtil.logI(TAG,paySuccessStr);
-//                TODO 
-            }
+			}
+
             @Override
             public void onFailed(String cpOrderID, String msg, String trace)
             {
@@ -330,6 +343,7 @@ public class UBSDK_VIVO_MainActivity extends Activity
                 mInfoTv.setText(payCancelStr);
                 UBLogUtil.logI(TAG,payCancelStr);
             }
+			
         });
     }
 
@@ -437,5 +451,23 @@ public class UBSDK_VIVO_MainActivity extends Activity
     public void onBackPressed()
     {
         UBSDK.getInstance().onBackPressed();
+        exit();
     }
+    
+    protected void gamePause() {
+  		UBSDK.getInstance().gamePause(new UBGamePauseCallback() {
+  			
+  			@Override
+  			public void onGamePause() {
+  				UBLogUtil.logI(TAG,"gamePause");
+  				 mInfoTv.setText("gamePause");
+  			}
+			@Override
+			public void onFail(String msg) {
+				UBLogUtil.logI(TAG+"----->gamePauseFail");
+				mInfoTv.setText("gamePauseFail");
+			}
+  		});
+  		
+  	}
 }

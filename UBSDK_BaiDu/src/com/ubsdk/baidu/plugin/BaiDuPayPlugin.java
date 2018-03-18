@@ -16,7 +16,7 @@ public class BaiDuPayPlugin implements IUBPayPlugin {
 	}
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
-		UBLogUtil.logI(TAG,"pay");
+		UBLogUtil.logI(TAG+"----->pay");
 		BaiDuSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
 	}
 

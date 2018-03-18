@@ -1,7 +1,7 @@
-/**/classpath
-/**/project
-/**/settings
-/**/bin/
-/**/gen/
-/**/proguard-project.txt
-/**/project.properties
+**/.classpath
+**/.project
+**/.settings/
+**/bin/
+**/gen/
+**/proguard-project.txt
+**/project.properties

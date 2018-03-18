@@ -458,9 +458,15 @@ public class UBSDK_BaiDu_MainActivity extends Activity
   			
   			@Override
   			public void onGamePause() {
-  				UBLogUtil.logI(TAG+"----->"+"gamePause");
+  				UBLogUtil.logI(TAG+"----->gamePause");
   				 mInfoTv.setText("gamePause");
   			}
+
+			@Override
+			public void onFail(String msg) {
+				UBLogUtil.logI(TAG+"----->gamePauseFail");
+				mInfoTv.setText("gamePauseFail");
+			}
   		});
   		
   	}

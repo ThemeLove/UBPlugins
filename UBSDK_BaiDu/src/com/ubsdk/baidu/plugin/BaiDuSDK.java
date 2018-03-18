@@ -42,15 +42,15 @@ public class BaiDuSDK {
 	}
 
 	public void init() {
-		UBLogUtil.logI(TAG, "init");
+		UBLogUtil.logI(TAG+"----->init");
 		try {
 			mActivity = UBSDKConfig.getInstance().getGameActivity();
 			if (mActivity == null) {
 				UBLogUtil.logW("the mAcitivity is null");
+				UBSDK.getInstance().getUBInitCallback().onFailed("gameActivity is null", null);
 				return;
 			}
 			String orientation = UBSDKConfig.getInstance().getParamsMap().get("BaiDu_Game_Orientation");
-			Log.w(TAG, orientation);
 			if (TextUtil.equalsIgnoreCase("portrait", orientation)) {
 				baiDu_Game_isLandscape = false;
 			}
@@ -134,6 +134,7 @@ public class BaiDuSDK {
 	 * SDK品宣接口
 	 */
 	private void initPingXuan() {
+		UBLogUtil.logI(TAG+"----->initPingXuan");
 		DKPlatform.getInstance().bdgameInit(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
@@ -147,7 +148,7 @@ public class BaiDuSDK {
 	 * 游戏暂停
 	 */
 	public void gamePause() {
-		UBLogUtil.logI(TAG, "gamePause");
+		UBLogUtil.logI(TAG+"----->gamePause");
 		DKPlatform.getInstance().bdgamePause(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
@@ -158,50 +159,55 @@ public class BaiDuSDK {
 	}
 
 	public void login() {
-		UBLogUtil.logI(TAG, "login:success----->simulation empty implementation");
+		UBLogUtil.logI(TAG+"----->login:success----->simulation empty implementation");
 		UBSDK.getInstance().getUBLoginCallback().onSuccess(new UBUserInfo());
 	}
 
 	public void logout() {
-		UBLogUtil.logI("logout:success----->simulation success");
+		UBLogUtil.logI(TAG+"----->logout:success----->simulation success");
 		UBSDK.getInstance().getUBLogoutCallback().onSuccess();
 	}
 
 	public void setGameDataInfo(Object obj, int dataType) {
 
-		UBLogUtil.logI(TAG, "setGameDataInfo----->simulation empty implementation");
+		UBLogUtil.logI(TAG+"----->setGameDataInfo----->simulation empty implementation");
 	}
 
 	public void exit() {
-		UBLogUtil.logI(TAG, "exit");
+		UBLogUtil.logI(TAG+"----->exit");
 		DKPlatform.getInstance().bdgameExit(mActivity, new IDKSDKCallBack() {
 			@Override
 			public void onResponse(String paramString) {
-				UBLogUtil.logI(TAG, "exit:onResponse----->exit");
+				UBLogUtil.logI(TAG+"----->exit:onResponse----->"+paramString);
 				UBSDK.getInstance().getUBExitCallback().onExit();
 			}
 		});
 	}
 
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
-		UBLogUtil.logI(TAG, "pay");
 
-		String billingId = "";
-		String billingPrice = "";
-		String billingName = "";
+		UBLogUtil.logI(TAG+"----->pay");
+		
+		String billingId="";
+		String billingPrice="";
+		String billingName="";
 
-		if (TextUtil.equalsIgnoreCase("1", ubOrderInfo.getGoodsID())) {
-			billingId = "43638";
-			billingPrice = "4.9";
-			billingName = "Remove Ads";
-		} else if (TextUtil.equalsIgnoreCase("2", ubOrderInfo.getGoodsID())) {
-			billingId = "43639";
-			billingPrice = "4.9";
-			billingName = "4 Keys";
-		} else if (TextUtil.equalsIgnoreCase("3", ubOrderInfo.getGoodsID())) {
-			billingId = "43640";
-			billingPrice = "4.9";
-			billingName = "Desert Theme";
+		if (TextUtil.equalsIgnoreCase("1",ubOrderInfo.getGoodsID())) {
+			billingId="44136";
+			billingPrice="4.9";
+			billingName="去除广告";
+		}else if(TextUtil.equalsIgnoreCase("2", ubOrderInfo.getGoodsID())){
+			billingId="44137";
+			billingPrice="4.9";
+			billingName="4把钥匙";
+		}else if(TextUtil.equalsIgnoreCase("3", ubOrderInfo.getGoodsID())){
+			billingId="44138";
+			billingPrice="4.9";
+			billingName="沙漠主题";
+		}else{
+			billingId="44136";
+			billingPrice="4.9";
+			billingName="去除广告";
 		}
 
 		GamePropsInfo gamePropsInfo = new GamePropsInfo(billingId, // 百度计费点id
@@ -217,8 +223,8 @@ public class BaiDuSDK {
 	IDKSDKCallBack RechargeCallback = new IDKSDKCallBack() {
 		@Override
 		public void onResponse(String paramString) {
-			// TODO Auto-generated method stub
-			UBLogUtil.logI(TAG, "pay:onResponse----->" + paramString);
+
+			UBLogUtil.logI(TAG+"----->pay:onResponse----->"+paramString);
 			try {
 				JSONObject jsonObject = new JSONObject(paramString);
 				// 支付状态码
@@ -307,9 +313,10 @@ public class BaiDuSDK {
 	/**
 	 * 百度补单接口
 	 */
-	private void callSupplement() {
-		// 回调函数
-		IDKSDKCallBack supplementlistener = new IDKSDKCallBack() {
+	private void callSupplement(){
+		UBLogUtil.logI(TAG+"----->callSupplement");
+		//回调函数
+		IDKSDKCallBack supplementlistener = new IDKSDKCallBack(){
 			@Override
 			public void onResponse(String paramString) {
 				UBLogUtil.logI(TAG, paramString);

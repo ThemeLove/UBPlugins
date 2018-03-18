@@ -13,7 +13,6 @@ import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
 import com.umbrella.game.ubsdk.callback.UBPayCallback;
 import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
-import com.umbrella.game.ubsdk.utils.AssetUtil;
 import com.umbrella.game.ubsdk.utils.ResUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import com.unity3d.player.UnityPlayerActivity;
@@ -282,6 +281,11 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
 				UBLogUtil.logI(TAG+"----->"+"gamePause");
 				 mInfoTv.setText("gamePause");
 			}
+			@Override
+			public void onFail(String msg) {
+				UBLogUtil.logI(TAG+"----->gamePauseFail");
+				mInfoTv.setText("gamePauseFail");
+			}
 		});
 		
 	}
@@ -471,6 +475,15 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+    	if (keyCode==KeyEvent.KEYCODE_BACK) {
+    		UBSDK.getInstance().onBackPressed();
+    		exit();
+		}
+    	return super.onKeyDown(keyCode, keyEvent);
+    }
+    
+    @Override
     public void onBackPressed()
     {
         UBSDK.getInstance().onBackPressed();
@@ -488,17 +501,7 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
 //        return this.mUnityPlayer.injectEvent(var2);
     	return super.onKeyUp(var1, var2);
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
-//        return this.mUnityPlayer.injectEvent(var2);
-    	if (keyCode==KeyEvent.KEYCODE_BACK) {
-    		UBSDK.getInstance().onBackPressed();
-			exit();
-		}
-    	return super.onKeyDown(keyCode, keyEvent);
-    	
-    	
-    }
+
     @Override
     public boolean onTouchEvent(MotionEvent var1) {
 //        return this.mUnityPlayer.injectEvent(var1);
