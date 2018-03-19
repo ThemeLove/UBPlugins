@@ -155,8 +155,8 @@ public class UBSDK_VIVO_MainActivity extends Activity
                     	UBLogUtil.logI(TAG,loginSuccessStr);
                         mInfoTv.setText(loginSuccessStr);
                         
-                        int platfromId = UBSDK.getInstance().getPlatformId();
-                        int subPlatformId = UBSDK.getInstance().getSubPlatformId();
+                        int platfromId = UBSDK.getInstance().getPlatformID();
+                        int subPlatformId = UBSDK.getInstance().getSubPlatformID();
                     	UBLogUtil.logI(TAG,"platfromId : " + platfromId);
                     	UBLogUtil.logI(TAG,"subPlatformId : " + subPlatformId);
                         
@@ -463,11 +463,11 @@ public class UBSDK_VIVO_MainActivity extends Activity
   				 mInfoTv.setText("gamePause");
   			}
 			@Override
-			public void onFail(String msg) {
+			public void onFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->gamePauseFail");
 				mInfoTv.setText("gamePauseFail");
 			}
   		});
-  		
   	}
+    
 }
