@@ -1,5 +1,6 @@
 package com.ubsdk.baidu.plugin;
 
+import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -25,14 +26,28 @@ public class BaiDuSettingPlugin implements IUBSettingPlugin{
 	}
 
 	@Override
-	public int getPlatformId() {
-		UBLogUtil.logI(TAG+"----->getPlatformId");
+	public int getPlatformID() {
+		UBLogUtil.logI(TAG+"----->getPlatformID");
 		return 0;
+	}
+	
+	@Override
+	public String getPlatformName() {
+		UBLogUtil.logI(TAG+"----->getPlatformName");
+		
+		String platformName="baidu";
+		try {
+			platformName = UBSDKConfig.getInstance().getParamsMap().get(UBSDKConfig.UB_PlatformName);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return platformName;
+		}
+		return platformName;
 	}
 
 	@Override
-	public int getSubPlatformId() {
-		UBLogUtil.logI(TAG+"----->getSubPlatformId");
+	public int getSubPlatformID() {
+		UBLogUtil.logI(TAG+"----->getSubPlatformID");
 		return 0;
 	}
 
