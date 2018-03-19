@@ -10,6 +10,7 @@
 <param name="UB_GameMainActivityName" value="com.umbrella.downthemountain" />
 
 <param name="UB_PlatformID" value="80" />
+<param name="UB_PlatformName" value="baidu"/>
 <param name="UB_SubPlatformID" value="0" />
 <param name="UB_ChannelID" value="1" />
 <param name="UB_SubChannelID" value="1" />

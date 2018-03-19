@@ -3,12 +3,16 @@
 <param name="VIVO_STOREID" value="9" />
 <param name="VIVO_APPID" value="8e9041a398534d37a169e63be5e55b6d" />
 <param name="VIVO_VERSION" value=""/>
-<param name="VAS_ORIENTATION" value="0" /><!-- 1为竖屏 0为横屏 -->
-<param name="UB_GAMEID" value="1123" />
-<param name="UB_PLATFORMID" value="80" />
-<param name="UB_SUBPLATFORMID" value="0" />
-<param name="UB_CHANNELID" value="1" />
-<param name="UB_SUBCHANNEL_ID" value="1" />
+<param name="UB_GameID" value="1123" />
+<param name="UB_GameDebug" value="true" />
+<param name="UB_GameOrientation" value="portrait" />
+<param name="UB_GameMainActivityName" value="com.umbrella.downthemountain" />
+
+<param name="UB_PlatformID" value="80" />
+<param name="UB_PlatformName" value="baidu"/>
+<param name="UB_SubPlatformID" value="0" />
+<param name="UB_ChannelID" value="1" />
+<param name="UB_SubChannelID" value="1" />
 <plugins>
 	<plugin name="com.ubsdk.vivo.plugin.VIVOUserPlugin" type="1" />
 	<plugin name="com.ubsdk.vivo.plugin.VIVOPayPlugin"  type="2"/>
