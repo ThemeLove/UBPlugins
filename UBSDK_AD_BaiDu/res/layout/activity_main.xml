@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/but_splashscreen_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="闪屏" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/but_banner_top_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="banner-显示" />
+
+                <Button
+                    android:id="@+id/but_banner_buttom_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="banner-底部" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/but_banner_hide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="banner-隐藏" />
+
+            <Button
+                android:id="@+id/but_block_center_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="插屏" />
+
+            <Button
+                android:id="@+id/but_fullscreen_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="开屏-视频" />
+
+            <TextView
+                android:gravity="center"
+                android:text="以下为开发测试 非功能相关"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <Button
+                android:id="@+id/but_test_crash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="test crash" />
+
+            <Button
+                android:id="@+id/but_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="开发测试" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/ad_banner_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true" />
+
+    <FrameLayout
+        android:id="@+id/ad_banner_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

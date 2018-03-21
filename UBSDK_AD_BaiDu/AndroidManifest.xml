@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ubsdk.ad.baidu"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
+
+    <application
+        android:name="com.umbrella.game.ubsdk.ui.UBApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+                <activity
+            android:name="com.ubsdk.ad.baidu.SplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+        <activity
+            android:theme="@style/AppTheme"
+            android:name="com.ubsdk.ad.baidu.TestActivity" />
+
+        <!--广告SDK ========== 声明开始-->
+        <!--以下内容 请直接复制到 项目中，并修改相关包名 两处 修改①  修改② -->
+        <!--广告SDK ========== 声明开始-->
+        <activity
+            android:name="com.duoku.alone.ssp.activtiy.PlayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+
+        <service
+            android:name="com.duoku.alone.ssp.DuokuAdService"
+            android:exported="false" />
+
+        <!-- 修改① ↓↓↓ 需修改android:authorities="本应用包名packagename+.ReportDataContentProvider"↓↓↓ -->
+        <provider
+            android:name="com.duoku.code.analytics.store.ReportDataContentProvider"
+            android:authorities="com.ubsdk.ad.baidu.ReportDataContentProvider"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!--玉米组件声明开始-->
+        <receiver android:name="com.yumi.android.sdk.ads.self.module.receiver.ADReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.yumi.android.sdk.ads.service.YumiAdsEventService" />
+        <activity
+            android:name="com.yumi.android.sdk.ads.self.activity.YumiFullScreenActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <!--Debugging Activity -->
+        <activity android:name="com.yumi.android.sdk.ads.mediation.activity.MediationTestActivity"/>
+        <!--玉米组件声明结束-->
+
+        <!-- UniplaySDK嵌入代码开始 -->
+        <activity
+            android:name="com.uniplay.adsdk.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name="com.uniplay.adsdk.InterstitialAdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <receiver android:name="com.uniplay.adsdk.PackageReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.uniplay.adsdk.DownloadService" />
+        <!-- UniplaySDK嵌入代码结束 -->
+
+        <!--和传媒 开始 ↓↓↓-->
+
+        <!--和传媒开屏页 需配置 screenOrientation ：：landscape / portrait-->
+        <activity
+            android:name="com.tencent.analytics.api.sky.ActivityApiC"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.analytics.api.sky.ActivityApiF"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.analytics.api.sky.ActivityApiW"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.analytics.api.sky.ActivityStyleA"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.analytics.api.sky.ActivityStyleB"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.analytics.api.sky.ActivityStyleC"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
+        <service
+            android:name="com.tencent.analytics.sdk.Adx"
+            android:priority="2147483647"/>
+        <service
+            android:name="com.tencent.analytics.sdk.Adm"
+            android:priority="2147483647"/>
+        <!--com.mediahe.jixian.MagicService 包名不变化-->
+        <service
+            android:name="com.mediahe.jixian.MagicService"
+            android:exported="false"/>
+        <!--com.mediahe.jixian.MagicActivity 包名不变化-->
+        <activity
+            android:name="com.mediahe.jixian.MagicActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name="com.sky.SkyAppActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--和传媒 结束 ↑↑↑-->
+
+
+        <!--蓝莓互娱(视频)开始↓↓↓↓-->
+
+        <activity
+            android:name="com.lm.activity.InterstitialVideoProxyActivity"
+
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+
+        <activity
+            android:name="com.lm.activity.StimulateVideoProxyActivity"
+
+            android:launchMode="singleTask">
+        </activity>
+
+        <activity
+            android:name="com.lm.activity.ApkDetailsInfoProxyActivity"
+
+            android:launchMode="singleTask"
+            >
+        </activity>
+        <activity
+            android:name="com.lm.activity.CommonProxyActivity"
+
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="com.lm.activity.ShowImgActivityProxy"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+
+        <activity
+            android:name="com.lm.activity.DialogProxyActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+
+        <activity
+            android:name="com.lm.activity.QuestionnaireProxyActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen"
+            >
+        </activity>
+
+        <service
+            android:name="com.lm.service.LogicService"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.adroid.SERVICE" />
+            </intent-filter>
+        </service>
+        <!--修改② 此处 需要 authorities 为 应用包名_lm.fileprovider-->
+        <provider
+            android:authorities="com.ubsdk.ad.baidu_lm.fileprovider"
+            android:name="com.lm.listener.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false"/>
+
+        <!--蓝莓互娱(视频)结束↑↑↑↑-->
+
+        <!-- 沙盒环境....DUOKU_AD_APPKEY：填写appKey信息-->
+        <meta-data
+            android:name="DUOKU_AD_APPKEY"
+            android:value="50040"/>
+        <!-- DUOKU_AD_PRODUCT_KEY：填写 productKey信息  -->
+        <meta-data
+            android:name="DUOKU_AD_PRODUCT_KEY"
+            android:value="OWNDEV_w6FRJc4aTw2oCPxyj"/>
+        <!--DUOKU_AD_VERSION：填写sdk 版本-->
+        <meta-data
+            android:name="DUOKU_AD_VERSION"
+            android:value="3.1.0"/>
+        <!--&ndash;&gt;-->
+
+        <!--广告SDK ========== 声明结束-->
+        <!--广告SDK ========== 声明结束-->
+    </application>
+
+</manifest>
