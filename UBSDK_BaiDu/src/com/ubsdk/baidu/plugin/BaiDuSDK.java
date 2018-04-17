@@ -1,5 +1,7 @@
 package com.ubsdk.baidu.plugin;
 
+import java.util.HashMap;
+
 import org.json.JSONObject;
 
 import com.duoku.platform.single.DKPlatform;
@@ -26,7 +28,7 @@ public class BaiDuSDK {
 	private static BaiDuSDK instance = null;
 	private Activity mActivity;
 	private boolean baiDu_Game_isLandscape = true;// 游戏是否是横屏
-
+	private HashMap<String,HashMap<String,BaiDuBilling>> baiDuBillingWithTypeMap;//百度计费点数据
 	private BaiDuSDK() {
 	}
 
@@ -50,7 +52,7 @@ public class BaiDuSDK {
 				UBSDK.getInstance().getUBInitCallback().onFailed("gameActivity is null", null);
 				return;
 			}
-			String orientation = UBSDKConfig.getInstance().getParamsMap().get("BaiDu_Game_Orientation");
+			String orientation = UBSDKConfig.getInstance().getParamMap().get("BaiDu_Game_Orientation");
 			if (TextUtil.equalsIgnoreCase("portrait", orientation)) {
 				baiDu_Game_isLandscape = false;
 			}
@@ -128,6 +130,7 @@ public class BaiDuSDK {
 			e.printStackTrace();
 		}
 
+		baiDuBillingWithTypeMap = BaiDuBillingConfigXMLParser.getBaiDuBillingWithTypeMap();
 	}
 
 	/**
@@ -184,37 +187,24 @@ public class BaiDuSDK {
 		});
 	}
 
+	
+	
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 
 		UBLogUtil.logI(TAG+"----->pay");
+		UBLogUtil.logI(TAG+"----->productID="+ubOrderInfo.getGoodsID());
 		
-		String billingId="";
-		String billingPrice="";
-		String billingName="";
+		UBLogUtil.logI(TAG+"----->baiduBillingWithTypeMap="+baiDuBillingWithTypeMap);
+		HashMap<String, BaiDuBilling> billingMap = baiDuBillingWithTypeMap.get("baidu");
+		BaiDuBilling baiDuBilling = billingMap.get(ubOrderInfo.getGoodsID());
 
-		if (TextUtil.equalsIgnoreCase("1",ubOrderInfo.getGoodsID())) {
-			billingId="44136";
-			billingPrice="4.9";
-			billingName="去除广告";
-		}else if(TextUtil.equalsIgnoreCase("2", ubOrderInfo.getGoodsID())){
-			billingId="44137";
-			billingPrice="4.9";
-			billingName="4把钥匙";
-		}else if(TextUtil.equalsIgnoreCase("3", ubOrderInfo.getGoodsID())){
-			billingId="44138";
-			billingPrice="4.9";
-			billingName="沙漠主题";
-		}else{
-			billingId="44136";
-			billingPrice="4.9";
-			billingName="去除广告";
-		}
-
-		GamePropsInfo gamePropsInfo = new GamePropsInfo(billingId, // 百度计费点id
-				billingPrice, // 计费点价格
-				billingName, // 计费点名称
+		GamePropsInfo gamePropsInfo = new GamePropsInfo(baiDuBilling.getBillingID(), // 百度计费点id
+				baiDuBilling.getBillingPrice(), // 计费点价格
+				baiDuBilling.getBillingName(), // 计费点名称
 				ubOrderInfo.getExtrasParams());// 透传字段
-		gamePropsInfo.setThirdPay("qpfangshua");// 只接入微信支付宝
+		
+		gamePropsInfo.setThirdPay("qpfangshua");// 只接入微信支付宝,固定值
+		
 		DKPlatform.getInstance().invokePayCenterActivity(mActivity, gamePropsInfo, null, null, null, null, null,
 				RechargeCallback);
 	}

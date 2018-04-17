@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pays>
+	<pay type="baidu">
+	    <goods>
+		    <!-- productID:游戏中商品固定ID -->
+		    <!-- billingID:百度计费点 -->
+		    <!-- billingName:计费点名称 -->
+		    <!-- billingPrice:计费点价格 -->
+		    <good productID="1" billingID="44136" billingName="去除广告" billingPrice="4.9"/>   
+		    <good productID="2" billingID="44137" billingName="4把钥匙"  billingPrice="4.9"/>   
+		    <good productID="2" billingID="44138" billingName="沙漠主题" billingPrice="4.9"/>     
+		</goods>
+	</pay>
+	
+	<pay type="mdo">
+	    <goods>
+			<!-- productID:游戏中商品固定ID -->
+		    <!-- billingID:百度计费点 -->
+		    <!-- billingName:计费点名称 -->
+		    <!-- billingPrice:计费点价格 -->
+		    <good productID="1" billingID="44136" billingName="去除广告" billingPrice="4.9"/>   
+		    <good productID="2" billingID="44137" billingName="4把钥匙"  billingPrice="4.9"/>   
+		    <good productID="2" billingID="44138" billingName="沙漠主题" billingPrice="4.9"/>   
+		</goods>    
+	</pay>
+	
+	<pay type="mm">
+	    <goods>
+			<!-- productID:游戏中商品固定ID -->
+		    <!-- billingID:百度计费点 -->
+		    <!-- billingName:计费点名称 -->
+		    <!-- billingPrice:计费点价格 -->
+		    <good productID="1" billingID="44136" billingName="去除广告" billingPrice="4.9"/>   
+		    <good productID="2" billingID="44137" billingName="4把钥匙"  billingPrice="4.9"/>   
+		    <good productID="2" billingID="44138" billingName="沙漠主题" billingPrice="4.9"/>   
+		</goods>    
+	</pay>
+	
+	<pay type="migu">
+	    <goods>
+			<!-- productID:游戏中商品固定ID -->
+		    <!-- billingID:百度计费点 -->
+		    <!-- billingName:计费点名称 -->
+		    <!-- billingPrice:计费点价格 -->
+		    <good productID="1" billingID="44136" billingName="去除广告" billingPrice="4.9"/>   
+		    <good productID="2" billingID="44137" billingName="4把钥匙"  billingPrice="4.9"/>   
+		    <good productID="2" billingID="44138" billingName="沙漠主题" billingPrice="4.9"/>   
+		</goods>      
+	</pay>
+	
+	<pay type="mcp">
+	    <goods>
+			<!-- productID:游戏中商品固定ID -->
+		    <!-- billingID:百度计费点 -->
+		    <!-- billingName:计费点名称 -->
+		    <!-- billingPrice:计费点价格 -->
+		    <good productID="1" billingID="44136" billingName="去除广告" billingPrice="4.9"/>   
+		    <good productID="2" billingID="44137" billingName="4把钥匙"  billingPrice="4.9"/>   
+		    <good productID="2" billingID="44138" billingName="沙漠主题" billingPrice="4.9"/>   
+		</goods>     
+	</pay>
+	
+	<pay type="wo">
+	    <goods>
+			<!-- productID:游戏中商品固定ID -->
+		    <!-- billingID:百度计费点 -->
+		    <!-- billingName:计费点名称 -->
+		    <!-- billingPrice:计费点价格 -->
+		    <good productID="1" billingID="44136" billingName="去除广告" billingPrice="4.9"/>   
+		    <good productID="2" billingID="44137" billingName="4把钥匙"  billingPrice="4.9"/>   
+		    <good productID="2" billingID="44138" billingName="沙漠主题" billingPrice="4.9"/>    
+		</goods>      
+	</pay>    
+    
+</pays>
