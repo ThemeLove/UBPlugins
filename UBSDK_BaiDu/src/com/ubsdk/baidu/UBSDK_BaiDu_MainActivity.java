@@ -59,7 +59,6 @@ public class UBSDK_BaiDu_MainActivity extends Activity
         setContentView(ResUtil.getLayoutId(UBSDK_BaiDu_MainActivity.this, "activity_main_demo"));
         initView();
         setListener();
-        
         setSDKlistener();
         
 //      设置UBSDK监听在 init 之前，init在onCrete之前
