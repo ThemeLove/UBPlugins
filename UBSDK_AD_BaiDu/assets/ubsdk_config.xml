@@ -15,10 +15,7 @@
 <param name="UB_ChannelID" value="1" />
 <param name="UB_SubChannelID" value="1" />
 <plugins>
-    <plugin name="com.ubsdk.baidu.plugin.BaiDuInitPlugin" type="0" />
-	<plugin name="com.ubsdk.baidu.plugin.BaiDuUserPlugin" type="1" />
-	<plugin name="com.ubsdk.baidu.plugin.BaiDuPayPlugin"  type="2"/>
-	<plugin name="com.ubsdk.baidu.plugin.BaiDuSettingPlugin"  type="3"/>
+    <plugin name="com.ubsdk.ad.baidu.plugin.ADBaiDuSDK" type="4" />
 </plugins>
 <applications>
 <application name="com.ubsdk.ad.baidu.plugin.ADBaiDuApplication"/>

@@ -9,11 +9,11 @@ import com.duoku.platform.single.DkProtocolKeys;
 import com.duoku.platform.single.callback.IDKSDKCallBack;
 import com.duoku.platform.single.item.GamePropsInfo;
 import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.bean.UBOrderInfo;
-import com.umbrella.game.ubsdk.bean.UBRoleInfo;
-import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
+import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
