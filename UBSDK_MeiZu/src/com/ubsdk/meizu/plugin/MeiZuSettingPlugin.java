@@ -1,5 +1,7 @@
 package com.ubsdk.meizu.plugin;
 
+import java.lang.reflect.Method;
+
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
@@ -37,7 +39,7 @@ public class MeiZuSettingPlugin implements IUBSettingPlugin{
 		
 		String platformName="demo";
 		try {
-			platformName = UBSDKConfig.getInstance().getParamsMap().get(UBSDKConfig.UB_PlatformName);
+			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return platformName;
@@ -56,16 +58,44 @@ public class MeiZuSettingPlugin implements IUBSettingPlugin{
 		UBLogUtil.logI(TAG,"getExtrasConfig");
 		return null;
 	}
-
+	
 	@Override
-	public boolean isFunctionSupported(int functionName) {
-		UBLogUtil.logI(TAG,"isFunctionSupported");
+	public boolean isSupportMethod(String methodName,Object[] args) {
+        UBLogUtil.logI(TAG+"----->isSupportMethod");
+        Class<?> [] parameterTypes=null;
+        if (args!=null&&args.length>0) {
+        	parameterTypes=new Class<?>[args.length];
+			for(int i=0;i<args.length;i++){
+				parameterTypes[i]=args[i].getClass();
+			}
+		}
+        
+        try {
+			Method method = getClass().getDeclaredMethod(methodName, parameterTypes);
+			return method==null?false:true;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
-	public String callFunction(int functionName) {
-		UBLogUtil.logI(TAG,"callFunction");
+	public Object callMethod(String methodName, Object[] args) {
+		UBLogUtil.logI(TAG+"----->callMethod");
+		Class<?>[] parameterTypes=null;
+		if (args!=null&&args.length>0) {
+			parameterTypes=new Class<?>[args.length];
+			for (int i=0;i<args.length;i++) {
+				parameterTypes[i]=args[i].getClass();
+			}
+		}
+		
+		try {
+			Method method = getClass().getDeclaredMethod(methodName, parameterTypes);
+			return method.invoke(this, args);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

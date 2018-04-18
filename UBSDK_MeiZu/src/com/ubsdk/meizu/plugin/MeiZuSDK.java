@@ -7,11 +7,11 @@ import com.meizu.gamesdk.model.model.MzPayParams;
 import com.meizu.gamesdk.model.model.PayResultCode;
 import com.meizu.gamesdk.offline.core.MzGameCenterPlatform;
 import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.bean.UBOrderInfo;
-import com.umbrella.game.ubsdk.bean.UBRoleInfo;
-import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
+import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import com.umbrella.game.ubsdk.utils.UBMD5Util;
@@ -38,8 +38,8 @@ public class MeiZuSDK {
 	public void init(){
 		UBLogUtil.logI(TAG,"init");
 		mActivity = UBSDKConfig.getInstance().getGameActivity();
-		mMeiZuGameID = UBSDKConfig.getInstance().getParamsMap().get("MeiZu_GameID");
-		mMeiZuAppSecret = UBSDKConfig.getInstance().getParamsMap().get("MeiZu_AppSecret");
+		mMeiZuGameID = UBSDKConfig.getInstance().getParamMap().get("MeiZu_GameID");
+		mMeiZuAppSecret = UBSDKConfig.getInstance().getParamMap().get("MeiZu_AppSecret");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 
 			@Override
