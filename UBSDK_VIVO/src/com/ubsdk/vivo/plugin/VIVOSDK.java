@@ -7,11 +7,11 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.bean.UBOrderInfo;
-import com.umbrella.game.ubsdk.bean.UBRoleInfo;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.http.UBHttpManager;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
+import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.ui.UBLoadingDialog;
 import com.vivo.unionsdk.open.VivoExitCallback;
 import com.vivo.unionsdk.open.VivoPayCallback;
@@ -45,8 +45,8 @@ public class VIVOSDK {
 	private String mVIVO_AppId;
 	private UBLoadingDialog mUBLoadingDialog;
 	public void init(){
-		mVIVO_StoreId = UBSDKConfig.getInstance().getParamsMap().get("VIVO_STOREID");
-		mVIVO_AppId = UBSDKConfig.getInstance().getParamsMap().get("VIVO_APPID");
+		mVIVO_StoreId = UBSDKConfig.getInstance().getParamMap().get("VIVO_STOREID");
+		mVIVO_AppId = UBSDKConfig.getInstance().getParamMap().get("VIVO_APPID");
 		mActivity=UBSDKConfig.getInstance().getGameActivity();
 		mUBLoadingDialog = new UBLoadingDialog(mActivity, "订单创建中...");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){

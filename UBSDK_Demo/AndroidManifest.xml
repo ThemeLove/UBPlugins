@@ -26,13 +26,13 @@
         <activity
             android:name="com.ubsdk.demo.UBSDK_Demo_MainActivity"
             android:label="@string/app_name" 
-            android:process=":unityplayer">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.ubsdk.demo.ADTestActivity"></activity>
         <activity
             android:name="com.umbrella.game.ubsdk.ui.UBSplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

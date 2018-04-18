@@ -2,10 +2,6 @@ package com.ubsdk.demo;
 import java.util.UUID;
 
 import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.bean.DataType;
-import com.umbrella.game.ubsdk.bean.UBOrderInfo;
-import com.umbrella.game.ubsdk.bean.UBRoleInfo;
-import com.umbrella.game.ubsdk.bean.UBUserInfo;
 import com.umbrella.game.ubsdk.callback.UBExitCallback;
 import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
@@ -13,16 +9,18 @@ import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
 import com.umbrella.game.ubsdk.callback.UBPayCallback;
 import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
+import com.umbrella.game.ubsdk.plugintype.analytics.DataType;
+import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.ResUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
-import com.unity3d.player.UnityPlayerActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -30,7 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
+public class UBSDK_Demo_MainActivity extends Activity
 {
 
     private Activity mActivity;
@@ -52,6 +50,8 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
     private TextView mInfoTv;
     
     public final String TAG =UBSDK_Demo_MainActivity.class.getSimpleName();
+
+	private Button mStepToADBtn;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +61,10 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
         mActivity = this;
     	UBLogUtil.logI(TAG+"----->"+"onCreate");
         
+        setContentView(ResUtil.getLayoutId(mActivity, "activity_main"));
+        initView();
+        setListener();
+    	
 //      设置UBSDK监听在 init 之前，init在onCrete之前
         setSDKlistener();
         UBSDK.getInstance().init(mActivity,new UBInitCallback()
@@ -69,10 +73,6 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
             @Override
             public void onSuccess()
             {
-                setContentView(ResUtil.getLayoutId(mActivity, "activity_main"));
-                initView();
-                setListener();
-            	
             	String successStr="init success";
             	UBLogUtil.logI(TAG+"----->"+successStr);
                 Toast.makeText(mActivity,successStr, Toast.LENGTH_SHORT).show();
@@ -82,10 +82,6 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
             @Override
             public void onFailed(String msg, String trace)
             {
-                setContentView(ResUtil.getLayoutId(mActivity, "activity_main"));
-                initView();
-                setListener();
-            	
             	String failStr="init onFailed : msg = " + msg + ",trace = " + trace;
             	UBLogUtil.logI(TAG+"----->"+failStr);
                 Toast.makeText(mActivity,failStr, Toast.LENGTH_SHORT).show();
@@ -106,6 +102,7 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
+        mStepToADBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_stepToTestAD"));
         mInfoTv = (TextView) findViewById(ResUtil.getViewID(this, "tv_info"));
     }
 
@@ -268,6 +265,15 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
             	setGameDataInfo(DataType.LEVEL_UP);
             }
         });
+        
+        mStepToADBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(UBSDK_Demo_MainActivity.this,ADTestActivity.class);
+				startActivity(intent);
+			}
+		});
         
     }
 
@@ -490,7 +496,7 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
         exit();
     }
     
-    
+/*    
     @Override
     public boolean dispatchKeyEvent(KeyEvent var1) {
     	return super.dispatchKeyEvent(var1);
@@ -506,5 +512,5 @@ public class UBSDK_Demo_MainActivity extends UnityPlayerActivity
     public boolean onTouchEvent(MotionEvent var1) {
 //        return this.mUnityPlayer.injectEvent(var1);
         return onTouchEvent(var1);
-    }
+    }*/
 }

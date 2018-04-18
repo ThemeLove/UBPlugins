@@ -27,4 +27,10 @@ public class VIVOApplication implements IChannelProxyApplication{
 		
 	}
 
+	@Override
+	public void onTerminate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
