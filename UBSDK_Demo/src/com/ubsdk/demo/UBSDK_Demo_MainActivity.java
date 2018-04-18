@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -102,7 +101,7 @@ public class UBSDK_Demo_MainActivity extends Activity
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
-        mStepToADBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_stepToTestAD"));
+        mStepToADBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_jumpToTestAD"));
         mInfoTv = (TextView) findViewById(ResUtil.getViewID(this, "tv_info"));
     }
 
@@ -480,14 +479,14 @@ public class UBSDK_Demo_MainActivity extends Activity
         UBSDK.getInstance().onConfigurationChanged(newConfig);
     }
 
-    @Override
+/*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
     	if (keyCode==KeyEvent.KEYCODE_BACK) {
     		UBSDK.getInstance().onBackPressed();
     		exit();
 		}
     	return super.onKeyDown(keyCode, keyEvent);
-    }
+    }*/
     
     @Override
     public void onBackPressed()

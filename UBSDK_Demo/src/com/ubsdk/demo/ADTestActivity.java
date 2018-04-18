@@ -1,10 +1,9 @@
 package com.ubsdk.demo;
 
-import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.callback.UBInitCallback;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.TextUtil;
+import com.umbrella.game.ubsdk.utils.ToastUtil;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -14,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class ADTestActivity extends Activity implements OnClickListener{
 
@@ -32,21 +30,6 @@ public class ADTestActivity extends Activity implements OnClickListener{
 
         setContentView(R.layout.activity_ad_test);
         //设置Banner 容器
-        
-        UBSDK.getInstance().init(this,new UBInitCallback() {
-			
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onFailed(String message, String trace) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
         
         mADTypeOrMethod = (EditText) findViewById(R.id.et_ADTypeOrMethodInput);
         
@@ -71,8 +54,8 @@ public class ADTestActivity extends Activity implements OnClickListener{
 
     }
 
-    public void onClick(View arg0) {
-        switch (arg0.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             // 闪屏广告
             case R.id.but_splashscreen_img:
             	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH);
@@ -100,22 +83,22 @@ public class ADTestActivity extends Activity implements OnClickListener{
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();
             	if (TextUtil.isEmpty(ADTypeStr)) {
-            		Toast.makeText(ADTestActivity.this, "不能为空，请输入数字",Toast.LENGTH_LONG).show();
+            		ToastUtil.showToast(ADTestActivity.this,"Can not be empty \r\n ADType \r\n 1----->bannerAD \r\n 2----->FullScreenAD \r\n 3----->SplashAD \r\n 4----->VideoAD");
             		return;
 				}
             	boolean supportADType = UBAD.getInstance().isSupportADType(Integer.parseInt(ADTypeStr));
-            	String supportADTypeStr=supportADType==true?"支持":"不支持";
-            	Toast.makeText(ADTestActivity.this, supportADTypeStr, Toast.LENGTH_LONG).show();
+            	String supportADTypeStr=supportADType==true?"support":"not support";
+            	ToastUtil.showToast(ADTestActivity.this, supportADTypeStr);
             	break;
             case R.id.but_isSupportMethod:
             	String MethodStr = mADTypeOrMethod.getText().toString().trim();
             	if (TextUtil.isEmpty(MethodStr)) {
-            		Toast.makeText(ADTestActivity.this, "不能为空，请输入方法名",Toast.LENGTH_LONG).show();
+            		ToastUtil.showToast(ADTestActivity.this,"Can not be empty ,Please enter the method name");
             		return;
 				}
             	boolean supportMethod = UBAD.getInstance().isSupportMethod(MethodStr,null);
-            	String supportMethodStr=supportMethod==true?"支持":"不支持";
-            	Toast.makeText(ADTestActivity.this, supportMethodStr, Toast.LENGTH_LONG).show();
+            	String supportMethodStr=supportMethod==true?"support":"not support";
+            	ToastUtil.showToast(ADTestActivity.this, supportMethodStr);
             	break;
             	
             case R.id.but_test_crash:
@@ -133,13 +116,13 @@ public class ADTestActivity extends Activity implements OnClickListener{
 
     @Override
     public void onBackPressed() {
-    	UBSDK.getInstance().onBackPressed();
+//    	UBSDK.getInstance().onBackPressed();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-    	UBSDK.getInstance().onDestroy();
+//    	UBSDK.getInstance().onDestroy();
         super.onDestroy();
     }
 

@@ -19,7 +19,7 @@
                 android:id="@+id/but_splashscreen_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="闪屏" />
+                android:text="Show SplashAD" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,39 +31,41 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="banner-显示" />
+                    android:textSize="12sp"
+                    android:text="show bannerAD_TOP" />
 
                 <Button
                     android:id="@+id/but_banner_buttom_img"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="banner-底部" />
+                    android:textSize="12sp"
+                    android:text="show bannerAD_Bottom" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/but_banner_hide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="banner-隐藏" />
+                android:text="hide_banner" />
 
             <Button
                 android:id="@+id/but_block_center_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="插屏" />
+                android:text="show FullScreenAD" />
 
             <Button
                 android:id="@+id/but_fullscreen_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="开屏-视频" />
+                android:text="show VideoAD" />
 
             <EditText
                 android:id="@+id/et_ADTypeOrMethodInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="请输入广告类型或者方法名"
+                android:hint="input ADType number or method name"
                 android:textSize="12sp" />
 
             <LinearLayout
@@ -76,7 +78,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="是否支持该种广告类型"
+                    android:text="is this AD type supported ?"
                     android:textSize="12sp" />
 
                 <Button
@@ -84,7 +86,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="是否支持该方法"
+                    android:text="is this method supported ?"
                     android:textSize="12sp" />
             </LinearLayout>
 
