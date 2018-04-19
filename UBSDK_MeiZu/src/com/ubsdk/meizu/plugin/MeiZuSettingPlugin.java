@@ -17,19 +17,19 @@ public class MeiZuSettingPlugin implements IUBSettingPlugin{
 
 	@Override
 	public void gamePause() {
-		UBLogUtil.logI(TAG,"gamePause");
+		UBLogUtil.logI(TAG+"----->gamePause");
 		MeiZuSDK.getInstance().gamePause();
 	}
 
 	@Override
 	public void exit() {
-		UBLogUtil.logI(TAG,"exit");
+		UBLogUtil.logI(TAG+"----->exit");
 		MeiZuSDK.getInstance().exit();
 	}
 
 	@Override
 	public int getPlatformID() {
-		UBLogUtil.logI(TAG,"getPlatformID");
+		UBLogUtil.logI(TAG+"----->getPlatformID");
 		return 0;
 	}
 	
@@ -49,13 +49,13 @@ public class MeiZuSettingPlugin implements IUBSettingPlugin{
 
 	@Override
 	public int getSubPlatformID() {
-		UBLogUtil.logI(TAG,"getSubPlatformID");
+		UBLogUtil.logI(TAG+"----->getSubPlatformID");
 		return 0;
 	}
 
 	@Override
 	public String getExtrasConfig(String extras) {
-		UBLogUtil.logI(TAG,"getExtrasConfig");
+		UBLogUtil.logI(TAG+"----->getExtrasConfig");
 		return null;
 	}
 	

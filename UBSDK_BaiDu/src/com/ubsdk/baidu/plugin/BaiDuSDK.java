@@ -196,8 +196,16 @@ public class BaiDuSDK {
 		
 		UBLogUtil.logI(TAG+"----->baiduBillingWithTypeMap="+baiDuBillingWithTypeMap);
 		HashMap<String, BaiDuBilling> billingMap = baiDuBillingWithTypeMap.get("baidu");
-		BaiDuBilling baiDuBilling = billingMap.get(ubOrderInfo.getGoodsID());
-
+		BaiDuBilling baiDuBilling=null;
+		if (billingMap!=null) {
+			baiDuBilling = billingMap.get(ubOrderInfo.getGoodsID());
+		}
+		
+		if (baiDuBilling==null) {
+			UBLogUtil.logE(TAG+"----->error----->baidu 计费点配置出错!!!");
+			return;
+		}
+		
 		GamePropsInfo gamePropsInfo = new GamePropsInfo(baiDuBilling.getBillingID(), // 百度计费点id
 				baiDuBilling.getBillingPrice(), // 计费点价格
 				baiDuBilling.getBillingName(), // 计费点名称
@@ -325,7 +333,7 @@ public class BaiDuSDK {
 
 						// int mNum = Integer.valueOf(mOrderPrice) * 10;
 
-						UBLogUtil.logI(TAG, "callSupplement:success----->orderId=" + mOrderId);
+						UBLogUtil.logI(TAG+"----->callSupplement:success----->orderId=" + mOrderId);
 						UBSDK.getInstance().getUBPayCallback().onSuccess("", mOrderId, mOrderProductId, "", mOrderPrice,
 								"");
 					}

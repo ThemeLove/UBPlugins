@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.meizu"
+    package="com.umbrella.boomdots.mz"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -44,6 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.ubsdk.meizu.ADTestActivity"></activity>
 
         <!-- 魅族 -->
         <activity
@@ -58,7 +59,7 @@
 
                 <data
                     android:host="alipay"
-                    android:scheme="com.ubsdk.meizu" />
+                    android:scheme="com.umbrella.boomdots.mz" />
             </intent-filter>
         </activity>
         <activity

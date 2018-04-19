@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tq_startbg" >
+    android:background="@drawable/demo_startbg" >
 
     <LinearLayout
         android:id="@+id/lin_left"
@@ -57,6 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="setGameDataInfo" />
+        <Button
+            android:id="@+id/btn_jumpToTestAD"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="jumpToTestADActivity"/>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_info"
