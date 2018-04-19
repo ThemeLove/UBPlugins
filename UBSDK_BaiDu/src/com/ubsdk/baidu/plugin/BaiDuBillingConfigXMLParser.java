@@ -32,6 +32,8 @@ public class BaiDuBillingConfigXMLParser {
 				case XmlPullParser.START_TAG:
 					String tag = parse.getName();
 					if (TextUtil.equals("pay", tag)) {
+						payType="";
+						billingMap=null;
 						payType = parse.getAttributeValue(null, "type");
 						billingMap = new HashMap<String, BaiDuBilling>();
 					}
