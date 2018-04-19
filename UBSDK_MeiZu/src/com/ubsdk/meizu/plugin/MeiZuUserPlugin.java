@@ -19,25 +19,25 @@ public class MeiZuUserPlugin implements IUBUserPlugin{
 	
 	@Override
 	public void login() {
-		UBLogUtil.logI(TAG,"login");
+		UBLogUtil.logI(TAG+"----->login");
 		MeiZuSDK.getInstance().login();
 	}
 
 	@Override
 	public void logout() {
-		UBLogUtil.logI(TAG,"logout");
+		UBLogUtil.logI(TAG+"----->logout");
 		MeiZuSDK.getInstance().logout();
 	}
 
 	@Override
 	public UBUserInfo getUserInfo() {
-		UBLogUtil.logI(TAG,"getUserInfo");
+		UBLogUtil.logI(TAG+"----->getUserInfo");
 		return null;
 	}
 
 	@Override
 	public void setGameDataInfo(Object obj, int dataType) {
-		UBLogUtil.logI(TAG,"setGameDataInfo");
+		UBLogUtil.logI(TAG+"----->setGameDataInfo");
 		MeiZuSDK.getInstance().setGameDataInfo(obj,dataType);
 	}
 
