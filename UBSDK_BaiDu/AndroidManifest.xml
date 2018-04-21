@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.umbrella.downthemountain.baidu" 
+	package="com.umbrella.boomdots.baidu" 
 	android:versionCode="211"
     android:versionName="2.1.1">
     <supports-screens
@@ -48,11 +48,10 @@
 	<uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
 
 	<!-- 适配Android N系统必需的ContentProvider写权限声明，写权限包含应用包名 -->
-	<uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.umbrella.downthemountain.baidu" />
-	<permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.umbrella.downthemountain.baidu"
+	<uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.umbrella.boomdots.baidu" />
+	<permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.umbrella.boomdots.baidu"
 		android:protectionLevel="normal">
 	</permission>
-	
 	<application
 	    android:name="com.umbrella.game.ubsdk.ui.UBApplication"
         android:allowBackup="true"
@@ -61,11 +60,11 @@
         android:theme="@style/AppTheme" >
         	<!--注意：下面4个meta-data一定要添加到application节点内） -->
         	<!-- dksdk_appid表示从开发者平台申请的APPID，一定要填写正确 -->
-			<meta-data android:name="dksdk_appid" android:value="10871023" />
+			<meta-data android:name="dksdk_appid" android:value="11125131" />
 			<!-- dksdk_appkey表示从开发者平台申请的APPKEY，一定要填写正确 -->
-			<meta-data android:name="dksdk_appkey" android:value="SlUcCVoVqNDioc6GKIqsOfZn" />
+			<meta-data android:name="dksdk_appkey" android:value="uDxP9u9InnhH1DzDHsGXofVT" />
 			<!-- dksdk_appsecret表示从开发者平台申请的APPSECRET，一定要填写正确 -->
-			<meta-data android:name="dksdk_appsecret" android:value="KCGfhZ2jA98yZqmsY51kqVDEQdhsDYBd" />
+			<meta-data android:name="dksdk_appsecret" android:value="P0LM1GLG3Bz4tdxcLVri3snC18HF5QRj" />
 			<!-- dksdk_channel表示渠道,百度手机助手13744，百度多酷12999，91（福建博锐）14076，百度贴吧14146 -->
 			<meta-data android:name="dksdk_channel" android:value="13744" />
 			<!-- dksdk_ver表示sdk版本,此版本为 221 -->
@@ -197,8 +196,8 @@
 
 		<!-- 适配Android N系统必需的ContentProvider声明，写权限包含应用包名 -->
 		<provider android:name="com.baidu.android.pushservice.PushInfoProvider"
-			android:authorities="com.umbrella.downthemountain.baidu.bdpush"
-			android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.umbrella.downthemountain.baidu"
+			android:authorities="com.umbrella.boomdots.baidu.bdpush"
+			android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.umbrella.boomdots.baidu"
 			android:protectionLevel="signature" android:exported="true" />
 		<!-- push receiver和service end -->
 		<!-- ###################### push sdk end ############################ -->
