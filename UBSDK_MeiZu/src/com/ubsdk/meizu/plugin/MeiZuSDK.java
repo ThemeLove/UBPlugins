@@ -86,34 +86,44 @@ public class MeiZuSDK {
 	private String mCpOrderID="";
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
+//		UBLogUtil.logI(TAG+"----->pay----->param----->mMeiZuAppID="+mMeiZuAppID+",cpOrderID="+ubOrderInfo.getCpOrderID());
 		
+//		魅族渠道支付时三个参数不能为空 app_id,cp_order_id,sign_type
 		String systemTime=System.currentTimeMillis()+"";
-		String appID=TextUtil.isEmpty(mMeiZuAppID)?"":mMeiZuAppID;
-		mCpOrderID = TextUtil.isEmpty(ubOrderInfo.getCpOrderID())?"":ubOrderInfo.getCpOrderID();
+//		校验参数
+		if (TextUtil.isEmpty(mMeiZuAppID)) {
+			UBLogUtil.logE(TAG+"----->error----->MeiZuAppID必要参数为空");
+			return;
+		}
+		if (TextUtil.isEmpty(ubOrderInfo.getCpOrderID())) {
+			UBLogUtil.logI(TAG+"----->warning----->cpOrderID 为空，使用系统时间代替！");
+			mCpOrderID=systemTime;
+		}
+		
 		String cpOrderCreateTime=TextUtil.isEmpty(ubOrderInfo.getCpOrderCreateTime())?systemTime:ubOrderInfo.getCpOrderCreateTime();
-		String payType="0";
 		String productBody=TextUtil.isEmpty(ubOrderInfo.getGoodsName())?"":ubOrderInfo.getGoodsName();
-		String productID=TextUtil.isEmpty(ubOrderInfo.getGoodsID())?"":ubOrderInfo.getGoodsID();
+		String productID=TextUtil.isEmpty(ubOrderInfo.getGoodsID())?"0":ubOrderInfo.getGoodsID();
 		String productSubject=TextUtil.isEmpty(ubOrderInfo.getGoodsDesc())?"":ubOrderInfo.getGoodsDesc();
 		String totalPrice=TextUtil.isEmpty(ubOrderInfo.getAmount()+"")?"":ubOrderInfo.getAmount()+"";
 		String userInfo=TextUtil.isEmpty(ubOrderInfo.getExtrasParams())?"":ubOrderInfo.getExtrasParams();
 		
+		String payType="0";
 		TreeMap<String,String> treeMap = new TreeMap<String,String>();
-		treeMap.put("app_id",appID);
+		treeMap.put("app_id",mMeiZuAppID);
 		treeMap.put("cp_order_id", mCpOrderID);
 		treeMap.put("create_time", cpOrderCreateTime);
 		treeMap.put("pay_type", payType);//0 表示定额支付
-		treeMap.put("product_body",productBody);
-		treeMap.put("product_id", productID);
-		treeMap.put("product_subject", productSubject);
+		treeMap.put("product_body",productBody);//默认为""
+		treeMap.put("product_id", productID);//默认为"0"
+		treeMap.put("product_subject", productSubject);//订单描述
 		treeMap.put("total_price", totalPrice);
 		treeMap.put("user_info", userInfo);
 		
 		String sign = UBMD5Util.MD5EncryptString(treeMap,":"+mMeiZuAppSecret).toLowerCase(Locale.getDefault());//魅族要求转成小写
 		
 		Bundle payInfo = new Bundle();
-		payInfo.putString(MzPayParams.ORDER_KEY_ORDER_APPID, appID);//游戏id
-		payInfo.putString(MzPayParams.ORDER_KEY_ORDER_ID,mCpOrderID);//订单id
+		payInfo.putString(MzPayParams.ORDER_KEY_ORDER_APPID, mMeiZuAppID);//游戏id,不能为空
+		payInfo.putString(MzPayParams.ORDER_KEY_ORDER_ID,mCpOrderID);//订单id，不能为空
 		payInfo.putLong(MzPayParams.ORDER_KEY_CREATE_TIME,Long.parseLong(cpOrderCreateTime));//订单创建时间
 		payInfo.putString(MzPayParams.ORDER_KEY_PAY_TYPE,payType);//支付方式，默认为0,定额支付
 		payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_BODY,productBody);//商品名称
@@ -123,7 +133,7 @@ public class MeiZuSDK {
 		payInfo.putString(MzPayParams.ORDER_KEY_CP_INFO,userInfo);//cp自定义信息
 		payInfo.putString(MzPayParams.ORDER_KEY_SIGN,sign);//签名
 		
-		payInfo.putString(MzPayParams.ORDER_KEY_SIGN_TYPE, "md5");//签名类型
+		payInfo.putString(MzPayParams.ORDER_KEY_SIGN_TYPE, "md5");//签名类型，不能为空，不参与签名
 		payInfo.putBoolean(MzPayParams.ORDER_KEY_DISABLE_PAY_TYPE_SMS,false);//是否关闭短信支付，默认是开启状态
 //		payInfo.putString(MzPayParams.ORDER_KEY_PRE_SELECTED_PAYWAY, MzPreSelectedPayWay.PAY_BY_UNIONPAY);指定支付方式
 		

@@ -13,7 +13,12 @@ public class BaiDuUserPlugin implements IUBUserPlugin{
 	private Activity mActivity;
 	private BaiDuUserPlugin(Activity activity){
 		this.mActivity=activity;
-		BaiDuSDK.getInstance().init();
+		
+		try {
+			BaiDuSDK.getInstance().init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
