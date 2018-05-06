@@ -3,9 +3,13 @@ package com.ubsdk.ad.baidu;
 import com.duoku.alone.ssp.util.ToastUtil;
 import com.duoku.code.analytics.ReportAPI;
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
+import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
+import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -17,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickListener{
+	private final String TAG=UBSDK_AD_BaiDu_MainActivity.class.getSimpleName();
 
     private EditText mADTypeOrMethod;
 
@@ -32,6 +37,7 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 
         setContentView(R.layout.activity_main_ad_demo);
         //设置Banner 容器
+        setSDKListener();
         
         UBSDK.getInstance().init(this,new UBInitCallback() {
 			
@@ -71,7 +77,148 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 
     }
 
-    public void onClick(View arg0) {
+    private void setSDKListener() {
+//    	设置切换账号监听
+    	UBSDK.getInstance().setUBSwitchAccountCallback(new UBSwitchAccountCallback() {
+			
+			@Override
+			public void onSuccess(UBUserInfo ubUserInfo) {
+				UBLogUtil.logI(TAG+"----->switchAccount----->onSuccess");
+			}
+			
+			@Override
+			public void onFailed(String message, String trace) {
+				UBLogUtil.logI(TAG+"----->switchAccount----->onFailed");
+			}
+			
+			@Override
+			public void onCancel() {
+				UBLogUtil.logI(TAG+"----->switchAccount----->onCancel");
+			}
+		});
+    	
+//    	设置广告监听
+    	UBAD.getInstance().setUBADCallback(new UBADCallback(){
+
+			@Override
+			public void onInit(boolean isInitSuccess, String msg) {
+				UBLogUtil.logI(TAG+"----->UBAD----->onInit");
+				if (isInitSuccess) {
+					UBLogUtil.logI(TAG+"----->UBAD----->init success!");
+				}else{
+					UBLogUtil.logI(TAG+"----->UBAD----->init fail!");
+				}
+			}
+
+			@Override
+			public void onClick(int adType, String msg) {
+				UBLogUtil.logI(TAG+"----->UBAD----->onClick");
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
+					break;
+				case ADType.AD_TYPE_FULLSCREEN:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick fullscreen AD");
+					break;
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onComplete(int adType, String msg) {
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
+					break;
+				case ADType.AD_TYPE_FULLSCREEN:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete fullscreen AD");
+					break;
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onShow(int adType, String msg) {
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
+					break;
+				case ADType.AD_TYPE_FULLSCREEN:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow fullscreen AD");
+					break;
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onClosed(int adType, String msg) {
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
+					break;
+				case ADType.AD_TYPE_FULLSCREEN:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed fullscreen AD");
+					break;
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onFailed(int adType, String msg) {
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
+					break;
+				case ADType.AD_TYPE_FULLSCREEN:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed fullscreen AD");
+					break;
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
+					break;
+
+				default:
+					break;
+				}
+			}});
+		
+	}
+
+	public void onClick(View arg0) {
         switch (arg0.getId()) {
             // 闪屏广告
             case R.id.but_splashscreen_img:
