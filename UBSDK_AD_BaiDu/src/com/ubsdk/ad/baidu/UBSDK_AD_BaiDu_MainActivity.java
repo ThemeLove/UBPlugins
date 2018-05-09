@@ -117,16 +117,15 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick fullscreen AD");
-					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
 					break;
-
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
+					break;
 				default:
 					break;
 				}
@@ -138,16 +137,15 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete fullscreen AD");
-					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
 					break;
-
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
+					break;
 				default:
 					break;
 				}
@@ -159,16 +157,15 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow fullscreen AD");
-					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
 					break;
-
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
+					break;
 				default:
 					break;
 				}
@@ -180,16 +177,15 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed fullscreen AD");
-					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
 					break;
-
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
+					break;
 				default:
 					break;
 				}
@@ -201,21 +197,19 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed fullscreen AD");
-					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
 					break;
-
+				case ADType.AD_TYPE_REWARDEDVIDEO:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
+					break;
 				default:
 					break;
 				}
 			}});
-		
 	}
 
 	public void onClick(View arg0) {
@@ -238,7 +232,7 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
                 break;
             // 中间-插屏
             case R.id.but_block_center_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_FULLSCREEN);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL);
                 break;
             // 视频
             case R.id.but_fullscreen_video:

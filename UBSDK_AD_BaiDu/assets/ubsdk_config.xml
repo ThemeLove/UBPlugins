@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="AD_BaiDu_BannerID" value="1000000" />
-<param name="AD_BaiDu_FullScreenID" value="1000001" />
-<param name="AD_BaiDu_SplashID" value="1000002" />
-<param name="AD_BaiDu_RewardVideoID" value="1000003" />
+<param name="AD_BaiDu_Banner_ID" value="1000000" />
+<param name="AD_BaiDu_Interstitial_ID" value="1000001" />
+<param name="AD_BaiDu_Splash_ID" value="1000002" />
+<param name="AD_BaiDu_RewardVideo_ID" value="1000003" />
+<param name="AD_BaiDu_Banner_Position_ID" value="1" />
 
 <param name="BaiDu_Game_Orientation" value="portrait" />
 <param name="BaiDu_AppId" value="10871023" />

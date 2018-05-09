@@ -28,17 +28,18 @@ import android.widget.FrameLayout;
 public class ADBaiDuSDK implements IUBADPlugin{
 	private static final String TAG=ADBaiDuSDK.class.getSimpleName();
 	
-	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_FULLSCREEN,ADType.AD_TYPE_REWARDEDVIDEO,ADType.AD_TYPE_SPLASH};
+	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH,ADType.AD_TYPE_REWARDEDVIDEO};
 	private Activity mActivity;
 	private WindowManager mWM;
 
 	private FrameLayout mBannerContainer;
-
 	private String mBannerID;
+	private int mBannerPosition=BannerPosition.TOP;//banner广告的位置
 
-	private String mFullScreenID;
-
+	private String mInterstitialID;
 	private String mRewardVideoID;
+
+
 
 	private ADBaiDuSDK(Activity activity){
 		mActivity=activity;
@@ -56,6 +57,11 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	}
 	
 	private void initAD(){
+		UBLogUtil.logI(TAG+"----->initAD");
+		mBannerContainer = new FrameLayout(mActivity);
+		android.widget.FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		mBannerContainer.setLayoutParams(layoutParams);
+		
 		DuoKuAdSDK.getInstance().init(mActivity, new InitListener() {
 			@Override
 			public void onBack(int code, String desc) {
@@ -74,12 +80,15 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	 * 加载百度广告参数
 	 */
 	private void loadADParams(){
-		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_BannerID");
-		mFullScreenID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_FullScreenID");
-		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_RewardVideoID");
+		UBLogUtil.logI(TAG+"----->loadADParams");
+		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Banner_ID");
+		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Interstitial_ID");
+		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_RewardVideo_ID");
+		mBannerPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Banner_Position"));
 	}
 	
 	private void setActivityListener(){
+		UBLogUtil.logI(TAG+"----->setActivityListener");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 			@Override
 			public void onDestroy() {
@@ -87,6 +96,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		        DuoKuAdSDK.getInstance().onDestoryBanner();
 		        DuoKuAdSDK.getInstance().onDestoryBlock();
 		        DuoKuAdSDK.getInstance().onDestoryVideo();
+		        mWM=null;
+		        mBannerContainer=null;
 				super.onDestroy();
 			}
 		});
@@ -153,8 +164,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_BANNER:
 			showBannerAD();
 			break;
-		case ADType.AD_TYPE_FULLSCREEN:
-			showFullScreenAD();
+		case ADType.AD_TYPE_INTERSTITIAL:
+			showInterstitialAD();
 			break;
 		case ADType.AD_TYPE_REWARDEDVIDEO:
 			showVideoAD();
@@ -221,34 +232,34 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	/**
 	 * 展示插屏广告
 	 */
-	private void showFullScreenAD() {
-		UBLogUtil.logI(TAG+"----->showFullScreenAD");
+	private void showInterstitialAD() {
+		UBLogUtil.logI(TAG+"----->showInterstitialAD");
 		ViewEntity viewEntity = new ViewEntity();
 		viewEntity.setType(FastenEntity.VIEW_BLOCK);
 		viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);
-		viewEntity.setSeatId(Integer.parseInt(mFullScreenID));
+		viewEntity.setSeatId(Integer.parseInt(mInterstitialID));
 		DuoKuAdSDK.getInstance().showBlockView(mActivity, viewEntity, new ViewClickListener() {
 			
 			@Override
 			public void onSuccess(String adID) {
 				UBLogUtil.logI(TAG+"----->showFullScreen----->onSuccess----->adID="+adID);
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_FULLSCREEN, "FullScreen AD show success!");
+				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show success!");
 			}
 			
 			@Override
 			public void onFailed(int errorCode) {
 				UBLogUtil.logI(TAG+"----->showFullScreen----->errorCode="+errorCode);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_FULLSCREEN, "FullScreen AD show failed:errorCode="+errorCode);
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show failed:errorCode="+errorCode);
 			}
 			
 			@Override
 			public void onClick(int type) {
 				if (type==1) {//用户关闭
 					UBLogUtil.logI(TAG+"----->onClick----->type=1,user close");
-					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_FULLSCREEN, "FullScreen AD　user closed!");
+					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD　user closed!");
 				}else if(type==2){//用户点击
 					UBLogUtil.logI(TAG+"----->onClick----->type=2,user click");
-					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_FULLSCREEN, "FullScreen AD user click!");
+					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD user click!");
 				}
 			}
 		});
@@ -260,16 +271,21 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	private void showBannerAD(){
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		
-		mBannerContainer = new FrameLayout(mActivity);
-		android.widget.FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		mBannerContainer.setLayoutParams(layoutParams);
-		
-		ADHelper.addBannerView(mWM, mBannerContainer, BannerPosition.TOP);
+		mWM.removeView(mBannerContainer);
+		ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);
 		
 		ViewEntity viewEntity = new ViewEntity();
 		viewEntity.setType(FastenEntity.VIEW_BANNER);//banner 类型
 		viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);//展示方向
-		viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
+		
+		if (BannerPosition.TOP==mBannerPosition) {
+			viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
+		}else if(BannerPosition.BOTTOM==mBannerPosition){
+			viewEntity.setPostion(FastenEntity.POSTION_BOTTOM);//展示位置
+		}else{
+			viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
+		}
+		
 		viewEntity.setSeatId(Integer.parseInt(mBannerID));//广告位id
 		
 		DuoKuAdSDK.getInstance().showBannerView(mActivity, viewEntity, mBannerContainer, new ViewClickListener() {
@@ -307,18 +323,29 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_BANNER:
 			hideBannerAD();
 			break;
-		case ADType.AD_TYPE_FULLSCREEN:
-			
+		case ADType.AD_TYPE_INTERSTITIAL:
+			hideInterstitialAD();
 			break;
 		case ADType.AD_TYPE_REWARDEDVIDEO:
-			
+			hideRewardVideoAD();
 			break;
 		case ADType.AD_TYPE_SPLASH:
-			
+			hideSplashAD();
 			break;
 		default:
 			break;
 		}
+	}
+	private void hideInterstitialAD() {
+		UBLogUtil.logI(TAG+"----->hideInterstitialAD");
+	}
+	
+	private void hideSplashAD() {
+		UBLogUtil.logI(TAG+"----->hideSplashAD");
+	}
+	
+	private void hideRewardVideoAD() {
+		UBLogUtil.logI(TAG+"----->hideRewardVideoAD");
 	}
 	
 	/**
