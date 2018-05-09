@@ -31,7 +31,6 @@ public class ADXiaoMiApplication implements IChannelProxyApplication{
 	@Override
 	public void onProxyConfigurationChanged(Application application, Configuration config) {
 		UBLogUtil.logI(TAG+"----->onProxyConfigurationChanged");
-		
 	}
 
 	@Override

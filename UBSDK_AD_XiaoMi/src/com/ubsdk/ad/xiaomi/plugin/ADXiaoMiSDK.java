@@ -68,7 +68,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 
 	private void showSplashAD() {
 		UBLogUtil.logI(TAG+"----->showSplashAD");
-//		显示广告之前先设置容器可见
+		
 	}
 
 	private void showVideoAD() {
