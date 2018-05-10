@@ -105,7 +105,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onAdShow(Object adViews) {
 				UBLogUtil.logI(TAG+"----->onAdShow");
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD showSuccess!");
+				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
 			}
 			
 			@Override

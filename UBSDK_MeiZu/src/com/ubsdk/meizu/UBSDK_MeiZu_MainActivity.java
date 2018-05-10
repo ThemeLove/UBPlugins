@@ -414,8 +414,6 @@ public class UBSDK_MeiZu_MainActivity extends Activity
         });
     }
 
- 
-
     @Override
     protected void onStart()
     {

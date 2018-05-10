@@ -2,12 +2,32 @@ package com.ubsdk.ad.xiaomi.plugin;
 
 import java.lang.reflect.Method;
 
+import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBADPlugin;
+import com.umbrella.game.ubsdk.listener.UBActivityListener;
+import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
+import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
+import com.xiaomi.ad.AdListener;
+import com.xiaomi.ad.SplashAdListener;
+import com.xiaomi.ad.adView.BannerAd;
+import com.xiaomi.ad.adView.BannerAd.BannerListener;
+import com.xiaomi.ad.adView.InterstitialAd;
+import com.xiaomi.ad.adView.SplashAd;
+import com.xiaomi.ad.common.pojo.AdError;
+import com.xiaomi.ad.common.pojo.AdEvent;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
+import android.widget.FrameLayout;
 
 public class ADXiaoMiSDK implements IUBADPlugin{
 	private final String TAG=ADXiaoMiSDK.class.getSimpleName();
@@ -15,33 +35,145 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	
 	
 	private Activity mActivity;
+	private WindowManager mWM;
+	private ViewGroup mContainer;
 	
 	private String mBannerID;//bannerID
-	private String mFullScreenID;//FullScreenID
+	private String mInterstitialID;//InterstitialID
 	private String mSplashID;//SplashID
 	private String mRewardVideoID;//RewardVideoID
+	private FrameLayout mBannerADContainer;
+	private BannerListener mBannerADListener;
+	private BannerAd mBannerAD;
+	private AdListener mInterstitialADListener;
+	private InterstitialAd mInterstitialAD;
+	private SplashAdListener mSplashADListener;
 	private ADXiaoMiSDK(Activity activity){
-		this.mActivity=activity;
+		mActivity=activity;
+		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
+		mContainer = (ViewGroup) ((ViewGroup)mActivity.findViewById(android.R.id.content)).getChildAt(0);
 		try {
-			
+			setActivityListener();
 			loadADParams();
-			
+			initAD();
 		} catch (Exception e) {
-			
+			e.printStackTrace();
+		}finally{//最终给出初始化成功的回调
+			UBAD.getInstance().getUBADCallback().onInit(true, "AD XiaoMi init Success!");
 		}
+	}
+	
+	private void setActivityListener(){
+		UBLogUtil.logI(TAG+"----->setActivityListener");
+		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
+			
+		});
+	}
+
+	/**
+	 * 初始化广告
+	 */
+	private void initAD() {
+		UBLogUtil.logI(TAG+"----->initAD");
+		mBannerADContainer = new FrameLayout(mActivity);
+		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		mBannerADContainer.setLayoutParams(bannerLayoutParams);
+		
+		FrameLayout mSplashADContainer = new FrameLayout(mActivity);
+		FrameLayout.LayoutParams splashLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+		mSplashADContainer.setLayoutParams(splashLayoutParams);
+		
+		
+		mBannerADListener = new BannerAd.BannerListener() {
+			@Override
+			public void onAdEvent(AdEvent adEvent) {
+				if (adEvent.mType==AdEvent.TYPE_CLICK) {
+					UBLogUtil.logI(TAG+"----->on Banner Click!");
+					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_BANNER, "Banner AD click!");
+				}else if(adEvent.mType==AdEvent.TYPE_SKIP){
+					UBLogUtil.logI(TAG+"----->on Banner Closed!");
+					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_BANNER,"Banner AD closed!");
+				}else if (adEvent.mType==AdEvent.TYPE_VIEW) {
+					UBLogUtil.logI(TAG+"----->on Banner Show!");
+					UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
+				}
+			}
+		};
+		
+		mInterstitialADListener = new AdListener() {
+			
+			@Override
+			public void onViewCreated(View view) {
+				UBLogUtil.logI(TAG+"----->on Interstitial onViewCreated");
+				
+			}
+			
+			@Override
+			public void onAdLoaded() {
+				UBLogUtil.logI(TAG+"----->on Interstitial onAdLoaded");
+				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD show success!");
+				mInterstitialAD.show();
+			}
+			
+			@Override
+			public void onAdEvent(AdEvent adEvent) {
+				UBLogUtil.logI(TAG+"----->on Interstitial onAdEvent");
+				if (AdEvent.TYPE_SKIP==adEvent.mType) {
+					UBLogUtil.logI(TAG+"----->on Interstitial close!");
+					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD close!");
+					
+				}else if(AdEvent.TYPE_CLICK==adEvent.mType){
+					UBLogUtil.logI(TAG+"----->on Interstitial click!");
+					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD click!");
+				}
+			}
+			
+			@Override
+			public void onAdError(AdError adError) {
+				UBLogUtil.logI(TAG+"----->on Interstitial onAdError");
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD failed!");
+			}
+		};
+		
+		mSplashADListener = new SplashAdListener() {
+			
+			@Override
+			public void onAdPresent() {
+				UBLogUtil.logI(TAG+"----->Splash AD show success!");
+				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_SPLASH, "Splash AD show success!");
+				
+			}
+			
+			@Override
+			public void onAdFailed(String msg) {
+				UBLogUtil.logI(TAG+"----->Splash AD show failed!");
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_SPLASH, msg);
+			}
+			
+			@Override
+			public void onAdDismissed() {
+				UBLogUtil.logI(TAG+"----->Splash AD show closed!");
+				UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_SPLASH,"Splash AD closed!");
+			}
+			
+			@Override
+			public void onAdClick() {
+				UBLogUtil.logI(TAG+"----->Splash AD click!");
+				UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_SPLASH,"Splash AD click!");
+			}
+		};
 	}
 
 	/**
 	 * 加载广告参数
 	 */
 	private void loadADParams() {
-		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_BannerID");
-		mFullScreenID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_FullScreenID");
-		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_SplashID");
-		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_RewardVideoID");
+		UBLogUtil.logI(TAG+"----->loadADParams");
+		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Banner_ID");
+		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_InterstitialID");
+		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Splash_ID");
+		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_RewardVideo_ID");
 	}
-
-
 
 	@Override
 	public void showADWithADType(int adType) {
@@ -51,8 +183,8 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_BANNER:
 			showBannerAD();
 			break;
-		case ADType.AD_TYPE_FULLSCREEN:
-			showFullScreenAD();
+		case ADType.AD_TYPE_INTERSTITIAL:
+			showInterstitialAD();
 			break;
 		case ADType.AD_TYPE_REWARDEDVIDEO:
 			showVideoAD();
@@ -68,19 +200,28 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 
 	private void showSplashAD() {
 		UBLogUtil.logI(TAG+"----->showSplashAD");
-		
+		new SplashAd(mActivity, arg1, arg2, arg3);
 	}
 
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
 	}
 
-	private void showFullScreenAD() {
-		UBLogUtil.logI(TAG+"----->showFullScreenAD");	
+	private void showInterstitialAD() {
+		UBLogUtil.logI(TAG+"----->showInterstitialAD");	
+		
+		if (mInterstitialAD==null) {
+			mInterstitialAD = new InterstitialAd(mActivity.getApplicationContext(),mActivity);
+		}
+		mInterstitialAD.requestAd(mInterstitialID,mInterstitialADListener);
 	}
 
 	private void showBannerAD() {
 		UBLogUtil.logI(TAG+"----->showBannerAD");
+		if (mBannerAD==null) {
+			mBannerAD = new BannerAd(mActivity, mBannerADContainer, mBannerADListener);
+		}
+		mBannerAD.show(mBannerID);
 	}
  
 	@Override

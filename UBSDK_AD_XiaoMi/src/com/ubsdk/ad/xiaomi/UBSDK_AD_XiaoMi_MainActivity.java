@@ -115,8 +115,8 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick fullscreen AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
 					break;
 				case ADType.AD_TYPE_REWARDEDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
@@ -136,8 +136,8 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete fullscreen AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
 					break;
 				case ADType.AD_TYPE_REWARDEDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
@@ -157,8 +157,8 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow fullscreen AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
 					break;
 				case ADType.AD_TYPE_REWARDEDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
@@ -178,8 +178,8 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed fullscreen AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
 					break;
 				case ADType.AD_TYPE_REWARDEDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
@@ -199,8 +199,8 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_BANNER:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
 					break;
-				case ADType.AD_TYPE_FULLSCREEN:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed fullscreen AD");
+				case ADType.AD_TYPE_INTERSTITIAL:
+					UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
 					break;
 				case ADType.AD_TYPE_REWARDEDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
@@ -236,7 +236,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
                 break;
             // 中间-插屏
             case R.id.but_block_center_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_FULLSCREEN);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL);
                 break;
             // 视频
             case R.id.but_fullscreen_video:

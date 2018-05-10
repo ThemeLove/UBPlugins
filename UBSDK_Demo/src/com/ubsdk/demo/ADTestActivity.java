@@ -74,7 +74,7 @@ public class ADTestActivity extends Activity implements OnClickListener{
                 break;
             // 中间-插屏
             case R.id.but_block_center_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_FULLSCREEN);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL);
                 break;
             // 视频
             case R.id.but_fullscreen_video:
