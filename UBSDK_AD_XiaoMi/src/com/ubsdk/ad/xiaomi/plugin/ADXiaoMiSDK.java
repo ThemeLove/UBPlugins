@@ -51,7 +51,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_BANNER:
 			showBannerAD();
 			break;
-		case ADType.AD_TYPE_FULLSCREEN:
+		case ADType.AD_TYPE_INTERSTITIAL:
 			showFullScreenAD();
 			break;
 		case ADType.AD_TYPE_REWARDEDVIDEO:
