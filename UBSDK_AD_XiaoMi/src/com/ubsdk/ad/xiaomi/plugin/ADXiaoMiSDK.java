@@ -1,37 +1,37 @@
 package com.ubsdk.ad.xiaomi.plugin;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBADPlugin;
-import com.umbrella.game.ubsdk.listener.UBActivityListener;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import com.xiaomi.ad.AdListener;
+import com.xiaomi.ad.NativeAdInfoIndex;
+import com.xiaomi.ad.NativeAdListener;
 import com.xiaomi.ad.SplashAdListener;
 import com.xiaomi.ad.adView.BannerAd;
 import com.xiaomi.ad.adView.BannerAd.BannerListener;
 import com.xiaomi.ad.adView.InterstitialAd;
 import com.xiaomi.ad.adView.SplashAd;
+import com.xiaomi.ad.adView.StandardNewsFeedAd;
 import com.xiaomi.ad.common.pojo.AdError;
 import com.xiaomi.ad.common.pojo.AdEvent;
 
+import android.R;
 import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.widget.FrameLayout;
 
 public class ADXiaoMiSDK implements IUBADPlugin{
 	private final String TAG=ADXiaoMiSDK.class.getSimpleName();
-	private final int[] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_BANNER,ADType.AD_TYPE_REWARDEDVIDEO,ADType.AD_TYPE_SPLASH};
+	private final int[] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_BANNER,ADType.AD_TYPE_REWARDVIDEO,ADType.AD_TYPE_SPLASH};
 	
 	
 	private Activity mActivity;
@@ -48,6 +48,11 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	private AdListener mInterstitialADListener;
 	private InterstitialAd mInterstitialAD;
 	private SplashAdListener mSplashADListener;
+	private FrameLayout mSplashADContainer;
+	private SplashAd mSplashAD;
+	private StandardNewsFeedAd mRewardVideoAD;
+	private NativeAdListener mRewardVideoListener;
+	private FrameLayout mRewardVideoADContainer;
 	private ADXiaoMiSDK(Activity activity){
 		mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
@@ -79,9 +84,15 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		mBannerADContainer.setLayoutParams(bannerLayoutParams);
 		
-		FrameLayout mSplashADContainer = new FrameLayout(mActivity);
+		mSplashADContainer = new FrameLayout(mActivity);
 		FrameLayout.LayoutParams splashLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 		mSplashADContainer.setLayoutParams(splashLayoutParams);
+		mContainer.addView(mSplashADContainer,splashLayoutParams);
+		
+		mRewardVideoADContainer = new FrameLayout(mActivity);
+		FrameLayout.LayoutParams rewardVideoLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+		mRewardVideoADContainer.setLayoutParams(rewardVideoLayoutParams);
+		mContainer.addView(mRewardVideoADContainer,rewardVideoLayoutParams);
 		
 		mBannerADListener = new BannerAd.BannerListener() {
 			@Override
@@ -140,7 +151,6 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 			public void onAdPresent() {
 				UBLogUtil.logI(TAG+"----->Splash AD show success!");
 				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_SPLASH, "Splash AD show success!");
-				
 			}
 			
 			@Override
@@ -161,6 +171,58 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 				UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_SPLASH,"Splash AD click!");
 			}
 		};
+		
+		mRewardVideoListener = new NativeAdListener() {
+			@Override
+			public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
+				UBLogUtil.logI(TAG+"----->onNativeInfoSuccess!");
+				if (list!=null&&list.size()>0) {
+					NativeAdInfoIndex response = list.get(0);
+					mRewardVideoAD.buildViewAsync(response, 1, new AdListener() {
+						
+						@Override
+						public void onViewCreated(View view) {
+							UBLogUtil.logI(TAG+"----->RewardVideo onViewCreated!");
+							mRewardVideoADContainer.removeAllViews();
+							mRewardVideoADContainer.addView(view);
+						}
+						
+						@Override
+						public void onAdLoaded() {
+							UBLogUtil.logI(TAG+"----->RewardVideo onAdLoaded!");
+						}
+						
+						@Override
+						public void onAdEvent(AdEvent adEvent) {
+							if (AdEvent.TYPE_SKIP==adEvent.mType) {
+								UBLogUtil.logI(TAG+"----->RewardVideo AD closed!");
+								UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD closed!");
+							}else if(AdEvent.TYPE_CLICK==adEvent.mType){
+								UBLogUtil.logI(TAG+"----->RewardVideo AD click!");
+								UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD click!");
+							}else if(AdEvent.TYPE_VIEW==adEvent.mType){
+								UBLogUtil.logI(TAG+"----->RewardVideo AD show success!");
+								UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show success!");
+							}
+						}
+						
+						@Override
+						public void onAdError(AdError adError) {
+							UBLogUtil.logI(TAG+"----->RewardVideo AD failed!");
+							UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD failed!");
+							mRewardVideoADContainer.removeAllViews();
+						}
+					});
+				}
+			}
+			
+			@Override
+			public void onNativeInfoFail(AdError adError) {
+				UBLogUtil.logI(TAG+"----->Video AD show Failed!");
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO,"Video AD show Failed!");
+				mRewardVideoADContainer.removeAllViews();
+			}
+		};
 	}
 
 	/**
@@ -169,7 +231,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	private void loadADParams() {
 		UBLogUtil.logI(TAG+"----->loadADParams");
 		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Banner_ID");
-		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_InterstitialID");
+		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Interstitial_ID");
 		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Splash_ID");
 		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_RewardVideo_ID");
 	}
@@ -185,11 +247,11 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_INTERSTITIAL:
 			showInterstitialAD();
 			break;
-		case ADType.AD_TYPE_REWARDEDVIDEO:
-			showVideoAD();
-			break;
 		case ADType.AD_TYPE_SPLASH:
 			showSplashAD();
+			break;
+		case ADType.AD_TYPE_REWARDVIDEO:
+			showVideoAD();
 			break;
 		default:
 			break;
@@ -199,11 +261,18 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 
 	private void showSplashAD() {
 		UBLogUtil.logI(TAG+"----->showSplashAD");
-//		new SplashAd(mActivity, arg1, arg2, arg3);
+		if (mSplashAD==null) {
+			mSplashAD = new SplashAd(mActivity, mSplashADContainer, R.drawable.alert_dark_frame, mSplashADListener);
+		}
+		mSplashAD.requestAd(mSplashID);
 	}
 
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
+		if (mRewardVideoAD==null) {
+			mRewardVideoAD = new StandardNewsFeedAd(mActivity);
+		}
+		mRewardVideoAD.requestAd(mRewardVideoID, 1, mRewardVideoListener);
 	}
 
 	private void showInterstitialAD() {

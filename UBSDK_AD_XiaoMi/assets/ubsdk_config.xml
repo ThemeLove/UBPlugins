@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="AD_XiaoMi_Banner_ID" value="ac18823f12b4ca6c6f209f7aed75cdc9" />
-<param name="AD_XiaoMi_Interstitial_ID" value="bccda9553ca678d19c36558dc04d7936" />
-<param name="AD_XiaoMi_RewardVideo_ID" value="7edb857ef29adef00c0cd2d8a0b0bc60"/>
-<param name="AD_XiaoMi_Splash_ID" value="8b7bcc89a946b6ef5bf5b7210d76c4b8"/>
-<param name="AD_XiaoMi_APP_ID" value="8b7bcc89a946b6ef5bf5b7210d76c4b8"/>
+<param name="AD_XiaoMi_Banner_ID" value="802e356f1726f9ff39c69308bfd6f06a" />
+<param name="AD_XiaoMi_Interstitial_ID" value="67b05e7cc9533510d4b8d9d4d78d0ae9" />
+<param name="AD_XiaoMi_RewardVideo_ID" value="2cae1a1f63f60185630f78a1d63923b0"/>
+<param name="AD_XiaoMi_Splash_ID" value="b373ee903da0c6fc9c9da202df95a500"/>
+<param name="AD_XiaoMi_APP_ID" value="2882303761517411490"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
@@ -17,7 +17,7 @@
 <param name="UB_ChannelID" value="1" />
 <param name="UB_SubChannelID" value="1" />
 <plugins>
-    <plugin name="com.ubsdk.ad.meizu.plugin.ADMeiZuSDK" type="4" />
+    <plugin name="com.ubsdk.ad.xiaomi.plugin.ADXiaoMiSDK" type="4" />
 </plugins>
 <applications>
 </applications>

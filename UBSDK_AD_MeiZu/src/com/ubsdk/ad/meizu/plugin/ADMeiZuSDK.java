@@ -19,7 +19,7 @@ import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.plugintype.ad.BannerPosition;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +32,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	private Activity mActivity;
 	private WindowManager mWM;
 	
-	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH,ADType.AD_TYPE_REWARDEDVIDEO};
+	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH,ADType.AD_TYPE_REWARDVIDEO};
 	
 	/**
 	 * 游戏主Activity的根视图，不是DecorView
@@ -90,9 +90,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	private void initAD() {
 		UBLogUtil.logI(TAG+"----->initAD");
 		mSplashADContainer = new FrameLayout(mActivity);
-		mSplashADContainer.setBackgroundColor(0x00ff0000);
+//		mSplashADContainer.setBackgroundColor(0x00ff0000);
 		mSplashADContainer.setVisibility(View.GONE);//默认不显示
-		LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200);
+		LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 		mContainer.addView(mSplashADContainer,layoutParams);//添加到第一个，确保显示的时候可见
 		
 		mBannerADContainer = new FrameLayout(mActivity);
@@ -203,25 +203,25 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onVideoAdPlayFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->onVideoAdPlayFailed----->msg:"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDEDVIDEO, msg);
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO, msg);
 			}
 			
 			@Override
 			public void onVideoAdPlayComplete() {
 				UBLogUtil.logI(TAG+"----->onVideoAdPlayComplete");
-				UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDEDVIDEO, "RewardVideo AD complete!");
+				UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete!");
 			}
 			
 			@Override
 			public void onVideoAdFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->onVideoAdFailed----->msg:"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDEDVIDEO,msg);
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO,msg);
 			}
 			
 			@Override
 			public void onVideoAdClose() {
 				UBLogUtil.logI(TAG+"----->onVideoAdClose");
-				UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDEDVIDEO, "RewardVideo AD close!");
+				UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD close!");
 			}
 		});
 	}
@@ -306,7 +306,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_SPLASH:
 			showSplashAD();
 			break;
-		case ADType.AD_TYPE_REWARDEDVIDEO:
+		case ADType.AD_TYPE_REWARDVIDEO:
 			showVideoAD();
 			break;
 		default:
@@ -340,13 +340,18 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		mInterstitialAD.loadInterstitialAd();
 	}
 
+	@SuppressLint("NewApi")
 	private void showBannerAD() {
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		
-		mWM.removeView(mBannerADContainer);
+		if (mBannerADContainer.isAttachedToWindow()) {
+			mWM.removeView(mBannerADContainer);
+		}
+		
 		ADHelper.addBannerView(mWM, mBannerADContainer,mBannerPosition);
 		if (mBannerAD==null) {
 			mBannerAD = new AdBanner(mActivity, mBannerID);
+//			mBannerAD = new AdBanner(mActivity, "9b8fc2b321d5f29d23c6dab7cca7d3d6");
 		}
 		mBannerAD.setAdBannerListener(mBannerADListener);
 		mBannerADContainer.removeAllViews();
@@ -366,7 +371,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_SPLASH:
 			hideSplashAD();
 			break;
-		case ADType.AD_TYPE_REWARDEDVIDEO:
+		case ADType.AD_TYPE_REWARDVIDEO:
 			hideRewardVideoAD();
 			break;
 		}
@@ -374,7 +379,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	private void hideBannerAD() {
 		UBLogUtil.logI(TAG+"----->hideBannerAD");
 		mBannerADContainer.setVisibility(View.GONE);
-		mBannerAD.destory();
+		if (mBannerAD!=null) {
+			mBannerAD.destory();
+		}
 	}
 	
 	private void hideInterstitialAD() {
