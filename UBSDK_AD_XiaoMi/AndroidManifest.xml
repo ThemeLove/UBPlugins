@@ -7,14 +7,15 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="23" />
-		<uses-permission android:name="android.permission.INTERNET"/>
-		<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-		<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-		<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-		<uses-permission android:name="android.permission.GET_TASKS"/>
-		<uses-permission android:name="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <application
         android:name="com.umbrella.game.ubsdk.ui.UBApplication"
         android:allowBackup="true"
@@ -30,14 +31,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
-		    android:name="com.xiaomi.ad.puppet.AdPuppetActivity"
-		    android:configChanges="orientation"
-		    android:label="AD Activity"
-		    android:screenOrientation="behind"
-    		android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
-		</activity>
+            android:name="com.xiaomi.ad.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+        </activity>
     </application>
 
 </manifest>
