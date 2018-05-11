@@ -24,9 +24,8 @@ public class ADXiaoMiApplication implements IChannelProxyApplication{
 		UBLogUtil.logI(TAG+"----->onProxyCreate");
 //		TODO
 //		 AdSdk.setMockOn(); //打开模拟模式，仅在初次接入广告时使用（测试用，在开发者站提交应用时请删除本行代码，否则不会有收益）
-//	     AdSdk.setDebugOn(); // 打开调试，输出调试信息（测试用，在开发者站提交应用时请删除本行代码，否则不会有收益）
+	     AdSdk.setDebugOn(); // 打开调试，输出调试信息（测试用，在开发者站提交应用时请删除本行代码，否则不会有收益）
 	     AdSdk.initialize(application, mADXiaoMiAppID);//appId是你在小米开发者网站上注册的应用ID。
-	     
 	}
 
 	@Override

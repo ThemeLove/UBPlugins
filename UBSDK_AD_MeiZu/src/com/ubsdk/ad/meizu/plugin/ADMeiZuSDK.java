@@ -19,6 +19,7 @@ import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.plugintype.ad.BannerPosition;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
@@ -79,6 +80,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 				mContainer=null;
 				mSplashADContainer=null;
 				mBannerADContainer=null;
+				if (mBannerAD!=null) {
+					mBannerAD.destory();
+				}
 				super.onDestroy();
 			}
 		});
@@ -96,7 +100,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		mContainer.addView(mSplashADContainer,layoutParams);//添加到第一个，确保显示的时候可见
 		
 		mBannerADContainer = new FrameLayout(mActivity);
-		android.widget.FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		mBannerADContainer.setLayoutParams(bannerLayoutParams);
 		
 //		Banner广告
@@ -343,19 +347,21 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	@SuppressLint("NewApi")
 	private void showBannerAD() {
 		UBLogUtil.logI(TAG+"----->showBannerAD");
+		mBannerADContainer.setVisibility(View.VISIBLE);
 		
 		if (mBannerADContainer.isAttachedToWindow()) {
 			mWM.removeView(mBannerADContainer);
 		}
 		
-		ADHelper.addBannerView(mWM, mBannerADContainer,mBannerPosition);
 		if (mBannerAD==null) {
 			mBannerAD = new AdBanner(mActivity, mBannerID);
-//			mBannerAD = new AdBanner(mActivity, "9b8fc2b321d5f29d23c6dab7cca7d3d6");
 		}
 		mBannerAD.setAdBannerListener(mBannerADListener);
 		mBannerADContainer.removeAllViews();
 		mBannerADContainer.addView(mBannerAD);
+//		mBannerADContainer.addView(mBannerAD,mBannerLayoutParams);
+		
+		ADHelper.addBannerView(mWM, mBannerADContainer,mBannerPosition);
 	}
  
 	@Override
@@ -379,9 +385,6 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	private void hideBannerAD() {
 		UBLogUtil.logI(TAG+"----->hideBannerAD");
 		mBannerADContainer.setVisibility(View.GONE);
-		if (mBannerAD!=null) {
-			mBannerAD.destory();
-		}
 	}
 	
 	private void hideInterstitialAD() {
