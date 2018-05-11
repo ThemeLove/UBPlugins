@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 <param name="AD_MeiZu_Banner_ID" value="ac18823f12b4ca6c6f209f7aed75cdc9" />
-<param name="AD_MeiZu_FullScreen_ID" value="bccda9553ca678d19c36558dc04d7936" />
+<param name="AD_MeiZu_Interstitial_ID" value="bccda9553ca678d19c36558dc04d7936" />
 <param name="AD_MeiZu_RewardVideo_ID" value="7edb857ef29adef00c0cd2d8a0b0bc60"/>
 <param name="AD_MeiZu_Splash_ID" value="8b7bcc89a946b6ef5bf5b7210d76c4b8"/>
 <param name="AD_MeiZu_Banner_Position" value="1"/>

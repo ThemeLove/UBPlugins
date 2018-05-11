@@ -28,7 +28,7 @@ import android.widget.FrameLayout;
 public class ADBaiDuSDK implements IUBADPlugin{
 	private static final String TAG=ADBaiDuSDK.class.getSimpleName();
 	
-	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH,ADType.AD_TYPE_REWARDEDVIDEO};
+	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH,ADType.AD_TYPE_REWARDVIDEO};
 	private Activity mActivity;
 	private WindowManager mWM;
 
@@ -167,7 +167,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_INTERSTITIAL:
 			showInterstitialAD();
 			break;
-		case ADType.AD_TYPE_REWARDEDVIDEO:
+		case ADType.AD_TYPE_REWARDVIDEO:
 			showVideoAD();
 			break;
 		case ADType.AD_TYPE_SPLASH:
@@ -207,23 +207,23 @@ public class ADBaiDuSDK implements IUBADPlugin{
 			@Override
 			public void onFailMsg(String msg) {
 				UBLogUtil.logI(TAG+"----->showVideoAD----->onFailMsg----->msg="+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDEDVIDEO, "RewardVideo AD show failed:msg="+msg);
+				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show failed:msg="+msg);
 			}
 			
 			@Override
 			public void onComplete() {
 				UBLogUtil.logI(TAG+"----->showVideoAD----->onComplete");
-				UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDEDVIDEO, "RewardVideo AD complete");
+				UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete");
 			}
 			
 			@Override
 			public void onClick(int type) {
 				if (type==1) {
 					UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=1,user close");
-					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDEDVIDEO,"RewardVideo AD　user closed!");
+					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD　user closed!");
 				}else if(type==2){
 					UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=2,user click");
-					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_REWARDEDVIDEO, "RewardVideo AD user click!");
+					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD user click!");
 				}
 			}
 		});
@@ -326,7 +326,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		case ADType.AD_TYPE_INTERSTITIAL:
 			hideInterstitialAD();
 			break;
-		case ADType.AD_TYPE_REWARDEDVIDEO:
+		case ADType.AD_TYPE_REWARDVIDEO:
 			hideRewardVideoAD();
 			break;
 		case ADType.AD_TYPE_SPLASH:

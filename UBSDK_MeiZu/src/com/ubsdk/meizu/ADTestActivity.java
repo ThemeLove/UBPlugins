@@ -79,7 +79,7 @@ public class ADTestActivity extends Activity implements OnClickListener{
                 break;
             // 视频
             case R.id.but_fullscreen_video:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDEDVIDEO);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO);
                 break;
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();

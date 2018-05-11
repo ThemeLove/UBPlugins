@@ -1,6 +1,4 @@
 package com.ubsdk.ad.meizu;
-
-import com.umbrella.boomdots.mz.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
@@ -122,7 +120,7 @@ public class UBSDK_AD_MeiZu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
 					break;
 				default:
@@ -142,7 +140,7 @@ public class UBSDK_AD_MeiZu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
 					break;
 				default:
@@ -162,7 +160,7 @@ public class UBSDK_AD_MeiZu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
 					break;
 				default:
@@ -182,7 +180,7 @@ public class UBSDK_AD_MeiZu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
 					break;
 				default:
@@ -202,7 +200,7 @@ public class UBSDK_AD_MeiZu_MainActivity extends Activity implements OnClickList
 				case ADType.AD_TYPE_SPLASH:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
 					break;
 				default:
@@ -236,7 +234,7 @@ public class UBSDK_AD_MeiZu_MainActivity extends Activity implements OnClickList
                 break;
             // 视频
             case R.id.but_fullscreen_video:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDEDVIDEO);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO);
                 break;
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();

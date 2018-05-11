@@ -118,7 +118,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_INTERSTITIAL:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
@@ -139,7 +139,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_INTERSTITIAL:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
@@ -160,7 +160,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_INTERSTITIAL:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
@@ -181,7 +181,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_INTERSTITIAL:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
@@ -202,7 +202,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				case ADType.AD_TYPE_INTERSTITIAL:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
 					break;
-				case ADType.AD_TYPE_REWARDEDVIDEO:
+				case ADType.AD_TYPE_REWARDVIDEO:
 					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
 					break;
 				case ADType.AD_TYPE_SPLASH:
@@ -213,7 +213,6 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 					break;
 				}
 			}});
-		
 	}
 
     public void onClick(View arg0) {
@@ -240,7 +239,7 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
                 break;
             // 视频
             case R.id.but_fullscreen_video:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDEDVIDEO);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO);
                 break;
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();
