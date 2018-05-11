@@ -39,8 +39,6 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	private String mInterstitialID;
 	private String mRewardVideoID;
 
-
-
 	private ADBaiDuSDK(Activity activity){
 		mActivity=activity;
 		mWM=(WindowManager) activity.getSystemService(Activity.WINDOW_SERVICE);
@@ -183,7 +181,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	 */
 	private void showSplashAD() {
 		UBLogUtil.logI(TAG+"----->showSplashAD");
-		mActivity.startActivity(new Intent(mActivity,BaiDuADSplashActivity.class));
+		mActivity.startActivity(new Intent(mActivity,ADBaiDuSplashActivity.class));
 	}
 
 	/**
@@ -242,7 +240,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 			
 			@Override
 			public void onSuccess(String adID) {
-				UBLogUtil.logI(TAG+"----->showFullScreen----->onSuccess----->adID="+adID);
+				UBLogUtil.logI(TAG+"----->showInterstitial----->onSuccess----->adID="+adID);
 				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show success!");
 			}
 			
@@ -271,7 +269,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	private void showBannerAD(){
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		
-		mWM.removeView(mBannerContainer);
+//		mWM.removeView(mBannerContainer);
 		ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);
 		
 		ViewEntity viewEntity = new ViewEntity();
@@ -354,7 +352,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	private void hideBannerAD(){
 		UBLogUtil.logI(TAG+"----->hideBannerAD");
 		
-		DuoKuAdSDK.getInstance().hideBannerView(mActivity, mBannerContainer);
+/*		DuoKuAdSDK.getInstance().hideBannerView(mActivity, mBannerContainer);
 		
         if (null != mBannerContainer) {
         	mBannerContainer.removeAllViews();
@@ -363,6 +361,6 @@ public class ADBaiDuSDK implements IUBADPlugin{
             }
             mBannerContainer.destroyDrawingCache();
             mBannerContainer = null;
-        }
+        }*/
 	}
 }

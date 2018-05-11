@@ -8,6 +8,7 @@ import com.duoku.alone.ssp.util.ToastUtil;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
+import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
@@ -19,8 +20,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-public class BaiDuADSplashActivity extends Activity {
-	private static final String TAG=BaiDuADSplashActivity.class.getSimpleName();
+public class ADBaiDuSplashActivity extends Activity {
+	private static final String TAG=ADBaiDuSplashActivity.class.getSimpleName();
     private FrameLayout container;
 
     @Override
@@ -50,7 +51,8 @@ public class BaiDuADSplashActivity extends Activity {
      * 加载广告参数
      */
     private void loadADParams() {
-		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_SplashID");
+		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Splash_ID");
+		mGameOrientation = UBSDKConfig.getInstance().getParamMap().get("BaiDu_Game_Orientation");
 	}
 
 	private Handler myhander = new Handler() {
@@ -62,6 +64,7 @@ public class BaiDuADSplashActivity extends Activity {
     };
     
 	private String mSplashID;
+	private String mGameOrientation;
 
     /**
      * 请求闪屏广告
@@ -69,9 +72,13 @@ public class BaiDuADSplashActivity extends Activity {
     public void showSplashAD() {
         ViewEntity viewEntity = new ViewEntity();
         viewEntity.setType(FastenEntity.VIEW_SPLASHSCREEN); // 广告类型 闪屏、全屏广告
-        viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL); // 展示方向竖或横
-        // viewEntity.setDirection(FastenEntity.VIEW_VERTICAL);
+        if (TextUtil.equals(mGameOrientation, "horizontal")) {
+        	viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL); // 展示方向横
+		}else{
+			viewEntity.setDirection(FastenEntity.VIEW_VERTICAL); // 展示方向竖
+		}
         viewEntity.setSeatId(Integer.parseInt(mSplashID)); // 广告位id
+        
         DuoKuAdSDK.getInstance().showSplashScreenView(this, viewEntity, container, new ViewClickListener() {
             @Override
             public void onSuccess(String adID) {
@@ -99,7 +106,7 @@ public class BaiDuADSplashActivity extends Activity {
                         finish();
                     } else if (type == 2) {//用户点击
                     	UBLogUtil.logI(TAG+"----->showSplashAD----->onClick-----type=2,user click");
-                        ToastUtil.showToast(BaiDuADSplashActivity.this, "点击广告");
+                        ToastUtil.showToast(ADBaiDuSplashActivity.this, "点击广告");
                         UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_SPLASH, "Splash AD user click!");
                     }
                 } catch (Exception e) {
