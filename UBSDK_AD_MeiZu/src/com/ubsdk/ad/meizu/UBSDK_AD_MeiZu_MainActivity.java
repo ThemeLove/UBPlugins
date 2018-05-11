@@ -1,6 +1,6 @@
 package com.ubsdk.ad.meizu;
 
-import com.qzgame.taiyi.hisense.R;
+import com.umbrella.boomdots.mz.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
