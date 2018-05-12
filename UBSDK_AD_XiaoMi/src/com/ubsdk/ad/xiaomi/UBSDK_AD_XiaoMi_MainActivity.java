@@ -94,132 +94,128 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
 				UBLogUtil.logI(TAG+"----->switchAccount----->onCancel");
 			}
 		});
-    	
-//    	设置广告监听
-    	UBAD.getInstance().setUBADCallback(new UBADCallback(){
 
-			@Override
-			public void onInit(boolean isInitSuccess, String msg) {
-				UBLogUtil.logI(TAG+"----->UBAD----->onInit");
-				if (isInitSuccess) {
-					UBLogUtil.logI(TAG+"----->UBAD----->init success!");
-				}else{
-					UBLogUtil.logI(TAG+"----->UBAD----->init fail!");
-				}
-			}
-
-			@Override
-			public void onClick(int adType, String msg) {
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick");
-				switch (adType) {
-				case ADType.AD_TYPE_BANNER:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
-					break;
-				case ADType.AD_TYPE_INTERSTITIAL:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
-					break;
-				case ADType.AD_TYPE_REWARDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
-					break;
-				case ADType.AD_TYPE_SPLASH:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
-					break;
-
-				default:
-					break;
-				}
-			}
-
-			@Override
-			public void onComplete(int adType, String msg) {
-				switch (adType) {
-				case ADType.AD_TYPE_BANNER:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
-					break;
-				case ADType.AD_TYPE_INTERSTITIAL:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
-					break;
-				case ADType.AD_TYPE_REWARDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
-					break;
-				case ADType.AD_TYPE_SPLASH:
-					UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
-					break;
-
-				default:
-					break;
-				}
-			}
-
-			@Override
-			public void onShow(int adType, String msg) {
-				switch (adType) {
-				case ADType.AD_TYPE_BANNER:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
-					break;
-				case ADType.AD_TYPE_INTERSTITIAL:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
-					break;
-				case ADType.AD_TYPE_REWARDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
-					break;
-				case ADType.AD_TYPE_SPLASH:
-					UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
-					break;
-
-				default:
-					break;
-				}
-			}
-
-			@Override
-			public void onClosed(int adType, String msg) {
-				switch (adType) {
-				case ADType.AD_TYPE_BANNER:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
-					break;
-				case ADType.AD_TYPE_INTERSTITIAL:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
-					break;
-				case ADType.AD_TYPE_REWARDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
-					break;
-				case ADType.AD_TYPE_SPLASH:
-					UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
-					break;
-
-				default:
-					break;
-				}
-			}
-
-			@Override
-			public void onFailed(int adType, String msg) {
-				switch (adType) {
-				case ADType.AD_TYPE_BANNER:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
-					break;
-				case ADType.AD_TYPE_INTERSTITIAL:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
-					break;
-				case ADType.AD_TYPE_REWARDVIDEO:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
-					break;
-				case ADType.AD_TYPE_SPLASH:
-					UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
-					break;
-
-				default:
-					break;
-				}
-			}});
 	}
 
-    public void onClick(View arg0) {
+    //  广告监听
+	private UBADCallback mUBADCallback = new UBADCallback(){
+
+		@Override
+		public void onInit(boolean isInitSuccess, String msg) {
+			UBLogUtil.logI(TAG+"----->UBAD----->onInit");
+			if (isInitSuccess) {
+				UBLogUtil.logI(TAG+"----->UBAD----->init success!");
+			}else{
+				UBLogUtil.logI(TAG+"----->UBAD----->init fail!");
+			}
+		}
+
+		@Override
+		public void onClick(int adType, String msg) {
+			UBLogUtil.logI(TAG+"----->UBAD----->onClick");
+			switch (adType) {
+			case ADType.AD_TYPE_BANNER:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
+				break;
+			case ADType.AD_TYPE_INTERSTITIAL:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
+				break;
+			case ADType.AD_TYPE_SPLASH:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
+				break;
+			case ADType.AD_TYPE_REWARDVIDEO:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void onComplete(int adType, String msg) {
+			switch (adType) {
+			case ADType.AD_TYPE_BANNER:
+				UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
+				break;
+			case ADType.AD_TYPE_INTERSTITIAL:
+				UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
+				break;
+			case ADType.AD_TYPE_SPLASH:
+				UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
+				break;
+			case ADType.AD_TYPE_REWARDVIDEO:
+				UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void onShow(int adType, String msg) {
+			switch (adType) {
+			case ADType.AD_TYPE_BANNER:
+				UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
+				break;
+			case ADType.AD_TYPE_INTERSTITIAL:
+				UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
+				break;
+			case ADType.AD_TYPE_SPLASH:
+				UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
+				break;
+			case ADType.AD_TYPE_REWARDVIDEO:
+				UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void onClosed(int adType, String msg) {
+			switch (adType) {
+			case ADType.AD_TYPE_BANNER:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
+				break;
+			case ADType.AD_TYPE_INTERSTITIAL:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
+				break;
+			case ADType.AD_TYPE_SPLASH:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
+				break;
+			case ADType.AD_TYPE_REWARDVIDEO:
+				UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void onFailed(int adType, String msg) {
+			switch (adType) {
+			case ADType.AD_TYPE_BANNER:
+				UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
+				break;
+			case ADType.AD_TYPE_INTERSTITIAL:
+				UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
+				break;
+			case ADType.AD_TYPE_SPLASH:
+				UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
+				break;
+			case ADType.AD_TYPE_REWARDVIDEO:
+				UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
+				break;
+			default:
+				break;
+			}
+		}};
+
+	public void onClick(View arg0) {
         switch (arg0.getId()) {
             // 闪屏广告
             case R.id.but_splashscreen_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH,mUBADCallback);
                 break;
             // 关闭横幅
             case R.id.but_banner_hide:
@@ -227,19 +223,19 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
                 break;
             // 顶部-横幅-图片
             case R.id.but_banner_top_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
                 break;
             // 底部-横幅-图片
             case R.id.but_banner_buttom_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
                 break;
             // 中间-插屏
             case R.id.but_block_center_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL,mUBADCallback);
                 break;
             // 视频
             case R.id.but_fullscreen_video:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO,mUBADCallback);
                 break;
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();
@@ -279,5 +275,4 @@ public class UBSDK_AD_XiaoMi_MainActivity extends Activity implements OnClickLis
     	UBSDK.getInstance().onDestroy();
         super.onDestroy();
     }
-
-}
+  }
