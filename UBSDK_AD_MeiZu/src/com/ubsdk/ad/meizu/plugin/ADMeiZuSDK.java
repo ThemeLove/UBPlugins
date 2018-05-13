@@ -66,7 +66,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{//最终给出初始化成功的回调
-			UBAD.getInstance().getUBADCallback().onInit(true, "AD MeiZu init Success!");
+			UBLogUtil.logI(TAG+"----->MeiZu AD init success!");
 		}
 	}
 
@@ -96,8 +96,8 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		mSplashADContainer = new FrameLayout(mActivity);
 //		mSplashADContainer.setBackgroundColor(0x00ff0000);
 		mSplashADContainer.setVisibility(View.GONE);//默认不显示
-		LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
-		mContainer.addView(mSplashADContainer,layoutParams);//添加到第一个，确保显示的时候可见
+		LayoutParams splashLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+		mContainer.addView(mSplashADContainer,splashLayoutParams);//添加到第一个，确保显示的时候可见
 		
 		mBannerADContainer = new FrameLayout(mActivity);
 		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);

@@ -1,9 +1,12 @@
 package com.ubsdk.demo;
 
+import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.ToastUtil;
+import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -15,12 +18,16 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 public class ADTestActivity extends Activity implements OnClickListener{
+	
+	private final String TAG=ADTestActivity.class.getSimpleName();
 
     private EditText mADTypeOrMethod;
+    private Activity mActivity;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivity=this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -38,7 +45,7 @@ public class ADTestActivity extends Activity implements OnClickListener{
         findViewById(R.id.but_banner_hide).setOnClickListener(this);
         findViewById(R.id.but_banner_buttom_img).setOnClickListener(this);
         findViewById(R.id.but_block_center_img).setOnClickListener(this);
-        findViewById(R.id.but_fullscreen_video).setOnClickListener(this);
+        findViewById(R.id.but_reward_video).setOnClickListener(this);
         findViewById(R.id.but_isSupportADType).setOnClickListener(this);
         findViewById(R.id.but_isSupportMethod).setOnClickListener(this);
         
@@ -58,7 +65,7 @@ public class ADTestActivity extends Activity implements OnClickListener{
         switch (view.getId()) {
             // 闪屏广告
             case R.id.but_splashscreen_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH,mUBADCallback);
                 break;
             // 关闭横幅
             case R.id.but_banner_hide:
@@ -66,19 +73,19 @@ public class ADTestActivity extends Activity implements OnClickListener{
                 break;
             // 顶部-横幅-图片
             case R.id.but_banner_top_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
                 break;
             // 底部-横幅-图片
             case R.id.but_banner_buttom_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
                 break;
             // 中间-插屏
             case R.id.but_block_center_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL,mUBADCallback);
                 break;
             // 视频
-            case R.id.but_fullscreen_video:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO);
+            case R.id.but_reward_video:
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO,mUBADCallback);
                 break;
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();
@@ -113,16 +120,140 @@ public class ADTestActivity extends Activity implements OnClickListener{
                 break;
         }
     }
+    
+    //  广告监听
+ 	private UBADCallback mUBADCallback = new UBADCallback(){
+
+ 		@Override
+ 		public void onClick(int adType, String msg) {
+ 			UBLogUtil.logI(TAG+"----->UBAD----->onClick");
+ 			switch (adType) {
+ 			case ADType.AD_TYPE_BANNER:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
+ 				ToastUtil.showToast(mActivity, "onClick banner AD");
+ 				break;
+ 			case ADType.AD_TYPE_INTERSTITIAL:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
+ 				ToastUtil.showToast(mActivity, "onClick interstitial AD");
+ 				break;
+ 			case ADType.AD_TYPE_SPLASH:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
+ 				ToastUtil.showToast(mActivity, "onClick splash AD");
+ 				break;
+ 			case ADType.AD_TYPE_REWARDVIDEO:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClick RewardVideo AD");
+ 				ToastUtil.showToast(mActivity, "onClick RewardVideo AD");
+ 				break;
+ 			default:
+ 				break;
+ 			}
+ 		}
+
+ 		@Override
+ 		public void onComplete(int adType, String msg) {
+ 			switch (adType) {
+ 			case ADType.AD_TYPE_BANNER:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
+ 				ToastUtil.showToast(mActivity, "onComplete banner AD");
+ 				break;
+ 			case ADType.AD_TYPE_INTERSTITIAL:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
+ 				ToastUtil.showToast(mActivity, "onComplete interstitial AD");
+ 				break;
+ 			case ADType.AD_TYPE_SPLASH:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
+ 				ToastUtil.showToast(mActivity, "onComplete splash AD");
+ 				break;
+ 			case ADType.AD_TYPE_REWARDVIDEO:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onComplete RewardVideo AD");
+ 				ToastUtil.showToast(mActivity, "onComplete RewardVideo AD");
+ 				break;
+ 			default:
+ 				break;
+ 			}
+ 		}
+
+ 		@Override
+ 		public void onShow(int adType, String msg) {
+ 			switch (adType) {
+ 			case ADType.AD_TYPE_BANNER:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
+ 				ToastUtil.showToast(mActivity, "onShow banner AD");
+ 				break;
+ 			case ADType.AD_TYPE_INTERSTITIAL:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
+ 				ToastUtil.showToast(mActivity, "onShow interstitial AD");
+ 				break;
+ 			case ADType.AD_TYPE_SPLASH:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
+ 				ToastUtil.showToast(mActivity, "onShow splash AD");
+ 				break;
+ 			case ADType.AD_TYPE_REWARDVIDEO:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
+ 				ToastUtil.showToast(mActivity, "onShow rewardVideo AD");
+ 				break;
+ 			default:
+ 				break;
+ 			}
+ 		}
+
+ 		@Override
+ 		public void onClosed(int adType, String msg) {
+ 			switch (adType) {
+ 			case ADType.AD_TYPE_BANNER:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
+ 				ToastUtil.showToast(mActivity, "onClosed banner AD");
+ 				break;
+ 			case ADType.AD_TYPE_INTERSTITIAL:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
+ 				ToastUtil.showToast(mActivity, "onClosed interstitial AD");
+ 				break;
+ 			case ADType.AD_TYPE_SPLASH:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
+ 				ToastUtil.showToast(mActivity, "onClosed splash AD");
+ 				break;
+ 			case ADType.AD_TYPE_REWARDVIDEO:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onClosed RewardVideo AD");
+ 				ToastUtil.showToast(mActivity, "onClosed RewardVideo AD");
+ 				break;
+ 			default:
+ 				break;
+ 			}
+ 		}
+
+ 		@Override
+ 		public void onFailed(int adType, String msg) {
+ 			switch (adType) {
+ 			case ADType.AD_TYPE_BANNER:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
+ 				ToastUtil.showToast(mActivity, "onFailed banner AD");
+ 				break;
+ 			case ADType.AD_TYPE_INTERSTITIAL:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
+ 				ToastUtil.showToast(mActivity, "onFailed interstitial AD");
+ 				break;
+ 			case ADType.AD_TYPE_SPLASH:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
+ 				ToastUtil.showToast(mActivity, "onFailed splash AD");
+ 				break;
+ 			case ADType.AD_TYPE_REWARDVIDEO:
+ 				UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
+ 				ToastUtil.showToast(mActivity, "onFailed rewardVideo AD");
+ 				break;
+ 			default:
+ 				break;
+ 			}
+ 		}};
 
     @Override
     public void onBackPressed() {
-//    	UBSDK.getInstance().onBackPressed();
+    	UBSDK.getInstance().onBackPressed();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-//    	UBSDK.getInstance().onDestroy();
+    	UBSDK.getInstance().onDestroy();
         super.onDestroy();
     }
 

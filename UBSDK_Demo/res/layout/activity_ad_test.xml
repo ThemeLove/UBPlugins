@@ -53,13 +53,13 @@
                 android:id="@+id/but_block_center_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="show FullScreenAD" />
+                android:text="show InterstitialAD" />
 
             <Button
-                android:id="@+id/but_fullscreen_video"
+                android:id="@+id/but_reward_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="show VideoAD" />
+                android:text="show RewardVideoAD" />
 
             <EditText
                 android:id="@+id/et_ADTypeOrMethodInput"

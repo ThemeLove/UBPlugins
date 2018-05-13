@@ -34,7 +34,9 @@
         
         <activity
             android:name="com.shenqi.video.VideoAdActivity"
-            android:theme="@android:style/Theme.Translucent" />
+            android:theme="@android:style/Theme.Translucent" 
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
 <!--                     android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize" -->
         <activity
             android:name="com.shenqi.video.AdActivity"

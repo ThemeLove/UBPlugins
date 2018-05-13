@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.ad.baidu"
+    package="com.duoku.alone.ssp.demo"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -71,7 +71,7 @@
         <!-- 修改① ↓↓↓ 需修改android:authorities="本应用包名packagename+.ReportDataContentProvider"↓↓↓ -->
         <provider
             android:name="com.duoku.code.analytics.store.ReportDataContentProvider"
-            android:authorities="com.ubsdk.ad.baidu.ReportDataContentProvider"
+            android:authorities="com.duoku.alone.ssp.demo.ReportDataContentProvider"
             android:enabled="true"
             android:exported="false" />
 
@@ -223,7 +223,7 @@
         </service>
         <!--修改② 此处 需要 authorities 为 应用包名_lm.fileprovider-->
         <provider 
-            android:authorities="com.ubsdk.ad.baidu_lm.fileprovider"
+            android:authorities="com.duoku.alone.ssp.demo_lm.fileprovider"
             android:name="com.lm.listener.FileProvider"
             android:grantUriPermissions="true"
             android:exported="false"/>
@@ -237,7 +237,9 @@
         <!-- DUOKU_AD_PRODUCT_KEY：填写 productKey信息  -->
         <meta-data
             android:name="DUOKU_AD_PRODUCT_KEY"
-            android:value="OWNDEV_w6FRJc4aTw2oCPxyj"/>
+            android:value="OWNDEV_w6FRJc4aTw2oCPxyj"
+            />
+<!--          android:value="OWNDEV_w6FRJc4aTw2oCPxyj" -->
         <!--DUOKU_AD_VERSION：填写sdk 版本-->
         <meta-data
             android:name="DUOKU_AD_VERSION"

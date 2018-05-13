@@ -39,6 +39,7 @@
             android:screenOrientation="portrait" >
             <!-- your game's orientation -->
         </activity>
+        
     </application>
 
 </manifest>

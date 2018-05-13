@@ -64,14 +64,18 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{//最终给出初始化成功的回调
-			UBAD.getInstance().getUBADCallback().onInit(true, "AD XiaoMi init Success!");
+			UBLogUtil.logI(TAG+"----->XiaoMi AD init Success!");
 		}
 	}
 	
 	private void setActivityListener(){
 		UBLogUtil.logI(TAG+"----->setActivityListener");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
-			
+
+			@Override
+			public void onDestroy() {
+				super.onDestroy();
+			}
 		});
 	}
 

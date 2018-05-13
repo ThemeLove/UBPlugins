@@ -22,6 +22,7 @@ import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.view.ViewPager.LayoutParams;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
@@ -38,6 +39,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 
 	private String mInterstitialID;
 	private String mRewardVideoID;
+
+	private ViewClickListener mBannerADListener;
 
 	private ADBaiDuSDK(Activity activity){
 		mActivity=activity;
@@ -60,15 +63,41 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		android.widget.FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		mBannerContainer.setLayoutParams(layoutParams);
 		
+		ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);
+		mBannerADListener = new ViewClickListener() {
+				
+				@Override
+				public void onSuccess(String adID) {
+					UBLogUtil.logI(TAG+"----->showBannerView----->onSuccess----->adID="+adID);
+					UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
+				}
+				
+				@Override
+				public void onFailed(int errorCode) {
+					UBLogUtil.logI(TAG+"----->showBannerView----->onFailed----->errorCode:"+errorCode);
+					UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_BANNER,"Banner AD show failed:errorCode="+errorCode);
+				}
+				
+				@Override
+				public void onClick(int type) {
+					if (type==1) {//关闭广告
+						UBLogUtil.logI(TAG+"----->onClick----->type=1,user close");
+						UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_BANNER, "Banner AD user closed!");
+					}else if(type==2){//点击广告
+						UBLogUtil.logI(TAG+"----->onClick----->type=2,user click");
+						UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_BANNER, "Banner AD user click!");
+					}
+				}
+			};
+		
+		
 		DuoKuAdSDK.getInstance().init(mActivity, new InitListener() {
 			@Override
 			public void onBack(int code, String desc) {
 				if (ErrorCode.SUCCESS_CODE==code) {//初始化成功
-					UBLogUtil.logI(TAG+"----->初始化BaidDu AD成功!");
-					UBAD.getInstance().getUBADCallback().onInit(true, "AD BaiDu init success!");
+					UBLogUtil.logI(TAG+"----->BaiDu AD init success!");
 				}else{//初始化失败
-					UBLogUtil.logI(TAG+"----->初始化BaiDu AD失败!");
-					UBAD.getInstance().getUBADCallback().onInit(false, "AD BaiDu init fail!");
+					UBLogUtil.logI(TAG+"----->BaiDu AD init failed!");
 				}
 			}
 		});
@@ -270,8 +299,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		
 //		mWM.removeView(mBannerContainer);
-		ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);
-		
+
+		mBannerContainer.setVisibility(View.VISIBLE);
 		ViewEntity viewEntity = new ViewEntity();
 		viewEntity.setType(FastenEntity.VIEW_BANNER);//banner 类型
 		viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);//展示方向
@@ -286,31 +315,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		
 		viewEntity.setSeatId(Integer.parseInt(mBannerID));//广告位id
 		
-		DuoKuAdSDK.getInstance().showBannerView(mActivity, viewEntity, mBannerContainer, new ViewClickListener() {
-			
-			@Override
-			public void onSuccess(String adID) {
-				UBLogUtil.logI(TAG+"----->showBannerView----->onSuccess----->adID="+adID);
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
-			}
-			
-			@Override
-			public void onFailed(int errorCode) {
-				UBLogUtil.logI(TAG+"----->showBannerView----->onFailed----->errorCode:"+errorCode);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_BANNER,"Banner AD show failed:errorCode="+errorCode);
-			}
-			
-			@Override
-			public void onClick(int type) {
-				if (type==1) {//关闭广告
-					UBLogUtil.logI(TAG+"----->onClick----->type=1,user close");
-					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_BANNER, "Banner AD user closed!");
-				}else if(type==2){//点击广告
-					UBLogUtil.logI(TAG+"----->onClick----->type=2,user click");
-					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_BANNER, "Banner AD user click!");
-				}
-			}
-		});
+		DuoKuAdSDK.getInstance().showBannerView(mActivity, viewEntity, mBannerContainer,mBannerADListener);
 	}
 
 	@Override
@@ -351,6 +356,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	 */
 	private void hideBannerAD(){
 		UBLogUtil.logI(TAG+"----->hideBannerAD");
+		mBannerContainer.setVisibility(View.GONE);
+//		DuoKuAdSDK.getInstance().hideBannerView(mActivity, mBannerContainer);
 		
 /*		DuoKuAdSDK.getInstance().hideBannerView(mActivity, mBannerContainer);
 		

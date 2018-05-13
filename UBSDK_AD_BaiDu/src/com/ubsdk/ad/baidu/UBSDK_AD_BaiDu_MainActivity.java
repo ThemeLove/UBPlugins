@@ -1,5 +1,6 @@
 package com.ubsdk.ad.baidu;
 
+import com.duoku.alone.ssp.demo.R;
 import com.duoku.alone.ssp.util.ToastUtil;
 import com.duoku.code.analytics.ReportAPI;
 import com.umbrella.game.ubsdk.UBSDK;
@@ -101,16 +102,6 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 	}
     //  广告监听
 	private UBADCallback mUBADCallback = new UBADCallback(){
-
-		@Override
-		public void onInit(boolean isInitSuccess, String msg) {
-			UBLogUtil.logI(TAG+"----->UBAD----->onInit");
-			if (isInitSuccess) {
-				UBLogUtil.logI(TAG+"----->UBAD----->init success!");
-			}else{
-				UBLogUtil.logI(TAG+"----->UBAD----->init fail!");
-			}
-		}
 
 		@Override
 		public void onClick(int adType, String msg) {
