@@ -4,73 +4,136 @@
     android:layout_height="match_parent"
     android:background="@drawable/demo_startbg" >
 
-    <LinearLayout
-        android:id="@+id/lin_left"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/btn_login"
+        <LinearLayout
+            android:id="@+id/lin_left"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="login" />
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="logout" />
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="login" />
 
-        <Button
-            android:id="@+id/btn_pay"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="pay" />
-        
-        <Button
-            android:id="@+id/btn_gamePause"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="gamePause" />
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="logout" />
 
-        <Button
-            android:id="@+id/btn_exit"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="exit" />
+            <Button
+                android:id="@+id/btn_pay"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="pay" />
 
-        <Button
-            android:id="@+id/btn_createRole"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="createRole" />
+            <Button
+                android:id="@+id/btn_gamePause"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="gamePause" />
 
-        <Button
-            android:id="@+id/btn_commitRoleInfo"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="setGameDataInfo" />
-        <Button
-            android:id="@+id/btn_jumpToTestAD"
-            android:layout_marginTop="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="jumpToTestADActivity"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_exit"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="exit" />
+
+            <Button
+                android:id="@+id/btn_createRole"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="createRole" />
+
+            <Button
+                android:id="@+id/btn_commitRoleInfo"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="setGameDataInfo" />
+
+            <Button
+                android:id="@+id/btn_showBannerAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="showBannerAD" />
+
+            <Button
+                android:id="@+id/btn_hideBannerAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="hideBannerAD" />
+
+            <Button
+                android:id="@+id/btn_showInterstitialAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="showInterstitialAD" />
+
+            <Button
+                android:id="@+id/btn_hideInterstitialAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="hideIntertitialAD" />
+
+            <Button
+                android:id="@+id/btn_showSplashAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="showSplashAD" />
+
+            <Button
+                android:id="@+id/btn_hideSplashAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="hideSplashAD" />
+
+            <Button
+                android:id="@+id/btn_showRewardVideoAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="showRewardVideoAD" />
+
+            <Button
+                android:id="@+id/btn_hideRewardVideoAD"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="hideRewardVideoAD" />
+
+            <Button
+                android:id="@+id/btn_jumpToTestAD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="jumpToTestADActivity" />
+        </LinearLayout>
+    </ScrollView>
+
     <TextView
         android:id="@+id/tv_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/lin_left"
         android:layout_marginLeft="20dp"
-        android:textColor="#800080"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/lin_left"
+        android:textColor="#800080" />
 
 </RelativeLayout>

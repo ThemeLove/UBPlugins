@@ -1,6 +1,5 @@
 package com.ubsdk.ad.baidu;
 
-import com.duoku.alone.ssp.demo.R;
 import com.duoku.alone.ssp.util.ToastUtil;
 import com.duoku.code.analytics.ReportAPI;
 import com.umbrella.game.ubsdk.UBSDK;

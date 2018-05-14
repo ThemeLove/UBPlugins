@@ -2,6 +2,7 @@ package com.ubsdk.demo;
 import java.util.UUID;
 
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBExitCallback;
 import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
@@ -9,11 +10,14 @@ import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.callback.UBLogoutCallback;
 import com.umbrella.game.ubsdk.callback.UBPayCallback;
 import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
+import com.umbrella.game.ubsdk.pluginimpl.UBAD;
+import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.plugintype.analytics.DataType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.ResUtil;
+import com.umbrella.game.ubsdk.utils.ToastUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
@@ -23,6 +27,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,11 +56,30 @@ public class UBSDK_Demo_MainActivity extends Activity
     public final String TAG =UBSDK_Demo_MainActivity.class.getSimpleName();
 
 	private Button mStepToADBtn;
+
+	private Button mShowBannerAD;
+
+	private Button mHideBannerAD;
+
+	private Button mShowInterstitialAD;
+
+	private Button mHideInterstitialAD;
+
+	private Button mShowSplashAD;
+
+	private Button mHideSplashAD;
+
+	private Button mShowRewardVideoAD;
+
+	private Button mHideRewardVideoAD;
+
+	private UBADCallback mUBADCallback;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-    	requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         mActivity = this;
     	UBLogUtil.logI(TAG+"----->"+"onCreate");
@@ -101,6 +125,16 @@ public class UBSDK_Demo_MainActivity extends Activity
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
+        
+        mShowBannerAD = (Button) findViewById(ResUtil.getViewID(this,"btn_showBannerAD"));
+        mHideBannerAD = (Button) findViewById(ResUtil.getViewID(this,"btn_hideBannerAD"));
+        mShowInterstitialAD = (Button) findViewById(ResUtil.getViewID(this,"btn_showInterstitialAD"));
+        mHideInterstitialAD = (Button) findViewById(ResUtil.getViewID(this,"btn_hideInterstitialAD"));
+        mShowSplashAD = (Button) findViewById(ResUtil.getViewID(this,"btn_showSplashAD"));
+        mHideSplashAD = (Button) findViewById(ResUtil.getViewID(this,"btn_hideSplashAD"));
+        mShowRewardVideoAD = (Button) findViewById(ResUtil.getViewID(this,"btn_showRewardVideoAD"));
+        mHideRewardVideoAD = (Button) findViewById(ResUtil.getViewID(this,"btn_hideRewardVideoAD"));
+        
         mStepToADBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_jumpToTestAD"));
         mInfoTv = (TextView) findViewById(ResUtil.getViewID(this, "tv_info"));
     }
@@ -136,6 +170,39 @@ public class UBSDK_Demo_MainActivity extends Activity
                 UBLogUtil.logI(TAG+"----->"+"switchAccount cancel");
             }
         });
+        
+        mUBADCallback = new UBADCallback() {
+			
+			@Override
+			public void onShow(int adType, String msg) {
+					UBLogUtil.logI(TAG+"----->onShow adType="+adType);
+					ToastUtil.showToast(mActivity,TAG+"----->onShow adType="+adType);
+			}
+			
+			@Override
+			public void onFailed(int adType, String msg) {
+				UBLogUtil.logI(TAG+"----->onFailed adType="+adType);
+				ToastUtil.showToast(mActivity,TAG+"----->onFailed adType="+adType);
+			}
+			
+			@Override
+			public void onComplete(int adType, String msg) {
+				UBLogUtil.logI(TAG+"----->onComplete adType="+adType);
+				ToastUtil.showToast(mActivity,TAG+"----->onComplete adType="+adType);
+			}
+			
+			@Override
+			public void onClosed(int adType, String msg) {
+				UBLogUtil.logI(TAG+"----->onClosed adType="+adType);
+				ToastUtil.showToast(mActivity,TAG+"----->onClosed adType="+adType);
+			}
+			
+			@Override
+			public void onClick(int adType, String msg) {
+				UBLogUtil.logI(TAG+"----->onClick adType="+adType);
+				ToastUtil.showToast(mActivity,TAG+"----->onClick adType="+adType);
+			}
+		};
 
     }
 
@@ -274,9 +341,71 @@ public class UBSDK_Demo_MainActivity extends Activity
 			}
 		});
         
+        mShowBannerAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
+			}
+		});
+        
+        mHideBannerAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().hideADWithADType(ADType.AD_TYPE_BANNER);
+			}
+		});
+        
+        mShowInterstitialAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL,mUBADCallback);
+			}
+		});
+        
+        mHideInterstitialAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().hideADWithADType(ADType.AD_TYPE_INTERSTITIAL);
+			}
+		});
+        
+        mShowSplashAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH,mUBADCallback);
+			}
+		});
+        
+        mHideSplashAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().hideADWithADType(ADType.AD_TYPE_SPLASH);
+			}
+		});
+        
+        mShowRewardVideoAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO,mUBADCallback);
+			}
+		});
+        
+        mHideRewardVideoAD.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				UBAD.getInstance().hideADWithADType(ADType.AD_TYPE_REWARDVIDEO);
+			}
+		});
+        
     }
-
-
     
     protected void gamePause() {
 		UBSDK.getInstance().gamePause(new UBGamePauseCallback() {

@@ -95,6 +95,7 @@ public class MeiZuSDK {
 			UBLogUtil.logE(TAG+"----->error----->MeiZuAppID必要参数为空");
 			return;
 		}
+		mCpOrderID=ubOrderInfo.getCpOrderID();
 		if (TextUtil.isEmpty(ubOrderInfo.getCpOrderID())) {
 			UBLogUtil.logI(TAG+"----->warning----->cpOrderID 为空，使用系统时间代替！");
 			mCpOrderID=systemTime;
