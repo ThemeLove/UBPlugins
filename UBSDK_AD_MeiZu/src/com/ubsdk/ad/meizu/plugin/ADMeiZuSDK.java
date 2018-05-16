@@ -11,6 +11,7 @@ import com.shenqi.video.InterstitialAdListener;
 import com.shenqi.video.ShenQiVideo;
 import com.shenqi.video.VideoAdListener;
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBADPlugin;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
@@ -58,6 +59,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	public ADMeiZuSDK (Activity activity){
 		mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
+		mUBADCallback = UBAD.getInstance().getUBADCallback();
 		mContainer = (ViewGroup) ((ViewGroup)mActivity.findViewById(android.R.id.content)).getChildAt(0);
 		try {
 			setActivityListener();
@@ -109,19 +111,25 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onAdShow(Object adViews) {
 				UBLogUtil.logI(TAG+"----->onAdShow");
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
+				}
 			}
 			
 			@Override
 			public void onAdError(String msg) {
 				UBLogUtil.logI(TAG+"----->onAdError----->msg"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_BANNER, msg);
+				if (mUBADCallback!=null) {
+					mUBADCallback.onFailed(ADType.AD_TYPE_BANNER, msg);
+				}
 			}
 			
 			@Override
 			public void onAdClick() {
 				UBLogUtil.logI(TAG+"----->onAdClick");
-				UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_BANNER, "Banner AD click!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onClick(ADType.AD_TYPE_BANNER, "Banner AD click!");
+				}
 			}
 		};
 		
@@ -132,7 +140,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onInterstitialAdShow() {
 				UBLogUtil.logI(TAG+"----->onInterstitialAdShow");
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show succcess!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show succcess!");
+				}
 			}
 			
 			@Override
@@ -146,19 +156,25 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onInterstitialAdFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->onInterstitialADFailed----->msg:"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_INTERSTITIAL, msg);
+				if (mUBADCallback!=null) {
+					mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL, msg);
+				}
 			}
 			
 			@Override
 			public void onInterstitialAdClose() {
 				UBLogUtil.logI(TAG+"----->onInterstitialAdClose");
-				UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD closed!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD closed!");
+				}
 			}
 			
 			@Override
 			public void onInterstitialAdClick() {
 				UBLogUtil.logI(TAG+"----->onInterstitialAdClick");
-				UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD click!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD click!");
+				}
 			}
 		});
 
@@ -169,20 +185,26 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onFullScreenAdShow() {
 				UBLogUtil.logI(TAG+"----->onSplashADShow");
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_SPLASH,"Splash AD show success!");
-			}
+					if (mUBADCallback!=null) {
+						mUBADCallback.onShow(ADType.AD_TYPE_SPLASH,"Splash AD show success!");
+					}
+				}
 			
 			@Override
 			public void onFullScreenAdFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->onSplashADFailed----->msg:"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_SPLASH, msg);
+				if (mUBADCallback!=null) {
+					mUBADCallback.onFailed(ADType.AD_TYPE_SPLASH, msg);
+				}
 			}
 			
 			@Override
 			public void onFullScreenAdDismiss() {
 				UBLogUtil.logI(TAG+"----->onSplashADDismiss");
 				mSplashADContainer.setVisibility(View.GONE);
-				UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_SPLASH, "Splash AD dismiss!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onClosed(ADType.AD_TYPE_SPLASH, "Splash AD dismiss!");
+				}
 			}
 		};
 		
@@ -207,25 +229,33 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onVideoAdPlayFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->onVideoAdPlayFailed----->msg:"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO, msg);
+				if (mUBADCallback!=null) {
+					mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO, msg);
+				}
 			}
 			
 			@Override
 			public void onVideoAdPlayComplete() {
 				UBLogUtil.logI(TAG+"----->onVideoAdPlayComplete");
-				UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete!");
+				}
 			}
 			
 			@Override
 			public void onVideoAdFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->onVideoAdFailed----->msg:"+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO,msg);
-			}
+					if (mUBADCallback!=null) {
+						mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO,msg);
+					}
+				}
 			
 			@Override
 			public void onVideoAdClose() {
 				UBLogUtil.logI(TAG+"----->onVideoAdClose");
-				UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD close!");
+				if (mUBADCallback!=null) {
+					mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD close!");
+				}
 			}
 		});
 	}
@@ -334,6 +364,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 
 	private boolean isInterstitialInit=true;
 	private AdBanner mBannerAD;
+	private UBADCallback mUBADCallback;
 	private void showInterstitialAD() {
 		UBLogUtil.logI(TAG+"----->showInterstitialAD");	
 		if (mInterstitialAD==null) {
