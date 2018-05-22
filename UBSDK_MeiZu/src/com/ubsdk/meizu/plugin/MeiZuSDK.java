@@ -101,6 +101,7 @@ public class MeiZuSDK {
 			UBLogUtil.logI(TAG+"----->payConfig="+payConfig.toString());
 		}
 		
+
 		
 //		UBLogUtil.logI(TAG+"----->pay----->param----->mMeiZuAppID="+mMeiZuAppID+",cpOrderID="+ubOrderInfo.getCpOrderID());
 		
@@ -111,7 +112,7 @@ public class MeiZuSDK {
 			UBLogUtil.logE(TAG+"----->error----->MeiZuAppID必要参数为空");
 			return;
 		}
-		mCpOrderID=ubOrderInfo.getCpOrderID();
+		mCpOrderID=TextUtil.replaceBlank(ubOrderInfo.getCpOrderID());
 		if (TextUtil.isEmpty(ubOrderInfo.getCpOrderID())) {
 			UBLogUtil.logI(TAG+"----->warning----->cpOrderID 为空，使用系统时间代替！");
 			mCpOrderID=systemTime;
@@ -123,6 +124,13 @@ public class MeiZuSDK {
 		String productSubject=TextUtil.isEmpty(ubOrderInfo.getGoodsDesc())?"":ubOrderInfo.getGoodsDesc();
 		String totalPrice=TextUtil.isEmpty(ubOrderInfo.getAmount()+"")?"":ubOrderInfo.getAmount()+"";
 		String userInfo=TextUtil.isEmpty(ubOrderInfo.getExtrasParams())?"":ubOrderInfo.getExtrasParams();
+
+		cpOrderCreateTime = TextUtil.replaceBlank(cpOrderCreateTime);
+		productBody = TextUtil.replaceBlank(productBody);
+		productID = TextUtil.replaceBlank(productID);
+		productSubject = TextUtil.replaceBlank(productSubject);
+		totalPrice = TextUtil.replaceBlank(totalPrice);
+		userInfo = TextUtil.replaceBlank(userInfo);
 		
 		String payType="0";
 		TreeMap<String,String> treeMap = new TreeMap<String,String>();
