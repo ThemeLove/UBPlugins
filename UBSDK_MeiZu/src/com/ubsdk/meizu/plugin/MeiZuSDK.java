@@ -1,5 +1,7 @@
 package com.ubsdk.meizu.plugin;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -10,6 +12,8 @@ import com.meizu.gamesdk.offline.core.MzGameCenterPlatform;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
+import com.umbrella.game.ubsdk.model.UBPayConfigModel;
+import com.umbrella.game.ubsdk.plugintype.pay.PayConfig;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
@@ -35,12 +39,15 @@ public class MeiZuSDK {
 	private Activity mActivity=null;
 	private String mMeiZuAppID;
 	private String mMeiZuAppSecret;
+	private HashMap<String,PayConfig> mPayConfigMap;
 	
 	public void init(){
 		UBLogUtil.logI(TAG+"----->init");
 		mActivity = UBSDKConfig.getInstance().getGameActivity();
 		mMeiZuAppID = UBSDKConfig.getInstance().getParamMap().get("MeiZu_AppID");
 		mMeiZuAppSecret = UBSDKConfig.getInstance().getParamMap().get("MeiZu_AppSecret");
+		
+		
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 
 			@Override
@@ -86,6 +93,15 @@ public class MeiZuSDK {
 	private String mCpOrderID="";
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
+		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("");
+		
+		if (mPayConfigMap!=null) {
+			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
+			PayConfig payConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
+			UBLogUtil.logI(TAG+"----->payConfig="+payConfig.toString());
+		}
+		
+		
 //		UBLogUtil.logI(TAG+"----->pay----->param----->mMeiZuAppID="+mMeiZuAppID+",cpOrderID="+ubOrderInfo.getCpOrderID());
 		
 //		魅族渠道支付时三个参数不能为空 app_id,cp_order_id,sign_type
@@ -184,6 +200,7 @@ public class MeiZuSDK {
 			}
 		}
 	};
+
 
 	
 	public void exit() {
