@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.TreeMap;
 
+import org.json.JSONObject;
+
 import com.meizu.gamesdk.model.callback.MzPayListener;
 import com.meizu.gamesdk.model.model.MzPayParams;
 import com.meizu.gamesdk.model.model.PayResultCode;
@@ -14,6 +16,7 @@ import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.model.UBPayConfigModel;
 import com.umbrella.game.ubsdk.plugintype.pay.PayConfig;
+import com.umbrella.game.ubsdk.plugintype.pay.PayType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
@@ -40,6 +43,7 @@ public class MeiZuSDK {
 	private String mMeiZuAppID;
 	private String mMeiZuAppSecret;
 	private HashMap<String,PayConfig> mPayConfigMap;
+	private PayConfig mPayConfig;//魅族支付配置
 	
 	public void init(){
 		UBLogUtil.logI(TAG+"----->init");
@@ -91,17 +95,14 @@ public class MeiZuSDK {
 	}
 	
 	private String mCpOrderID="";
-	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
+	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo orderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
 		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("");
-		
 		if (mPayConfigMap!=null) {
 			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
-			PayConfig payConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
-			UBLogUtil.logI(TAG+"----->payConfig="+payConfig.toString());
+			mPayConfig = mPayConfigMap.get(orderInfo.getGoodsID());
+			UBLogUtil.logI(TAG+"----->payConfig="+mPayConfig.toString());
 		}
-		
-
 		
 //		UBLogUtil.logI(TAG+"----->pay----->param----->mMeiZuAppID="+mMeiZuAppID+",cpOrderID="+ubOrderInfo.getCpOrderID());
 		
@@ -112,57 +113,73 @@ public class MeiZuSDK {
 			UBLogUtil.logE(TAG+"----->error----->MeiZuAppID必要参数为空");
 			return;
 		}
-		mCpOrderID=TextUtil.replaceBlank(ubOrderInfo.getCpOrderID());
-		if (TextUtil.isEmpty(ubOrderInfo.getCpOrderID())) {
-			UBLogUtil.logI(TAG+"----->warning----->cpOrderID 为空，使用系统时间代替！");
-			mCpOrderID=systemTime;
+		
+		if (mPayConfig==null) {
+			throw new RuntimeException("meizu store pay config error!!");
 		}
 		
-		String cpOrderCreateTime=TextUtil.isEmpty(ubOrderInfo.getCpOrderCreateTime())?systemTime:ubOrderInfo.getCpOrderCreateTime();
-		String productBody=TextUtil.isEmpty(ubOrderInfo.getGoodsName())?"":ubOrderInfo.getGoodsName();
-		String productID=TextUtil.isEmpty(ubOrderInfo.getGoodsID())?"0":ubOrderInfo.getGoodsID();
-		String productSubject=TextUtil.isEmpty(ubOrderInfo.getGoodsDesc())?"":ubOrderInfo.getGoodsDesc();
-		String totalPrice=TextUtil.isEmpty(ubOrderInfo.getAmount()+"")?"":ubOrderInfo.getAmount()+"";
-		String userInfo=TextUtil.isEmpty(ubOrderInfo.getExtrasParams())?"":ubOrderInfo.getExtrasParams();
+		if (mPayConfig.getPayType()==PayType.PAY_TYPE_NORMAL) {//正常支付
+			orderInfo = mPayConfig.getOrderInfo();
+			mCpOrderID=TextUtil.replaceBlank(orderInfo.getCpOrderID());
+			if (TextUtil.isEmpty(orderInfo.getCpOrderID())) {
+				UBLogUtil.logI(TAG+"----->warning----->cpOrderID 为空，使用系统时间代替！");
+				mCpOrderID=systemTime;
+			}
+			
+			String cpOrderCreateTime=TextUtil.isEmpty(orderInfo.getCpOrderCreateTime())?systemTime:orderInfo.getCpOrderCreateTime();
+			String productBody=TextUtil.isEmpty(orderInfo.getGoodsName())?"":orderInfo.getGoodsName();
+			String productID=TextUtil.isEmpty(orderInfo.getGoodsID())?"0":orderInfo.getGoodsID();
+			String productSubject=TextUtil.isEmpty(orderInfo.getGoodsDesc())?"":orderInfo.getGoodsDesc();
+			String totalPrice=TextUtil.isEmpty(orderInfo.getAmount()+"")?"":orderInfo.getAmount()+"";
+			String userInfo=TextUtil.isEmpty(orderInfo.getExtrasParams())?"":orderInfo.getExtrasParams();
 
-		cpOrderCreateTime = TextUtil.replaceBlank(cpOrderCreateTime);
-		productBody = TextUtil.replaceBlank(productBody);
-		productID = TextUtil.replaceBlank(productID);
-		productSubject = TextUtil.replaceBlank(productSubject);
-		totalPrice = TextUtil.replaceBlank(totalPrice);
-		userInfo = TextUtil.replaceBlank(userInfo);
+			cpOrderCreateTime = TextUtil.replaceBlank(cpOrderCreateTime);
+			productBody = TextUtil.replaceBlank(productBody);
+			productID = TextUtil.replaceBlank(productID);
+			productSubject = TextUtil.replaceBlank(productSubject);
+			totalPrice = TextUtil.replaceBlank(totalPrice);
+			userInfo = TextUtil.replaceBlank(userInfo);
+			
+			String payType="0";
+			TreeMap<String,String> treeMap = new TreeMap<String,String>();
+			treeMap.put("app_id",mMeiZuAppID);
+			treeMap.put("cp_order_id", mCpOrderID);
+			treeMap.put("create_time", cpOrderCreateTime);
+			treeMap.put("pay_type", payType);//0 表示定额支付
+			treeMap.put("product_body",productBody);//默认为""
+			treeMap.put("product_id", productID);//默认为"0"
+			treeMap.put("product_subject", productSubject);//订单描述
+			treeMap.put("total_price", totalPrice);
+			treeMap.put("user_info", userInfo);
+			
+			String sign = UBMD5Util.MD5EncryptString(treeMap,":"+mMeiZuAppSecret).toLowerCase(Locale.getDefault());//魅族要求转成小写
+			
+			Bundle payInfo = new Bundle();
+			payInfo.putString(MzPayParams.ORDER_KEY_ORDER_APPID, mMeiZuAppID);//游戏id,不能为空
+			payInfo.putString(MzPayParams.ORDER_KEY_ORDER_ID,mCpOrderID);//订单id，不能为空
+			payInfo.putLong(MzPayParams.ORDER_KEY_CREATE_TIME,Long.parseLong(cpOrderCreateTime));//订单创建时间
+			payInfo.putString(MzPayParams.ORDER_KEY_PAY_TYPE,payType);//支付方式，默认为0,定额支付
+			payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_BODY,productBody);//商品名称
+			payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_ID,productID);//商品id
+			payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_SUBJECT,productSubject);//商品描述
+			payInfo.putString(MzPayParams.ORDER_KEY_AMOUNT,totalPrice);//金额
+			payInfo.putString(MzPayParams.ORDER_KEY_CP_INFO,userInfo);//cp自定义信息
+			payInfo.putString(MzPayParams.ORDER_KEY_SIGN,sign);//签名
+			
+			payInfo.putString(MzPayParams.ORDER_KEY_SIGN_TYPE, "md5");//签名类型，不能为空，不参与签名
+			payInfo.putBoolean(MzPayParams.ORDER_KEY_DISABLE_PAY_TYPE_SMS,false);//是否关闭短信支付，默认是开启状态
+//			payInfo.putString(MzPayParams.ORDER_KEY_PRE_SELECTED_PAYWAY, MzPreSelectedPayWay.PAY_BY_UNIONPAY);指定支付方式
+			
+			MzGameCenterPlatform.singlePay(mActivity, payInfo,mzPayListener);
+			
+			
+		}else if(mPayConfig.getPayType()==PayType.PAY_TYPE_BILLING){//计费点支付
+			
+		}else if(mPayConfig.getPayType()==PayType.PAY_TYPE_DIY){//自定义支付
+			
+		}
 		
-		String payType="0";
-		TreeMap<String,String> treeMap = new TreeMap<String,String>();
-		treeMap.put("app_id",mMeiZuAppID);
-		treeMap.put("cp_order_id", mCpOrderID);
-		treeMap.put("create_time", cpOrderCreateTime);
-		treeMap.put("pay_type", payType);//0 表示定额支付
-		treeMap.put("product_body",productBody);//默认为""
-		treeMap.put("product_id", productID);//默认为"0"
-		treeMap.put("product_subject", productSubject);//订单描述
-		treeMap.put("total_price", totalPrice);
-		treeMap.put("user_info", userInfo);
 		
-		String sign = UBMD5Util.MD5EncryptString(treeMap,":"+mMeiZuAppSecret).toLowerCase(Locale.getDefault());//魅族要求转成小写
-		
-		Bundle payInfo = new Bundle();
-		payInfo.putString(MzPayParams.ORDER_KEY_ORDER_APPID, mMeiZuAppID);//游戏id,不能为空
-		payInfo.putString(MzPayParams.ORDER_KEY_ORDER_ID,mCpOrderID);//订单id，不能为空
-		payInfo.putLong(MzPayParams.ORDER_KEY_CREATE_TIME,Long.parseLong(cpOrderCreateTime));//订单创建时间
-		payInfo.putString(MzPayParams.ORDER_KEY_PAY_TYPE,payType);//支付方式，默认为0,定额支付
-		payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_BODY,productBody);//商品名称
-		payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_ID,productID);//商品id
-		payInfo.putString(MzPayParams.ORDER_KEY_PRODUCT_SUBJECT,productSubject);//商品描述
-		payInfo.putString(MzPayParams.ORDER_KEY_AMOUNT,totalPrice);//金额
-		payInfo.putString(MzPayParams.ORDER_KEY_CP_INFO,userInfo);//cp自定义信息
-		payInfo.putString(MzPayParams.ORDER_KEY_SIGN,sign);//签名
-		
-		payInfo.putString(MzPayParams.ORDER_KEY_SIGN_TYPE, "md5");//签名类型，不能为空，不参与签名
-		payInfo.putBoolean(MzPayParams.ORDER_KEY_DISABLE_PAY_TYPE_SMS,false);//是否关闭短信支付，默认是开启状态
-//		payInfo.putString(MzPayParams.ORDER_KEY_PRE_SELECTED_PAYWAY, MzPreSelectedPayWay.PAY_BY_UNIONPAY);指定支付方式
-		
-		MzGameCenterPlatform.singlePay(mActivity, payInfo,mzPayListener);
 	}
 	
 	MzPayListener mzPayListener=new MzPayListener() {
@@ -208,7 +225,6 @@ public class MeiZuSDK {
 			}
 		}
 	};
-
 
 	
 	public void exit() {
