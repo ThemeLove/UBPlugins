@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/but_splashscreen_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show SplashAD" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/but_banner_top_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:text="show bannerAD_TOP" />
+
+                <Button
+                    android:id="@+id/but_banner_buttom_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:text="show bannerAD_Bottom" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/but_banner_hide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="hide_banner" />
+
+            <Button
+                android:id="@+id/but_block_center_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="show FullScreenAD" />
+
+            <Button
+                android:id="@+id/but_fullscreen_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="show VideoAD" />
+
+            <EditText
+                android:id="@+id/et_ADTypeOrMethodInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="input ADType number or method name"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/but_isSupportADType"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="is this AD type supported ?"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/but_isSupportMethod"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="is this method supported ?"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="以下为开发测试 非功能相关" />
+
+            <Button
+                android:id="@+id/but_test_crash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="test crash" />
+
+            <Button
+                android:id="@+id/but_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="开发测试" />
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/ad_banner_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true" />
+
+    <FrameLayout
+        android:id="@+id/ad_banner_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
