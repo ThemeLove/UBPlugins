@@ -21,8 +21,9 @@ import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.plugintype.ad.BannerPosition;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -133,10 +134,8 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			}
 		};
 		
-//		插屏广告
-		mInterstitialAD = new InterstitialAd(mActivity, mInterstitialID);
-		mInterstitialAD.setInterstitialAdListener(new InterstitialAdListener() {
-			
+		mInterstitialAdListener = new InterstitialAdListener() {
+					
 			@Override
 			public void onInterstitialAdShow() {
 				UBLogUtil.logI(TAG+"----->onInterstitialAdShow");
@@ -148,7 +147,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onInterstitialAdReady() {
 				UBLogUtil.logI(TAG+"----->onInterstitialADReady");
-				if (!isInterstitialInit&&mInterstitialAD.isInterstitialAdReady()) {
+				if (mInterstitialAD.isInterstitialAdReady()) {
 					mInterstitialAD.showInterstitialAd(mActivity);
 				}
 			}
@@ -176,9 +175,8 @@ public class ADMeiZuSDK implements IUBADPlugin{
 					mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD click!");
 				}
 			}
-		});
+		};
 
-		
 //		Splash广告
 		mSplashScreenADListener = new FullScreenAdListener() {
 			
@@ -208,15 +206,13 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			}
 		};
 		
-
-		
-//		Video广告
-		ShenQiVideo.getInstance().init(mActivity, mRewardVideoID, new VideoAdListener() {
+//		RewardVideo广告监听
+		mVideoAdListener = new VideoAdListener() {
 			
 			@Override
 			public void onVideoAdReady() {
 				UBLogUtil.logI(TAG+"----->onVideoAdReady");
-				if (!isVideoInit&&ShenQiVideo.getInstance().isVideoReady()) {
+				if (ShenQiVideo.getInstance().isVideoReady()) {
 					ShenQiVideo.getInstance().playVideoAd();
 				}
 			}
@@ -257,7 +253,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 					mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD close!");
 				}
 			}
-		});
+		};
 	}
 
 	/**
@@ -355,44 +351,54 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		new FullScreenAd(mActivity, mSplashADContainer, mSplashID, mSplashScreenADListener);
 	}
 
-	private boolean isVideoInit=true;
+//	private boolean isVideoInit=false;//视频是否初始化
+	private VideoAdListener mVideoAdListener;
+	private ShenQiVideo mShenQiVideo;
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
-		isVideoInit=false;
-		ShenQiVideo.getInstance().fetchedVideoAd();
+		if (mShenQiVideo==null) {
+			mShenQiVideo = ShenQiVideo.getInstance().init(mActivity, mRewardVideoID, mVideoAdListener);
+			mShenQiVideo.fetchedVideoAd();
+		}else{
+			mShenQiVideo.fetchedVideoAd();
+		}
 	}
 
-	private boolean isInterstitialInit=true;
 	private AdBanner mBannerAD;
 	private UBADCallback mUBADCallback;
+	
+//	private boolean isInterstitialInit=false;//插屏广告是否初始化，默认为false
+	private InterstitialAdListener mInterstitialAdListener;
+
 	private void showInterstitialAD() {
 		UBLogUtil.logI(TAG+"----->showInterstitialAD");	
 		if (mInterstitialAD==null) {
-			UBLogUtil.logI(TAG+"-------null");
-			return;
+			mInterstitialAD = new InterstitialAd(mActivity, mInterstitialID);
+			mInterstitialAD.setInterstitialAdListener(mInterstitialAdListener);
+			mInterstitialAD.loadInterstitialAd();
+		}else{
+			mInterstitialAD.loadInterstitialAd();
 		}
-		isInterstitialInit=false;
-		mInterstitialAD.loadInterstitialAd();
 	}
 
-	@SuppressLint("NewApi")
+	@TargetApi(Build.VERSION_CODES.KITKAT)
 	private void showBannerAD() {
 		UBLogUtil.logI(TAG+"----->showBannerAD");
-		mBannerADContainer.setVisibility(View.VISIBLE);
 		
-		if (mBannerADContainer.isAttachedToWindow()) {
+/*		if (mBannerADContainer.isAttachedToWindow()) {//新api，低版本机型会报错
 			mWM.removeView(mBannerADContainer);
-		}
+		}*/
 		
 		if (mBannerAD==null) {
 			mBannerAD = new AdBanner(mActivity, mBannerID);
+			mBannerAD.setAdBannerListener(mBannerADListener);
+			mBannerADContainer.removeAllViews();
+			mBannerADContainer.addView(mBannerAD);
+//			把mBannerADContainer添加到WindowManager上，只添加一次
+			ADHelper.addBannerView(mWM, mBannerADContainer,mBannerPosition);
 		}
-		mBannerAD.setAdBannerListener(mBannerADListener);
-		mBannerADContainer.removeAllViews();
-		mBannerADContainer.addView(mBannerAD);
 //		mBannerADContainer.addView(mBannerAD,mBannerLayoutParams);
-		
-		ADHelper.addBannerView(mWM, mBannerADContainer,mBannerPosition);
+		mBannerADContainer.setVisibility(View.VISIBLE);
 	}
  
 	@Override

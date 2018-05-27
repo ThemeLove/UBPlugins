@@ -1,16 +1,9 @@
-package com.ubsdk.ad.baidu;
+package com.ubsdk.oppo;
 
-import com.duoku.alone.ssp.util.ToastUtil;
-import com.duoku.code.analytics.ReportAPI;
-import com.umbrella.boomdots.baidu.R;
-import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.callback.UBADCallback;
-import com.umbrella.game.ubsdk.callback.UBInitCallback;
-import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
-import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
-import com.umbrella.game.ubsdk.utils.UBLogUtil;
+import com.umbrella.game.ubsdk.utils.TextUtil;
+import com.umbrella.game.ubsdk.utils.ToastUtil;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -21,8 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickListener{
-	private final String TAG=UBSDK_AD_BaiDu_MainActivity.class.getSimpleName();
+public class ADTestActivity extends Activity implements OnClickListener{
 
     private EditText mADTypeOrMethod;
 
@@ -36,24 +28,8 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
         // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);// 设置屏幕的横方向
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 设置屏幕的竖方向
 
-        setContentView(R.layout.activity_main_ad_demo);
+        setContentView(R.layout.activity_ad_test);
         //设置Banner 容器
-        setSDKListener();
-        
-        UBSDK.getInstance().init(this,new UBInitCallback() {
-			
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onFailed(String message, String trace) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
         
         mADTypeOrMethod = (EditText) findViewById(R.id.et_ADTypeOrMethodInput);
         
@@ -78,137 +54,11 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 
     }
 
-//	广告监听
-    private void setSDKListener() {
-//    	设置切换账号监听
-    	UBSDK.getInstance().setUBSwitchAccountCallback(new UBSwitchAccountCallback() {
-			
-			@Override
-			public void onSuccess(UBUserInfo ubUserInfo) {
-				UBLogUtil.logI(TAG+"----->switchAccount----->onSuccess");
-			}
-			
-			@Override
-			public void onFailed(String message, String trace) {
-				UBLogUtil.logI(TAG+"----->switchAccount----->onFailed");
-			}
-			
-			@Override
-			public void onCancel() {
-				UBLogUtil.logI(TAG+"----->switchAccount----->onCancel");
-			}
-		});
- 
-	}
-    //  广告监听
-	private UBADCallback mUBADCallback = new UBADCallback(){
-
-		@Override
-		public void onClick(int adType, String msg) {
-			UBLogUtil.logI(TAG+"----->UBAD----->onClick");
-			switch (adType) {
-			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
-				break;
-			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
-				break;
-			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
-				break;
-			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
-				break;
-			default:
-				break;
-			}
-		}
-
-		@Override
-		public void onComplete(int adType, String msg) {
-			switch (adType) {
-			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
-				break;
-			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
-				break;
-			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
-				break;
-			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
-				break;
-			default:
-				break;
-			}
-		}
-
-		@Override
-		public void onShow(int adType, String msg) {
-			switch (adType) {
-			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
-				break;
-			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
-				break;
-			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
-				break;
-			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
-				break;
-			default:
-				break;
-			}
-		}
-
-		@Override
-		public void onClosed(int adType, String msg) {
-			switch (adType) {
-			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
-				break;
-			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
-				break;
-			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
-				break;
-			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
-				break;
-			default:
-				break;
-			}
-		}
-
-		@Override
-		public void onFailed(int adType, String msg) {
-			switch (adType) {
-			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
-				break;
-			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
-				break;
-			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
-				break;
-			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
-				break;
-			default:
-				break;
-			}
-		}};
-
-	public void onClick(View arg0) {
-        switch (arg0.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             // 闪屏广告
             case R.id.but_splashscreen_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH,mUBADCallback);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_SPLASH);
                 break;
             // 关闭横幅
             case R.id.but_banner_hide:
@@ -216,39 +66,46 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
                 break;
             // 顶部-横幅-图片
             case R.id.but_banner_top_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER);
                 break;
             // 底部-横幅-图片
             case R.id.but_banner_buttom_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER,mUBADCallback);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_BANNER);
                 break;
             // 中间-插屏
             case R.id.but_block_center_img:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL,mUBADCallback);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_INTERSTITIAL);
                 break;
             // 视频
             case R.id.but_fullscreen_video:
-            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO,mUBADCallback);
+            	UBAD.getInstance().showADWithADType(ADType.AD_TYPE_REWARDVIDEO);
                 break;
             case R.id.but_isSupportADType:
             	String ADTypeStr = mADTypeOrMethod.getText().toString().trim();
+            	if (TextUtil.isEmpty(ADTypeStr)) {
+            		ToastUtil.showToast(ADTestActivity.this,"Can not be empty \r\n ADType \r\n 1----->bannerAD \r\n 2----->FullScreenAD \r\n 3----->SplashAD \r\n 4----->VideoAD");
+            		return;
+				}
             	boolean supportADType = UBAD.getInstance().isSupportADType(Integer.parseInt(ADTypeStr));
-            	String supportADTypeStr=supportADType==true?"支持":"不支持";
-            	ToastUtil.showToast(UBSDK_AD_BaiDu_MainActivity.this, supportADTypeStr);
-            	
+            	String supportADTypeStr=supportADType==true?"support":"not support";
+            	ToastUtil.showToast(ADTestActivity.this, supportADTypeStr);
             	break;
             case R.id.but_isSupportMethod:
             	String MethodStr = mADTypeOrMethod.getText().toString().trim();
+            	if (TextUtil.isEmpty(MethodStr)) {
+            		ToastUtil.showToast(ADTestActivity.this,"Can not be empty ,Please enter the method name");
+            		return;
+				}
             	boolean supportMethod = UBAD.getInstance().isSupportMethod(MethodStr,null);
-            	String supportMethodStr=supportMethod==true?"支持":"不支持";
-            	ToastUtil.showToast(UBSDK_AD_BaiDu_MainActivity.this, supportMethodStr);
+            	String supportMethodStr=supportMethod==true?"support":"not support";
+            	ToastUtil.showToast(ADTestActivity.this, supportMethodStr);
             	break;
             	
             case R.id.but_test_crash:
                 // 1、ANR
 //                CrashReport.testANRCrash();
                 // 2、JavaCrash
-                ReportAPI.testJavaCrash();
+//                ReportAPI.testJavaCrash();
                 // 3、NativeCrash
                 // CrashReport.testNativeCrash();
                 break;
@@ -259,13 +116,13 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 
     @Override
     public void onBackPressed() {
-    	UBSDK.getInstance().onBackPressed();
+//    	UBSDK.getInstance().onBackPressed();
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-    	UBSDK.getInstance().onDestroy();
+//    	UBSDK.getInstance().onDestroy();
         super.onDestroy();
     }
 

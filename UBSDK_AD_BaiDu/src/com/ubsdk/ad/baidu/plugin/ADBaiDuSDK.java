@@ -59,11 +59,11 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	
 	private void initAD(){
 		UBLogUtil.logI(TAG+"----->initAD");
+//		bannerAD
 		mBannerContainer = new FrameLayout(mActivity);
 		android.widget.FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		mBannerContainer.setLayoutParams(layoutParams);
-		
-		ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);
+
 		mBannerADListener = new ViewClickListener() {
 				
 				@Override
@@ -90,7 +90,67 @@ public class ADBaiDuSDK implements IUBADPlugin{
 				}
 			};
 		
-		
+//		InterstitialAD
+		mInterstitialAdListener = new ViewClickListener() {
+						
+				@Override
+				public void onSuccess(String adID) {
+					UBLogUtil.logI(TAG+"----->showInterstitial----->onSuccess----->adID="+adID);
+					UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show success!");
+				}
+				
+				@Override
+				public void onFailed(int errorCode) {
+					UBLogUtil.logI(TAG+"----->showFullScreen----->errorCode="+errorCode);
+					UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show failed:errorCode="+errorCode);
+				}
+				
+				@Override
+				public void onClick(int type) {
+					if (type==1) {//用户关闭
+						UBLogUtil.logI(TAG+"----->onClick----->type=1,user close");
+						UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD　user closed!");
+					}else if(type==2){//用户点击
+						UBLogUtil.logI(TAG+"----->onClick----->type=2,user click");
+						UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD user click!");
+					}
+				}
+			};
+			
+//			RewardVideoAD
+			mRewardVideoADListener = new CallBackListener() {
+				
+				@Override
+				public void onReady() {
+					UBLogUtil.logI(TAG+"----->showVideoAD----->onReady");
+					 DuoKuAdSDK.getInstance().showVideoImmediate(mActivity,mRewardVideoEntity);
+				}
+				
+				@Override
+				public void onFailMsg(String msg) {
+					UBLogUtil.logI(TAG+"----->showVideoAD----->onFailMsg----->msg="+msg);
+					UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show failed:msg="+msg);
+				}
+				
+				@Override
+				public void onComplete() {
+					UBLogUtil.logI(TAG+"----->showVideoAD----->onComplete");
+					UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete");
+				}
+				
+				@Override
+				public void onClick(int type) {
+					if (type==1) {
+						UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=1,user close");
+						UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD　user closed!");
+					}else if(type==2){
+						UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=2,user click");
+						UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD user click!");
+					}
+				}
+			};
+				
+//		初始化百度广告
 		DuoKuAdSDK.getInstance().init(mActivity, new InitListener() {
 			@Override
 			public void onBack(int code, String desc) {
@@ -120,7 +180,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 			@Override
 			public void onDestroy() {
 				UBLogUtil.logI(TAG+"----->onDestory");
-		        DuoKuAdSDK.getInstance().onDestoryBanner();
+//		        DuoKuAdSDK.getInstance().onDestoryBanner();
 		        DuoKuAdSDK.getInstance().onDestoryBlock();
 		        DuoKuAdSDK.getInstance().onDestoryVideo();
 		        mWM=null;
@@ -218,42 +278,13 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	 */
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
-		final ViewEntity viewEntity = new ViewEntity();
-		viewEntity.setType(FastenEntity.VIEW_VIDEO);
-		viewEntity.setDirection(FastenEntity.VIEW_VERTICAL);
-		viewEntity.setSeatId(Integer.parseInt(mRewardVideoID));
-		
-		DuoKuAdSDK.getInstance().cacheVideo(mActivity, viewEntity, new CallBackListener() {
-			
-			@Override
-			public void onReady() {
-				UBLogUtil.logI(TAG+"----->showVideoAD----->onReady");
-				 DuoKuAdSDK.getInstance().showVideoImmediate(mActivity,viewEntity);
-			}
-			
-			@Override
-			public void onFailMsg(String msg) {
-				UBLogUtil.logI(TAG+"----->showVideoAD----->onFailMsg----->msg="+msg);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show failed:msg="+msg);
-			}
-			
-			@Override
-			public void onComplete() {
-				UBLogUtil.logI(TAG+"----->showVideoAD----->onComplete");
-				UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete");
-			}
-			
-			@Override
-			public void onClick(int type) {
-				if (type==1) {
-					UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=1,user close");
-					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD　user closed!");
-				}else if(type==2){
-					UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=2,user click");
-					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD user click!");
-				}
-			}
-		});
+		if (mRewardVideoEntity==null) {
+			mRewardVideoEntity = new ViewEntity();
+			mRewardVideoEntity.setType(FastenEntity.VIEW_VIDEO);
+			mRewardVideoEntity.setDirection(FastenEntity.VIEW_VERTICAL);
+			mRewardVideoEntity.setSeatId(Integer.parseInt(mRewardVideoID));
+		}
+		DuoKuAdSDK.getInstance().cacheVideo(mActivity, mRewardVideoEntity, mRewardVideoADListener);
 	}
 
 	/**
@@ -265,57 +296,44 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		viewEntity.setType(FastenEntity.VIEW_BLOCK);
 		viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);
 		viewEntity.setSeatId(Integer.parseInt(mInterstitialID));
-		DuoKuAdSDK.getInstance().showBlockView(mActivity, viewEntity, new ViewClickListener() {
-			
-			@Override
-			public void onSuccess(String adID) {
-				UBLogUtil.logI(TAG+"----->showInterstitial----->onSuccess----->adID="+adID);
-				UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show success!");
-			}
-			
-			@Override
-			public void onFailed(int errorCode) {
-				UBLogUtil.logI(TAG+"----->showFullScreen----->errorCode="+errorCode);
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show failed:errorCode="+errorCode);
-			}
-			
-			@Override
-			public void onClick(int type) {
-				if (type==1) {//用户关闭
-					UBLogUtil.logI(TAG+"----->onClick----->type=1,user close");
-					UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD　user closed!");
-				}else if(type==2){//用户点击
-					UBLogUtil.logI(TAG+"----->onClick----->type=2,user click");
-					UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD user click!");
-				}
-			}
-		});
+		DuoKuAdSDK.getInstance().showBlockView(mActivity, viewEntity, mInterstitialAdListener);
 	}
 
+	private boolean isBannerInit=false;//banner广告是否初始化
+
+	private ViewClickListener mInterstitialAdListener;
+
+	private CallBackListener mRewardVideoADListener;
+
+	private ViewEntity mRewardVideoEntity;
 	/**
 	 * 显示Banner广告
 	 */
 	private void showBannerAD(){
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		
-//		mWM.removeView(mBannerContainer);
-
-		mBannerContainer.setVisibility(View.VISIBLE);
-		ViewEntity viewEntity = new ViewEntity();
-		viewEntity.setType(FastenEntity.VIEW_BANNER);//banner 类型
-		viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);//展示方向
-		
-		if (BannerPosition.TOP==mBannerPosition) {
-			viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
-		}else if(BannerPosition.BOTTOM==mBannerPosition){
-			viewEntity.setPostion(FastenEntity.POSTION_BOTTOM);//展示位置
-		}else{
-			viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
+		if (!isBannerInit) {
+//			ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);//只添加一次
+			ViewEntity viewEntity = new ViewEntity();
+			viewEntity.setType(FastenEntity.VIEW_BANNER);//banner 类型
+			viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);//展示方向
+			
+			if (BannerPosition.TOP==mBannerPosition) {
+				viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
+			}else if(BannerPosition.BOTTOM==mBannerPosition){
+				viewEntity.setPostion(FastenEntity.POSTION_BOTTOM);//展示位置
+			}else{
+				viewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
+			}
+			
+			viewEntity.setSeatId(Integer.parseInt(mBannerID));//广告位id
+			
+			DuoKuAdSDK.getInstance().showBannerView(mActivity, viewEntity, mBannerContainer,mBannerADListener);
+			
+			isBannerInit=true;
 		}
 		
-		viewEntity.setSeatId(Integer.parseInt(mBannerID));//广告位id
-		
-		DuoKuAdSDK.getInstance().showBannerView(mActivity, viewEntity, mBannerContainer,mBannerADListener);
+		mBannerContainer.setVisibility(View.VISIBLE);
 	}
 
 	@Override
