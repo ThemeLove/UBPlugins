@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="OPPO_Pay_Rate" value="100"/>
-<param name="OPPO_AppID" value="3194768" />
-<param name="OPPO_AppKey" value="799dbf67e35841028df83495a1eb84e4" />
-<param name="OPPO_AppSecret" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
+<param name="XiaoMi_AppID" value="3194768" />
+<param name="XiaoMi_AppKey" value="799dbf67e35841028df83495a1eb84e4" />
+<param name="XiaoMi_AppSecret" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
@@ -16,11 +15,11 @@
 <param name="UB_ChannelID" value="1" />
 <param name="UB_SubChannelID" value="1" />
 <plugins>
-	<plugin name="com.ubsdk.oppo.plugin.OPPOUserPlugin" type="1" />
-	<plugin name="com.ubsdk.oppo.plugin.OPPOPayPlugin"  type="2"/>
-	<plugin name="com.ubsdk.oppo.plugin.OPPOSettingPlugin"  type="3"/>
+	<plugin name="com.ubsdk.xiaomi.plugin.XiaoMiUserPlugin" type="1" />
+	<plugin name="com.ubsdk.xiaomi.plugin.XiaoMiPayPlugin"  type="2"/>
+	<plugin name="com.ubsdk.xiaomi.plugin.XiaoMiSettingPlugin"  type="3"/>
 </plugins>
 <applications>
-	<application name="com.ubsdk.oppo.plugin.OPPOApplication"/>
+	<application name="com.ubsdk.xiaomi.plugin.XiaoMiApplication"/>
 </applications>
 </config>

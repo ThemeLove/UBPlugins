@@ -4,13 +4,18 @@ import java.util.HashMap;
 
 import com.nearme.game.sdk.GameCenterSDK;
 import com.nearme.game.sdk.callback.GameExitCallback;
+import com.nearme.game.sdk.callback.SinglePayCallback;
+import com.nearme.game.sdk.common.model.biz.PayInfo;
+import com.nearme.platform.opensdk.pay.PayResponse;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.model.UBPayConfigModel;
 import com.umbrella.game.ubsdk.plugintype.pay.PayConfig;
+import com.umbrella.game.ubsdk.plugintype.pay.PayType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
@@ -19,6 +24,11 @@ public class OPPOSDK {
 	private final String TAG=OPPOSDK.class.getSimpleName();
 	private static OPPOSDK instance=null;
 	private Activity mActivity;
+	private int mOPPOPayRate;//oppo支付比例
+	private boolean mIsShowCpmsChannel=false;//是否显示运营商短代支付方式
+	private boolean mIsUseCachedChannel=true;//是否记住上次支付方式
+	private HashMap<String, PayConfig> mPayConfigMap;
+	private PayConfig mPayConfig;//本次支付的支付配置
 	private OPPOSDK(){}
 	
 	public static OPPOSDK getInstance(){
@@ -35,10 +45,10 @@ public class OPPOSDK {
 	public void init(){
 		UBLogUtil.logI(TAG+"----->init");
 		mActivity = UBSDKConfig.getInstance().getGameActivity();
-		String mOPPOPayRate = UBSDKConfig.getInstance().getParamMap().get("OPPO_Pay_Rate");
-		String string2 = UBSDKConfig.getInstance().getParamMap().get("OPPO_");
-		String string = UBSDKConfig.getInstance().getParamMap().get("");
-		HashMap<String, PayConfig> payConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
+		mOPPOPayRate =Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("OPPO_Pay_Rate"));
+		mIsShowCpmsChannel = Boolean.parseBoolean(UBSDKConfig.getInstance().getParamMap().get("OPPO_IsShowCpSmsChannel"));
+		mIsUseCachedChannel = Boolean.parseBoolean(UBSDKConfig.getInstance().getParamMap().get("OPPO_IsUseCachedChannel"));
+		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
 		
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 
@@ -58,7 +68,53 @@ public class OPPOSDK {
 	
 	public void pay(UBRoleInfo ubRoleInfo,UBOrderInfo ubOrderInfo){
 		UBLogUtil.logI(TAG+"----->pay");
-	
+		if (mPayConfigMap!=null&&!TextUtil.isEmpty(ubOrderInfo.getGoodsID())) {
+			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
+			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
+			UBLogUtil.logI(TAG+"----->payConfig="+mPayConfig.toString());
+		}
+		
+		if (mPayConfig==null) {
+			throw new RuntimeException("OPPO store pay config error!!");
+		}
+		
+		final String tm=System.currentTimeMillis()+"";
+		
+		if (PayType.PAY_TYPE_NORMAL==mPayConfig.getPayType()) {
+//			三个参数分别为订单号，扩展参数，金额
+			int oppoAmount=(int) (mPayConfig.getAmount()*mOPPOPayRate);
+			PayInfo payInfo = new PayInfo(tm,mPayConfig.getProductName(),Integer.parseInt(oppoAmount+""));
+			payInfo.setProductName(mPayConfig.getProductName());
+			payInfo.setProductDesc(mPayConfig.getOrderInfo().getGoodsDesc());
+			payInfo.setShowCpSmsChannel(mIsShowCpmsChannel);
+			payInfo.setUseCachedChannel(mIsUseCachedChannel);
+//			payInfo.setCallbackUrl("");不通过服务器发货不用填写
+			GameCenterSDK.getInstance().doSinglePay(mActivity, payInfo, new SinglePayCallback() {
+				
+				@Override
+				public void onSuccess(String msg) {
+					UBLogUtil.logI(TAG+"----->pay:onSuccess----->msg="+msg);
+					UBSDK.getInstance().getUBPayCallback().onSuccess(tm, tm, mPayConfig.getProductID(), mPayConfig.getProductName(), mPayConfig.getAmount()+"", mPayConfig.getProductName());
+				}
+				
+				@Override
+				public void onFailure(String msg, int code) {
+					if (PayResponse.CODE_CANCEL== code) {
+						UBLogUtil.logI(TAG+"----->pay:cancel----->msg="+msg);
+						UBSDK.getInstance().getUBPayCallback().onCancel(tm);
+					}else{
+						UBLogUtil.logI(TAG+"----->pay:failed----->msg="+msg);
+						UBSDK.getInstance().getUBPayCallback().onFailed(tm, msg, null);
+					}
+				}
+				
+				@Override
+				public void onCallCarrierPay(PayInfo payInfo, boolean bySelectSMSPay) {
+					UBLogUtil.logI(TAG+"----->onCallCarrierPay");
+//					TODO运营商支付逻辑
+				}
+			});
+		}
 	}
 
 	public void exit() {

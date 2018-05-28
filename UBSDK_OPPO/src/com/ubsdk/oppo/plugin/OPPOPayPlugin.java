@@ -13,6 +13,7 @@ public class OPPOPayPlugin implements IUBPayPlugin {
 	private Activity mActivity;
 	private OPPOPayPlugin(Activity activity){
 		this.mActivity=activity;
+		OPPOSDK.getInstance().init();
 	}
 
 	@Override
