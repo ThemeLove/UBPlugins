@@ -18,22 +18,25 @@ public class VIVOUserPlugin implements IUBUserPlugin{
 
 	@Override
 	public void login() {
+		UBLogUtil.logI(TAG+"----->login");
 		VIVOSDK.getInstance().login();
 	}
 
 	@Override
 	public void logout() {
+		UBLogUtil.logI(TAG+"----->logout");
 		VIVOSDK.getInstance().logout();
-		
 	}
 
 	@Override
 	public UBUserInfo getUserInfo() {
+		UBLogUtil.logI(TAG+"----->getUserInfo");
 		return null;
 	}
 
 	@Override
 	public void setGameDataInfo(Object obj, int dataType) {
+		UBLogUtil.logI(TAG+"----->setGameDataInfo");
 		VIVOSDK.getInstance().setGameDataInfo(obj,dataType);
 	}
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payconfig>
+    <product productID="101"  productName="60元宝" amount="6" payType="3">
+	    <billing billingID="47033" billingName="更多主题"  billingPrice="4.9"/>
+	    <paymethoditems>
+	    	<paymethoditem payID="1" payName="支付宝"  payDesc="" isSelect="true"/>
+	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
+	    	<paymethoditem payID="3" payName="QQ支付"  payDesc=""/>
+	    </paymethoditems>   
+	    <orderinfo orderID="1000" amount="6" productName="60元宝" productDesc="60元宝"  ext="ext" />     
+	</product>
+    <product productID="101" payType="1">
+	    <billing billingID="47033" billingName="更多主题"  billingPrice="4.9"/>
+	    <paymethoditems>
+	    	<paymethoditem payName="支付宝" payIcon="1" amount="6" productName="60元宝" productDesc=""/>
+	    </paymethoditems>   
+	    <orderinfo orderID="1" amount="1" productName="1" productDesc="1"  ext="3" />     
+	</product>
+</payconfig>

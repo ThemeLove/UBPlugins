@@ -19,8 +19,8 @@ public class VIVOPayPlugin implements IUBPayPlugin{
 
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
+		UBLogUtil.logI(TAG+"----->pay");
 		VIVOSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
-		
 	}
 
 	@Override

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 <param name="VIVO_STOREID" value="9" />
-<param name="VIVO_APPID" value="8e9041a398534d37a169e63be5e55b6d" />
+<param name="VIVO_AppID" value="8e9041a398534d37a169e63be5e55b6d" />
+<param name="VIVO_CpID" value="8e9041a398534d37a169e63be5e55b6d" />
+<param name="VIVO_AppKey" value="8e9041a398534d37a169e63be5e55b6d" />
 <param name="VIVO_VERSION" value=""/>
+
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
 <param name="UB_GameOrientation" value="portrait" />

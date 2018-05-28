@@ -13,6 +13,7 @@ import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.ui.UBLoadingDialog;
+import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import com.vivo.unionsdk.open.VivoExitCallback;
 import com.vivo.unionsdk.open.VivoPayCallback;
 import com.vivo.unionsdk.open.VivoPayInfo;
@@ -24,9 +25,9 @@ import com.yolanda.nohttp.rest.Request;
 import com.yolanda.nohttp.rest.Response;
 
 import android.app.Activity;
-import android.os.Bundle;
 
 public class VIVOSDK {
+	private final String TAG=VIVOSDK.class.getSimpleName();
 	private static VIVOSDK instance;
 	private VIVOSDK(){}
 	public static VIVOSDK getInstance(){
@@ -45,66 +46,38 @@ public class VIVOSDK {
 	private String mVIVO_AppId;
 	private UBLoadingDialog mUBLoadingDialog;
 	public void init(){
-		mVIVO_StoreId = UBSDKConfig.getInstance().getParamMap().get("VIVO_STOREID");
-		mVIVO_AppId = UBSDKConfig.getInstance().getParamMap().get("VIVO_APPID");
+		mVIVO_StoreId = UBSDKConfig.getInstance().getParamMap().get("VIVO_StoreID");
+		mVIVO_AppId = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
 		mActivity=UBSDKConfig.getInstance().getGameActivity();
 		mUBLoadingDialog = new UBLoadingDialog(mActivity, "订单创建中...");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
-
-			@Override
-			public void onCreate(Bundle savedInstanceState) {
-				// TODO Auto-generated method stub
-				super.onCreate(savedInstanceState);
-			}
-
-			@Override
-			public void onPause() {
-				// TODO Auto-generated method stub
-				super.onPause();
-			}
-
-			@Override
-			public void onResume() {
-				// TODO Auto-generated method stub
-				super.onResume();
-			}
-
-			@Override
-			public void onStop() {
-				// TODO Auto-generated method stub
-				super.onStop();
-			}
-
 			@Override
 			public void onDestroy() {
-				// TODO Auto-generated method stub
 				super.onDestroy();
 			}
 
 			@Override
 			public void onBackPressed() {
 				super.onBackPressed();
-				exit();
 			}
-			
 		});
+		
+		UBSDK.getInstance().getUBInitCallback().onSuccess();//给出同步成功回调
 	}
 	
 	public void login() {
-		// TODO Auto-generated method stub
-		
+		UBLogUtil.logI(TAG+"----->login");
 	}
 	public void logout() {
-		// TODO Auto-generated method stub
-		
+		UBLogUtil.logI(TAG+"----->logout");
 	}
 	
 	public void setGameDataInfo(Object obj, int dataType) {
-		// TODO Auto-generated method stub
-		
+		UBLogUtil.logI(TAG+"----->setGameDataInfo");
 	}
 	
 	public void exit() {
+		UBLogUtil.logI(TAG+"----->exit");
 		VivoUnionSDK.exit(mActivity, new VivoExitCallback() {
 			
 			@Override
@@ -119,10 +92,10 @@ public class VIVOSDK {
 				UBSDK.getInstance().getUBExitCallback().onCancel("user cancel", null);
 			}
 		});
-		
 	}
 	
 	public void pay(UBRoleInfo ubRoleInfo, final UBOrderInfo ubOrderInfo) {
+		UBLogUtil.logI(TAG+"----->pay");
 		String VIVOOrderUrl="https://pay.vivo.com.cn/vivoPay/getVivoOrderNum";
 		int VIVORequestWhat=1;
 		Request<String> VIVOOrderRequest = NoHttp.createStringRequest(VIVOOrderUrl,RequestMethod.POST);

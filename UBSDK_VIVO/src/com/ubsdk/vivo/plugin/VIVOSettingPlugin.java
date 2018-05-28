@@ -18,19 +18,19 @@ public class VIVOSettingPlugin implements IUBSettingPlugin {
 
 	@Override
 	public void exit() {
+		UBLogUtil.logI(TAG+"----->exit");
 		VIVOSDK.getInstance().exit();
 	}
 
 	@Override
 	public int getPlatformID() {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG+"----->getPlatformID");
 		return 0;
 	}
 	
 	@Override
 	public String getPlatformName() {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
-		
 		String platformName="vivo";
 		try {
 			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
@@ -43,19 +43,19 @@ public class VIVOSettingPlugin implements IUBSettingPlugin {
 
 	@Override
 	public int getSubPlatformID() {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG+"----->getSubPlatformID");
 		return 0;
 	}
 
 	@Override
 	public String getExtrasConfig(String extras) {
-		// TODO Auto-generated method stub
+		UBLogUtil.logI(TAG+"----->getExtrasConfig");
 		return null;
 	}
 
 	@Override
 	public void gamePause() {
-		
+		UBLogUtil.logI(TAG+"----->gamePause");
 	}
 
 	@Override
