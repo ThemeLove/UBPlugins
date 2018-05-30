@@ -12,11 +12,13 @@ public class LenovoPayPlugin implements IUBPayPlugin{
 	private Activity mActivity;
 	private LenovoPayPlugin(Activity activity){
 		mActivity=activity;
+		LenovoSDK.getInstance().init();
 	}
 
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
+		LenovoSDK.getInstance().pay(ubRoleInfo, ubOrderInfo);
 	}
 	
 	@Override

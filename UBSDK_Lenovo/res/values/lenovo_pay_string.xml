@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ubsdk_pay_qq_pay">QQ支付</string>
+    <string name="ubsdk_pay_ali_pay">支付宝</string>
+    <string name="ubsdk_pay_wx_pay">微信支付</string>
+
+    <string name="ubsdk_pay_qq_pay_desc">安全可靠\r\n快速充值</string>
+    <string name="ubsdk_pay_ali_pay_desc">安全可靠\r\n支付快速便捷</string>
+    <string name="ubsdk_pay_wx_pay_desc">无需开通网银\r\n轻松支付</string>
+    
+    <string name="ubsdk_pay_sdk_logo">Umbrella</string>
+
+</resources>
