@@ -42,12 +42,12 @@ public class VIVOSDK {
 	}
 	
 	private Activity mActivity;
-	private String mVIVO_StoreId;
-	private String mVIVO_AppId;
+	private String mVIVO_StoreID;
+	private String mVIVO_AppID;
 	private UBLoadingDialog mUBLoadingDialog;
 	public void init(){
-		mVIVO_StoreId = UBSDKConfig.getInstance().getParamMap().get("VIVO_StoreID");
-		mVIVO_AppId = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
+		mVIVO_StoreID = UBSDKConfig.getInstance().getParamMap().get("VIVO_StoreID");
+		mVIVO_AppID = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
 		mActivity=UBSDKConfig.getInstance().getGameActivity();
 		mUBLoadingDialog = new UBLoadingDialog(mActivity, "订单创建中...");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
@@ -107,12 +107,12 @@ public class VIVOSDK {
         params.put("orderTitle",ubOrderInfo.getGoodsName());
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         params.put("orderTime",format.format(new Date()));//订单创建时间
-        params.put("storeId",mVIVO_StoreId);//商户ID
-        params.put("appId", mVIVO_AppId);                  //APPID
+        params.put("storeId",mVIVO_StoreID);//商户ID
+        params.put("appId", mVIVO_AppID);                  //APPID
 //        params.put("storeOrder", UUID.randomUUID().toString().replaceAll("-", ""));//商户订单号
         params.put("storeOrder",ubOrderInfo.getOrderID());//商户订单号
         params.put("version", "1.0");
-        String str = VivoSignUtils.getVivoSign(params,mVIVO_StoreId);//signkey
+        String str = VivoSignUtils.getVivoSign(params,mVIVO_StoreID);//signkey
         params.put("signature", str);
         params.put("signMethod", "MD5");
 		VIVOOrderRequest.add(params);
@@ -143,7 +143,7 @@ public class VIVOSDK {
 						String vivoSignature = jsob.optString("vivoSignature");
 						String vivoOrder = jsob.optString("vivoOrder");
 						ubOrderInfo.setOrderID(vivoOrder);
-						VivoPayInfo vivoPayInfo = new VivoPayInfo(ubOrderInfo.getGoodsName(),ubOrderInfo.getGoodsDesc(),orderAmount,vivoSignature, mVIVO_AppId,vivoOrder, null);
+						VivoPayInfo vivoPayInfo = new VivoPayInfo(ubOrderInfo.getGoodsName(),ubOrderInfo.getGoodsDesc(),orderAmount,vivoSignature, mVIVO_AppID,vivoOrder, null);
 						VivoUnionSDK.pay(mActivity, vivoPayInfo, new VivoPayCallback() {
 							@Override
 							public void onVivoPayResult(String transNo, boolean isSuccess, String errorCode) {
