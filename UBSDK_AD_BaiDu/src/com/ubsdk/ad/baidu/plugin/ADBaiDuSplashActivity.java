@@ -5,6 +5,7 @@ import com.duoku.alone.ssp.FastenEntity;
 import com.duoku.alone.ssp.entity.ViewEntity;
 import com.duoku.alone.ssp.listener.ViewClickListener;
 import com.duoku.alone.ssp.util.ToastUtil;
+import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
@@ -53,6 +54,7 @@ public class ADBaiDuSplashActivity extends Activity {
     private void loadADParams() {
 		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Splash_ID");
 		mGameOrientation = UBSDKConfig.getInstance().getParamMap().get("BaiDu_Game_Orientation");
+		mUBADCallback = UBAD.getInstance().getUBADCallback();
 	}
 
 	private Handler myhander = new Handler() {
@@ -65,6 +67,7 @@ public class ADBaiDuSplashActivity extends Activity {
     
 	private String mSplashID;
 	private String mGameOrientation;
+	private UBADCallback mUBADCallback;
 
     /**
      * 请求闪屏广告
@@ -83,14 +86,18 @@ public class ADBaiDuSplashActivity extends Activity {
             @Override
             public void onSuccess(String adID) {
             	UBLogUtil.logI(TAG+"----->showSplashAD----->onSuccess----->adID="+adID);
-            	UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_SPLASH, "Splash AD show success!");
+            	if (mUBADCallback!=null) {
+            		mUBADCallback.onShow(ADType.AD_TYPE_SPLASH, "Splash AD show success!");
+				}
             }
 
             @Override
             public void onFailed(int errorCode) {
             	UBLogUtil.logI(TAG+"----->showSplashAD----->onFailed----->errorCode="+errorCode);
                 try {
-                	UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_SPLASH, "Splash AD show Failed:errorCode="+errorCode);
+                	if (mUBADCallback!=null) {
+                		mUBADCallback.onFailed(ADType.AD_TYPE_SPLASH, "Splash AD show Failed:errorCode="+errorCode);
+					}
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -102,12 +109,15 @@ public class ADBaiDuSplashActivity extends Activity {
                 try {
                     if (type == 1) {//用户关闭
                     	UBLogUtil.logI(TAG+"----->showSplashAD----->onClick-----type=1,user close");
-                    	UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_SPLASH, "Splash AD　user closed!");
+                    	if (mUBADCallback!=null) {
+                    		mUBADCallback.onClosed(ADType.AD_TYPE_SPLASH, "Splash AD　user closed!");
+        				}
                         finish();
                     } else if (type == 2) {//用户点击
                     	UBLogUtil.logI(TAG+"----->showSplashAD----->onClick-----type=2,user click");
-                        ToastUtil.showToast(ADBaiDuSplashActivity.this, "点击广告");
-                        UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_SPLASH, "Splash AD user click!");
+                    	if (mUBADCallback!=null) {
+                    		mUBADCallback.onClick(ADType.AD_TYPE_SPLASH, "Splash AD user click!");
+						}
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

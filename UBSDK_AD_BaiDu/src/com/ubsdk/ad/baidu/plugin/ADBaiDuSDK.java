@@ -14,7 +14,6 @@ import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBADPlugin;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
-import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.plugintype.ad.BannerPosition;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;

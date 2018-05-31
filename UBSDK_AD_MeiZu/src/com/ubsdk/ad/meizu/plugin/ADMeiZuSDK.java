@@ -363,9 +363,6 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			mShenQiVideo.fetchedVideoAd();
 		}
 	}
-
-	private AdBanner mBannerAD;
-	private UBADCallback mUBADCallback;
 	
 //	private boolean isInterstitialInit=false;//插屏广告是否初始化，默认为false
 	private InterstitialAdListener mInterstitialAdListener;
@@ -380,6 +377,10 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			mInterstitialAD.loadInterstitialAd();
 		}
 	}
+	
+
+	private AdBanner mBannerAD;
+	private UBADCallback mUBADCallback;
 
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	private void showBannerAD() {

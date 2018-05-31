@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="23" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
 
     
     <uses-permission android:name="android.permission.INTERNET" />
@@ -41,14 +41,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-                <service
+        <activity
+            android:name="com.ubsdk.ad.lenovo.plugin.ADLenovoSplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        
+        <service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" >
         </service>
 
         <activity
             android:name="com.qq.e.ads.ADActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" >
+            android:configChanges="orientation" >
         </activity>
         
         <activity android:name="com.chance.ads.AdActivity" >
@@ -58,7 +62,7 @@
             android:name="com.chance.ads.VideoAdActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
