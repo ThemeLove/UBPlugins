@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="Lenovo_AppID" value="3194768" />
-<param name="Lenovo_PrivateKey" value="799dbf67e35841028df83495a1eb84e4" />
-<param name="Lenovo_PublicKey" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
-<param name="Lenovo_Pay_ProductID" value="1111"/>
+<param name="AD_BaiDu_Banner_ID" value="2050839" />
+<param name="AD_BaiDu_Interstitial_ID" value="2050840" />
+<param name="AD_BaiDu_Splash_ID" value="2050841" />
+<param name="AD_BaiDu_RewardVideo_ID" value="2050842" />
+<param name="AD_BaiDu_Banner_Position" value="1" />
 
+<param name="BaiDu_Game_Orientation" value="portrait" />
+<param name="BaiDu_AppId" value="10871023" />
+<param name="BaiDu_AppKey" value="SlUcCVoVqNDioc6GKIqsOfZn"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
@@ -17,9 +21,7 @@
 <param name="UB_ChannelID" value="1" />
 <param name="UB_SubChannelID" value="1" />
 <plugins>
-	<plugin name="com.ubsdk.lenovo.plugin.LenovoUserPlugin" type="1" />
-	<plugin name="com.ubsdk.lenovo.plugin.LenovoPayPlugin"  type="2"/>
-	<plugin name="com.ubsdk.lenovo.plugin.LenovoSettingPlugin"  type="3"/>
+    <plugin name="com.ubsdk.ad.lenovo.plugin.ADLenovoSDK" type="4" />
 </plugins>
 <applications>
 </applications>

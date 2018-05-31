@@ -1,4 +1,7 @@
 package com.ubsdk.lenovo.plugin.diy;
+
+import com.umbrella.game.ubsdk.plugintype.pay.diy.PayMethodItem;
+
 /**
  * 支付方式点击监听
  * @author qingshanliao
@@ -6,7 +9,7 @@ package com.ubsdk.lenovo.plugin.diy;
 public interface PayDialogClickListener {
 	/**
 	 * 支付按钮
-	 * @param payItem
+	 * @param payItemO
 	 */
 	void onPay(PayMethodItem payMethodItem);
 	

@@ -2,6 +2,7 @@ package com.ubsdk.lenovo.plugin.diy;
 
 import java.util.ArrayList;
 
+import com.umbrella.game.ubsdk.plugintype.pay.diy.PayMethodItem;
 import com.umbrella.game.ubsdk.utils.DisplayUtil;
 import com.umbrella.game.ubsdk.utils.ResUtil;
 import com.umbrella.game.ubsdk.utils.TextUtil;
@@ -66,10 +67,10 @@ public class PayDialog extends Dialog{
         int screenHeight = DisplayUtil.screenHeight;
         boolean isHorizontal = DisplayUtil.isHorizontal();
         if (isHorizontal) {
-			lp.width=screenHeight*4/5;
+			lp.width=screenWidth*3/5;
 //			lp.height=screenHeight*4/5;
 		}else{
-			lp.width=screenWidth*4/5;
+			lp.width=screenWidth;
 //			lp.height=screenHeight*3/5;s
 		}
         
@@ -119,8 +120,9 @@ public class PayDialog extends Dialog{
 				final PayMethodItemView payMethodItemView = new PayMethodItemView(mContext);
 				payMethodItemView.setPayMethodItem(payMethodItem);
 				
-				LayoutParams layoutParams = new LinearLayout.LayoutParams(DisplayUtil.dip2px(80), DisplayUtil.dip2px(100));
-				layoutParams.rightMargin=DisplayUtil.dip2px(3);
+				LayoutParams layoutParams = new LinearLayout.LayoutParams(DisplayUtil.dip2px(100), DisplayUtil.dip2px(90));
+				layoutParams.rightMargin=DisplayUtil.dip2px(12);
+				layoutParams.leftMargin=DisplayUtil.dip2px(12);
 				
 				mPayMethodItemContainer.addView(payMethodItemView,layoutParams);
 				
@@ -131,19 +133,11 @@ public class PayDialog extends Dialog{
 //						重新构造数据更新视图
 						updatePayMethodItemList(mCurrentPayMethodItem);
 						setPayMethodItemList(mPayMethodItemList);
-//						if (mPayDialogClickListener!=null) {
-//							mPayDialogClickListener.OnPayMethodItemClick(mCurrentPayMethodItem);
-//						}
+						if (mPayDialogClickListener!=null) {
+							mPayDialogClickListener.onPay(mCurrentPayMethodItem);
+						}
 					}
 				});
-			}
-		}
-		
-//		更新支付按钮状态
-		for (PayMethodItem payMethodItem : payMethodItemList) {
-			if (payMethodItem.isSelect()) {
-				mCurrentPayMethodItem = payMethodItem;
-				updatePayBtnStatus(payMethodItem);
 			}
 		}
 	}
@@ -166,25 +160,19 @@ public class PayDialog extends Dialog{
 	 * @param ubUserInfo
 	 * @param orderInfo
 	 */
-	public void updatePayInfoStatus(String sdkLogoStr,String userName,String productName,double amount){
-		mLogo.setText(sdkLogoStr);
-		if (TextUtil.isEmpty(userName)) {
-			mPayUserName.setVisibility(View.GONE);
-		}else{
-			mPayUserName.setVisibility(View.VISIBLE);
-			SpannableStringBuilder sb = new SpannableStringBuilder();
-			sb.append(userName);
-			sb.setSpan(new ForegroundColorSpan(0xFFFF6600), 0, userName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE );
-			mPayUserName.setText(sb);
-		}
+	public void updatePayInfoStatus(String productName,double amount){
+		mLogo.setText("客服电话:400-816-9910		客服QQ:2246833903");//写死
 		
 		if (TextUtil.isEmpty(productName)&&amount<=0) {
 			mPayOrderInfo.setVisibility(View.GONE);
 		}else{
 			mPayOrderInfo.setVisibility(View.VISIBLE);
 			SpannableStringBuilder sb = new SpannableStringBuilder();
-			sb.append(productName+"（￥"+amount+"元）");
-			sb.setSpan(new ForegroundColorSpan(0xFFFF6600), 0,productName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE );
+			
+			sb.append("商品：").append(productName).append("        ");
+			sb.append("价格：").append(amount+"").append("元");
+			sb.setSpan(new ForegroundColorSpan(0xa01296db), 3,3+productName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE );
+			sb.setSpan(new ForegroundColorSpan(0xa01296db), 14+productName.length(),sb.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE );
 			mPayOrderInfo.setText(sb);
 		}
 	}

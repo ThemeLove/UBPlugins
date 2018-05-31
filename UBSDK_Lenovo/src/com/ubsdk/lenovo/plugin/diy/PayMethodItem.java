@@ -1,25 +1,25 @@
-package com.ubsdk.lenovo.plugin.diy;
+/*package com.ubsdk.lenovo.plugin.diy;
 
-/**
+*//**
  * 支付方式视图封装javaBean
  * @author qingshanliao
- */
+ *//*
 public class PayMethodItem {
-	/**
+	*//**
 	 * 支付方式ID,对应PayType
-	 */
+	 *//*
 	private int ID;
-	/**
+	*//**
 	 * 支付方式名称
-	 */
+	 *//*
 	private String name;
-	/**
+	*//**
 	 * 支付方式描述
-	 */
+	 *//*
 	private String desc;
-	/**
+	*//**
 	 * 支付方式logo
-	 */
+	 *//*
 	private int    logo;
 	private boolean isSelect=false;//标示payTypeItemView是否被选中
 	public String getName() {
@@ -59,3 +59,4 @@ public class PayMethodItem {
 	}
 
 }
+*/
