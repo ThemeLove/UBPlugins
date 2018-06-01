@@ -29,7 +29,7 @@
             android:text="Y100" />
 
         <HorizontalScrollView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ffffff"
             android:layout_gravity="center_horizontal"
@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:padding="3dp" >
             </LinearLayout>

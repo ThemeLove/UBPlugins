@@ -252,7 +252,6 @@ public class ADLenovoSDK implements IUBADPlugin{
 		}
 		return false;
 	}
-
 	
 	@Override
 	public void showADWithADType(int adType) {

@@ -5,6 +5,12 @@
 	    <paymethoditems>
 	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
 	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
+	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
+	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
+	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
+	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
+	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
+	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
 	    </paymethoditems>   
 	    <orderinfo orderID="1000" amount="6" productName="60元宝" productDesc="60元宝"  ext="ext" />     
 	</product>
