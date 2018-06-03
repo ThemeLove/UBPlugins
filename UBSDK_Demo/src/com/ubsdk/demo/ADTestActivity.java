@@ -1,6 +1,7 @@
 package com.ubsdk.demo;
 
-import com.umbrella.boomdots.R;
+
+import com.tencent.tmgp.umbrella.boomdots.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="VIVO_STOREID" value="9" />
-<param name="VIVO_AppID" value="8e9041a398534d37a169e63be5e55b6d" />
-<param name="VIVO_CpID" value="8e9041a398534d37a169e63be5e55b6d" />
-<param name="VIVO_AppKey" value="8e9041a398534d37a169e63be5e55b6d" />
+<param name="VIVO_AppID" value="2fc58425695e5ab299ebee06af69d1d9" />
+<param name="VIVO_CPID" value="a51760bca8dd54e66f80" />
+<param name="VIVO_AppKey" value="04c927301e6bb056c02d7836791ef408" />
 <param name="VIVO_VERSION" value=""/>
 
 <param name="UB_GameID" value="1123" />
