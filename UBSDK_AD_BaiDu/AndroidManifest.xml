@@ -144,7 +144,6 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-
         <service
             android:name="com.tencent.analytics.sdk.Adx"
             android:priority="2147483647"/>
@@ -230,21 +229,30 @@
 
         <!--蓝莓互娱(视频)结束↑↑↑↑-->
 
+        <!-- ======================================碰碰球参数======================================  -->
         <!-- 沙盒环境....DUOKU_AD_APPKEY：填写appKey信息-->
         <meta-data
             android:name="DUOKU_AD_APPKEY"
             android:value="11125131"/>
-        <!-- DUOKU_AD_PRODUCT_KEY：填写 productKey信息  -->
         <meta-data
             android:name="DUOKU_AD_PRODUCT_KEY"
             android:value="uDxP9u9InnhH1DzDHsGXofVT"
             />
-<!--          android:value="OWNDEV_w6FRJc4aTw2oCPxyj" -->
-        <!--DUOKU_AD_VERSION：填写sdk 版本-->
         <meta-data
             android:name="DUOKU_AD_VERSION"
             android:value="3.1.0"/>
-        <!--&ndash;&gt;-->
+        
+        <!-- ======================================测试参数======================================  -->
+ <!--        <meta-data
+            android:name="DUOKU_AD_APPKEY"
+            android:value="50040"/>
+        <meta-data
+            android:name="DUOKU_AD_PRODUCT_KEY"
+            android:value="OWNDEV_w6FRJc4aTw2oCPxyj"
+            />
+        <meta-data
+            android:name="DUOKU_AD_VERSION"
+            android:value="3.1.0"/> -->
 
         <!--广告SDK ========== 声明结束-->
         <!--广告SDK ========== 声明结束-->

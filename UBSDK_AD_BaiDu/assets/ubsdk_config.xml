@@ -6,9 +6,15 @@
 <param name="AD_BaiDu_RewardVideo_ID" value="2050842" />
 <param name="AD_BaiDu_Banner_Position" value="1" />
 
+<!-- <param name="AD_BaiDu_Banner_ID" value="1000000" />
+<param name="AD_BaiDu_Interstitial_ID" value="1000001" />
+<param name="AD_BaiDu_Splash_ID" value="1000002" />
+<param name="AD_BaiDu_RewardVideo_ID" value="1000003" />
+<param name="AD_BaiDu_Banner_Position" value="1" /> -->
+
 <param name="BaiDu_Game_Orientation" value="portrait" />
-<param name="BaiDu_AppId" value="10871023" />
-<param name="BaiDu_AppKey" value="SlUcCVoVqNDioc6GKIqsOfZn"/>
+<param name="BaiDu_AppId" value="11125131" />
+<param name="BaiDu_AppKey" value="uDxP9u9InnhH1DzDHsGXofVT"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />

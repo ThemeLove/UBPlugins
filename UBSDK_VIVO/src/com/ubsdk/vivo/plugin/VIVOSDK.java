@@ -63,6 +63,7 @@ public class VIVOSDK {
 		mVIVO_CPID = UBSDKConfig.getInstance().getParamMap().get("VIVO_CPID");
 		mVIVO_AppID = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
 		mVIVO_AppKey = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppKey");
+		mVIVOPayVersion = UBSDKConfig.getInstance().getParamMap().get("VIVO_Pay_Version");
 		mActivity=UBSDKConfig.getInstance().getGameActivity();
 		mUBLoadingDialog = new UBLoadingDialog(mActivity, "订单创建中...");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
@@ -127,7 +128,7 @@ public class VIVOSDK {
 		if (mPayConfig==null) {
 			throw new RuntimeException("vivo store pay config error!");
 		}
-		final String tm=System.currentTimeMillis()+"";//系统时间用作订单号
+		final String tm=System.currentTimeMillis()+"";//系统时间用作商户订单号
 		if (PayType.PAY_TYPE_DIY==mPayConfig.getPayType()) {//vivo是自定义支付
 			ArrayList<PayMethodItem> payMethodItemList = mPayConfig.getPayMethodItemList();
 			final PayDialog payDialog = new PayDialog(mActivity);
@@ -142,6 +143,7 @@ public class VIVOSDK {
 
 						@Override
 						public void onSuccess(VivoPayInfo vivoPayInfo) {
+							UBLogUtil.logI(TAG+"----->vivoPayInfo="+vivoPayInfo);
 							if (PayMethod.WEIXING==payMethodItem.getID()) {
 								VivoUnionSDK.payNow(mActivity, vivoPayInfo, vivoPayCallback, VivoConstants.SINGLE_FRONT_PAY_WEIXIN);
 							}else if(PayMethod.ALIPAY==payMethodItem.getID()){
@@ -169,6 +171,8 @@ public class VIVOSDK {
 		
 		@Override
 		public void onVivoPayResult(String transNo, boolean isSuccess, String errorCode) {
+			UBLogUtil.logI(TAG+"----->vivoPay----->transNo="+transNo+",isSuccess="+isSuccess+",errorCode="+errorCode);
+			
 			if (isSuccess) {
 				UBSDK.getInstance().getUBPayCallback().onSuccess(transNo, transNo, mPayConfig.getProductID(), mPayConfig.getProductName(), mPayConfig.getAmount()+"", mPayConfig.getProductName());
 			}else{
@@ -177,6 +181,7 @@ public class VIVOSDK {
 		}
 	};
 	private String mVIVO_AppKey;
+	private String mVIVOPayVersion;
 	/**
 	 * 从VIVO服务器交互获取订单信息
 	 * @param payConfig
@@ -191,25 +196,26 @@ public class VIVOSDK {
 	    final HashMap<String, String> params = new HashMap<String, String>();
 	    params.put("notifyUrl","http://113.98.231.125:8051/vcoin/notifyStubAction");//回调地址
 	    params.put("orderAmount",Float.parseFloat(mPayConfig.getAmount()+"")+"");  //注意：精确到小数点后两位；
+//	    params.put("orderAmount","6.00");  //注意：精确到小数点后两位；
 	    params.put("orderDesc",mPayConfig.getProductName());
 	    params.put("orderTitle",mPayConfig.getProductName());
 	    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 	    params.put("orderTime",format.format(new Date()));//订单创建时间
 	    params.put("storeId",mVIVO_CPID);//商户ID
 	    params.put("appId", mVIVO_AppID);                  //APPID
-	    params.put("storeOrder", UUID.randomUUID().toString().replaceAll("-", ""));//商户订单号
-//	    params.put("storeOrder",tm);//商户订单号
-	    params.put("version", "1.0.0");
-	    String str = VivoSignUtils.getVivoSign(params,mVIVO_AppKey);//signkey
-	    params.put("signature", str);
+//	    params.put("storeOrder", UUID.randomUUID().toString().replaceAll("-", ""));//商户订单号
+	    params.put("storeOrder",tm);//商户订单号
+	    params.put("version", mVIVOPayVersion);
+	    final String signStr = VivoSignUtils.getVivoSign(params,mVIVO_AppKey);//signkey
+	    params.put("signature", signStr);
 	    params.put("signMethod", "MD5");
 	    UBLogUtil.logI(TAG+"----->params="+params);
 		VIVOOrderRequest.add(params);
-		 UBLogUtil.logI(TAG+"----->signStr="+str);
+		 UBLogUtil.logI(TAG+"----->signStr="+signStr);
 		boolean verifySignature = VivoSignUtils.verifySignature(params, mVIVO_AppKey);
 		UBLogUtil.logI(TAG+"----->验证签名="+verifySignature);
+		
 		UBHttpManager.getInstance().addRequest(VIVORequestWhat, VIVOOrderRequest, new OnResponseListener<String>() {
-
 
 			@Override
 			public void onFailed(int what, String arg1, Object arg2, Exception e, int arg4, long arg5) {
@@ -237,6 +243,7 @@ public class VIVOSDK {
 						JSONObject jsob = new JSONObject(response.get());
 						String orderAmount = jsob.optString("orderAmount");
 						String vivoSignature = jsob.optString("vivoSignature");
+//						String signature = jsob.optString("signature");
 						String vivoOrder = jsob.optString("vivoOrder");
 						VivoPayInfo vivoPayInfo = new VivoPayInfo(mPayConfig.getProductName(),mPayConfig.getProductName(),orderAmount,vivoSignature, mVIVO_AppID,vivoOrder, null);
 						if (ubHttpListener!=null&&ubHttpListener!=null) {

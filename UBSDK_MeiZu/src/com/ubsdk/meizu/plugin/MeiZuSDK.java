@@ -1,11 +1,8 @@
 package com.ubsdk.meizu.plugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.TreeMap;
-
-import org.json.JSONObject;
 
 import com.meizu.gamesdk.model.callback.MzPayListener;
 import com.meizu.gamesdk.model.model.MzPayParams;

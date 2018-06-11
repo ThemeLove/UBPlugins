@@ -13,6 +13,10 @@ import com.duoku.platform.single.item.GamePropsInfo;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
+import com.umbrella.game.ubsdk.model.UBPayConfigModel;
+import com.umbrella.game.ubsdk.plugintype.pay.Billing;
+import com.umbrella.game.ubsdk.plugintype.pay.PayConfig;
+import com.umbrella.game.ubsdk.plugintype.pay.PayType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
@@ -28,9 +32,9 @@ public class BaiDuSDK {
 	private static BaiDuSDK instance = null;
 	private Activity mActivity;
 	private boolean baiDu_Game_isLandscape = true;// 游戏是否是横屏
-	private HashMap<String,HashMap<String,BaiDuBilling>> baiDuBillingWithTypeMap;//百度计费点数据
-	private BaiDuSDK() {
-	}
+	private HashMap<String,PayConfig> mPayConfigMap;
+	private PayConfig mPayConfig;//本次支付的支付配置
+	private BaiDuSDK() { }
 
 	public static BaiDuSDK getInstance() {
 		if (instance == null) {
@@ -129,8 +133,6 @@ public class BaiDuSDK {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		baiDuBillingWithTypeMap = BaiDuBillingConfigXMLParser.getBaiDuBillingWithTypeMap();
 	}
 
 	/**
@@ -186,35 +188,31 @@ public class BaiDuSDK {
 			}
 		});
 	}
-
-	
 	
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 
 		UBLogUtil.logI(TAG+"----->pay");
-		UBLogUtil.logI(TAG+"----->productID="+ubOrderInfo.getGoodsID());
-		
-		UBLogUtil.logI(TAG+"----->baiduBillingWithTypeMap="+baiDuBillingWithTypeMap);
-		HashMap<String, BaiDuBilling> billingMap = baiDuBillingWithTypeMap.get("baidu");
-		BaiDuBilling baiDuBilling=null;
-		if (billingMap!=null) {
-			baiDuBilling = billingMap.get(ubOrderInfo.getGoodsID());
+		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
+		if (mPayConfigMap!=null) {
+			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
+			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
+			UBLogUtil.logI(TAG+"----->payConfig="+mPayConfig.toString());
 		}
 		
-		if (baiDuBilling==null) {
-			UBLogUtil.logE(TAG+"----->error----->baidu 计费点配置出错!!!");
-			return;
+		if (mPayConfig==null) {
+			throw new RuntimeException("baidu store pay config error!!");
 		}
 		
-		GamePropsInfo gamePropsInfo = new GamePropsInfo(baiDuBilling.getBillingID(), // 百度计费点id
-				baiDuBilling.getBillingPrice(), // 计费点价格
-				baiDuBilling.getBillingName(), // 计费点名称
-				ubOrderInfo.getExtrasParams());// 透传字段
-		
-		gamePropsInfo.setThirdPay("qpfangshua");// 只接入微信支付宝,固定值
-		
-		DKPlatform.getInstance().invokePayCenterActivity(mActivity, gamePropsInfo, null, null, null, null, null,
-				RechargeCallback);
+		if (PayType.PAY_TYPE_BILLING==mPayConfig.getPayType()) {
+			Billing billing = mPayConfig.getBilling();
+			String billingID = billing.getBillingID();
+			String billingName = billing.getBillingName();
+			String billingPrice = billing.getBillingPrice();
+			GamePropsInfo gamePropsInfo = new GamePropsInfo(billingID, billingPrice, billingName, mPayConfig.getOrderInfo().getExtrasParams());
+			gamePropsInfo.setThirdPay("qpfangshua");// 只接入微信支付宝,固定值
+			DKPlatform.getInstance().invokePayCenterActivity(mActivity, gamePropsInfo, null, null, null, null, null,
+					RechargeCallback);
+		}
 	}
 
 	// 支付回调函数

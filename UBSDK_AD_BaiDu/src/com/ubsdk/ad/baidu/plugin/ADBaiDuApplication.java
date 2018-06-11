@@ -19,11 +19,9 @@ public class ADBaiDuApplication implements IChannelProxyApplication{
 	@Override
 	public void onProxyCreate(Application application) {
 		UBLogUtil.logI(TAG+"----->onProxyCreate");
-		
+	    // 必须在init之前设置,设置是否是线上地址，默认或者true为线上地址，false为测试地址
 		DuoKuAdSDK.getInstance().initApplication(application);
-	    // 设置是否是线上地址，默认或者true为线上地址，false为测试地址
-	    // 必须在init之前设置
-	    DuoKuAdSDK.getInstance().setOnline(true,application);
+		DuoKuAdSDK.getInstance().setOnline(false,application);
 	    // 开启调试日志 默认false
 	    DuoKuAdSDK.getInstance().setDebug(true);
 	}

@@ -3,7 +3,12 @@
 <param name="VIVO_AppID" value="2fc58425695e5ab299ebee06af69d1d9" />
 <param name="VIVO_CPID" value="a51760bca8dd54e66f80" />
 <param name="VIVO_AppKey" value="04c927301e6bb056c02d7836791ef408" />
-<param name="VIVO_VERSION" value=""/>
+<param name="VIVO_Pay_Version" value="1.0.0"/>
+
+<!-- <param name="VIVO_AppID" value="1007" />
+<param name="VIVO_CPID" value="20131030114035786189" />
+<param name="VIVO_AppKey" value="20131030114035565895" />
+<param name="VIVO_Pay_Version" value="1.0.0"/> -->
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
@@ -15,6 +20,7 @@
 <param name="UB_SubPlatformID" value="0" />
 <param name="UB_ChannelID" value="1" />
 <param name="UB_SubChannelID" value="1" />
+
 <plugins>
 	<plugin name="com.ubsdk.vivo.plugin.VIVOUserPlugin" type="1" />
 	<plugin name="com.ubsdk.vivo.plugin.VIVOPayPlugin"  type="2"/>

@@ -4,7 +4,6 @@ import com.duoku.alone.ssp.DuoKuAdSDK;
 import com.duoku.alone.ssp.FastenEntity;
 import com.duoku.alone.ssp.entity.ViewEntity;
 import com.duoku.alone.ssp.listener.ViewClickListener;
-import com.duoku.alone.ssp.util.ToastUtil;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
@@ -108,9 +107,9 @@ public class ADBaiDuSplashActivity extends Activity {
             public void onClick(int type) {
                 try {
                     if (type == 1) {//用户关闭
-                    	UBLogUtil.logI(TAG+"----->showSplashAD----->onClick-----type=1,user close");
+                    	UBLogUtil.logI(TAG+"----->showSplashAD----->onClick-----type=1,close");
                     	if (mUBADCallback!=null) {
-                    		mUBADCallback.onClosed(ADType.AD_TYPE_SPLASH, "Splash AD　user closed!");
+                    		mUBADCallback.onClosed(ADType.AD_TYPE_SPLASH, "Splash AD closed!");
         				}
                         finish();
                     } else if (type == 2) {//用户点击
@@ -134,7 +133,8 @@ public class ADBaiDuSplashActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+//    	闪屏广告倒计时结束自己结束，这里屏蔽返回键
+//    	return;
     	super.onBackPressed();
-    	finish();
     }
 }

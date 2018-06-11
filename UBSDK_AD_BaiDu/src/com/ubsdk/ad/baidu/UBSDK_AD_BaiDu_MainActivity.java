@@ -105,19 +105,19 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 
 		@Override
 		public void onClick(int adType, String msg) {
-			UBLogUtil.logI(TAG+"----->UBAD----->onClick");
+			UBLogUtil.logI(TAG+"----->onClick");
 			switch (adType) {
 			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick banner AD");
+				UBLogUtil.logI(TAG+"----->onClick banner AD");
 				break;
 			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick interstitial AD");
+				UBLogUtil.logI(TAG+"----->onClick interstitial AD");
 				break;
 			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick splash AD");
+				UBLogUtil.logI(TAG+"----->onClick splash AD");
 				break;
 			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClick rewardVideo AD");
+				UBLogUtil.logI(TAG+"----->onClick rewardVideo AD");
 				break;
 			default:
 				break;
@@ -128,16 +128,16 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 		public void onComplete(int adType, String msg) {
 			switch (adType) {
 			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete banner AD");
+				UBLogUtil.logI(TAG+"----->onComplete banner AD");
 				break;
 			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete interstitial AD");
+				UBLogUtil.logI(TAG+"----->onComplete interstitial AD");
 				break;
 			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete splash AD");
+				UBLogUtil.logI(TAG+"----->onComplete splash AD");
 				break;
 			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onComplete rewardVideo AD");
+				UBLogUtil.logI(TAG+"----->onComplete rewardVideo AD");
 				break;
 			default:
 				break;
@@ -148,16 +148,16 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 		public void onShow(int adType, String msg) {
 			switch (adType) {
 			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow banner AD");
+				UBLogUtil.logI(TAG+"----->onShow banner AD");
 				break;
 			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow interstitial AD");
+				UBLogUtil.logI(TAG+"----->onShow interstitial AD");
 				break;
 			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow splash AD");
+				UBLogUtil.logI(TAG+"----->onShow splash AD");
 				break;
 			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onShow rewardVideo AD");
+				UBLogUtil.logI(TAG+"----->onShow rewardVideo AD");
 				break;
 			default:
 				break;
@@ -168,16 +168,16 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 		public void onClosed(int adType, String msg) {
 			switch (adType) {
 			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed banner AD");
+				UBLogUtil.logI(TAG+"----->onClosed banner AD");
 				break;
 			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed interstitial AD");
+				UBLogUtil.logI(TAG+"----->onClosed interstitial AD");
 				break;
 			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed splash AD");
+				UBLogUtil.logI(TAG+"----->onClosed splash AD");
 				break;
 			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onClosed rewardVideo AD");
+				UBLogUtil.logI(TAG+"----->onClosed rewardVideo AD");
 				break;
 			default:
 				break;
@@ -188,16 +188,16 @@ public class UBSDK_AD_BaiDu_MainActivity extends Activity implements OnClickList
 		public void onFailed(int adType, String msg) {
 			switch (adType) {
 			case ADType.AD_TYPE_BANNER:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed banner AD");
+				UBLogUtil.logI(TAG+"----->onFailed banner AD");
 				break;
 			case ADType.AD_TYPE_INTERSTITIAL:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed interstitial AD");
+				UBLogUtil.logI(TAG+"----->onFailed interstitial AD");
 				break;
 			case ADType.AD_TYPE_SPLASH:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed splash AD");
+				UBLogUtil.logI(TAG+"----->onFailed splash AD");
 				break;
 			case ADType.AD_TYPE_REWARDVIDEO:
-				UBLogUtil.logI(TAG+"----->UBAD----->onFailed rewardVideo AD");
+				UBLogUtil.logI(TAG+"----->onFailed rewardVideo AD");
 				break;
 			default:
 				break;
