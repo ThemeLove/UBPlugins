@@ -34,6 +34,7 @@ public class OPPOSettingPlugin implements IUBSettingPlugin{
 	@Override
 	public void gamePause() {
 		UBLogUtil.logI(TAG+"----->gamePause");
+		OPPOSDK.getInstance().gamePause();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.ubsdk.ad.xiaomi;
 
+import com.umbrella.boomdots.mi.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;

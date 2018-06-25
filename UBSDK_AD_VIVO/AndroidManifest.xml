@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jd.game.onetpet.vivo"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="25" />
+    <!-- SDK 相关声明 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!--以下为可选权限	，如果需要精确定位的话请加上此权限-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    
+    <application
+        android:name="com.umbrella.game.ubsdk.ui.UBApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.ubsdk.ad.vivo.UBSDK_AD_VIVO_MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+                
+        <activity
+            android:name="com.ubsdk.ad.vivo.plugin.ADVIVOSplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+        
+         <!--百度申明start-->
+        <activity
+            android:name="com.baidu.mobads.AppActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <!--如果targetSdkVersion设置值>=24，则需要添加provider申明，否则不需要添加，注意需要替换包名-->
+        <provider
+            android:name="com.baidu.mobads.openad.FileProvider"
+            android:authorities="com.jd.game.onetpet.vivo.bd.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/bd_file_paths"/>
+        </provider>
+        <!--百度申明end-->
+
+        <!-- GDT声明start -->
+        <service
+            android:name="com.qq.e.comm.DownloadService"
+            android:exported="false"/>
+        <!-- 请开发者注意字母的大小写，ADActivity，而不是AdActivity -->
+        <activity
+            android:name="com.qq.e.ads.ADActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
+
+        <!-- targetSDKVersion >= 24时才需要添加这个provider。provider的authorities属性的值为${packageName}.fileprovider，请开发者根据自己的${applicationId}来设置这个值 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.jd.game.onetpet.vivo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/gdt_file_path"/>
+        </provider>
+        <!-- GDT声明end -->
+        
+    </application>
+</manifest>

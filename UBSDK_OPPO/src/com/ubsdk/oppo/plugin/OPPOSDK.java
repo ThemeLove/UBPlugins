@@ -8,6 +8,7 @@ import com.nearme.game.sdk.callback.SinglePayCallback;
 import com.nearme.game.sdk.common.model.biz.PayInfo;
 import com.nearme.platform.opensdk.pay.PayResponse;
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBGamePauseCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.model.UBPayConfigModel;
@@ -15,6 +16,7 @@ import com.umbrella.game.ubsdk.plugintype.pay.PayConfig;
 import com.umbrella.game.ubsdk.plugintype.pay.PayType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -48,7 +50,6 @@ public class OPPOSDK {
 		mOPPOPayRate =Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("OPPO_Pay_Rate"));
 		mIsShowCpmsChannel = Boolean.parseBoolean(UBSDKConfig.getInstance().getParamMap().get("OPPO_IsShowCpSmsChannel"));
 		mIsUseCachedChannel = Boolean.parseBoolean(UBSDKConfig.getInstance().getParamMap().get("OPPO_IsUseCachedChannel"));
-		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
 		
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 
@@ -66,8 +67,25 @@ public class OPPOSDK {
 		UBSDK.getInstance().getUBInitCallback().onSuccess();
 	}
 	
+	public void login() {
+		UBLogUtil.logI(TAG+"----->login");
+		UBUserInfo ubUserInfo = new UBUserInfo();
+		ubUserInfo.setUid("123456");
+		ubUserInfo.setUserName("ubsdktest");
+		ubUserInfo.setToken("123456ABCDEFG");
+		ubUserInfo.setExtra("extra");
+//		成功回调
+		UBSDK.getInstance().getUBLoginCallback().onSuccess(ubUserInfo);
+	}
+
+	public void logout() {
+		UBLogUtil.logI(TAG+"----->logout");
+		UBSDK.getInstance().getUBLogoutCallback().onSuccess();
+	}
+	
 	public void pay(UBRoleInfo ubRoleInfo,UBOrderInfo ubOrderInfo){
 		UBLogUtil.logI(TAG+"----->pay");
+		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
 		if (mPayConfigMap!=null&&!TextUtil.isEmpty(ubOrderInfo.getGoodsID())) {
 			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
 			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
@@ -125,5 +143,13 @@ public class OPPOSDK {
 				UBSDK.getInstance().getUBExitCallback().onExit();
 			}
 		});
+	}
+
+	public void gamePause() {
+		UBLogUtil.logI(TAG+"----->gamePause");
+		UBGamePauseCallback ubGamePauseCallback = UBSDK.getInstance().getUBGamePauseCallback();
+		if (ubGamePauseCallback!=null) {
+			ubGamePauseCallback.onGamePause();
+		}
 	}
 }

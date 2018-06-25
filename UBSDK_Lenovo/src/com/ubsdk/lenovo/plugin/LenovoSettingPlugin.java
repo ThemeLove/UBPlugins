@@ -1,5 +1,6 @@
 package com.ubsdk.lenovo.plugin;
 
+import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -15,12 +16,13 @@ public class LenovoSettingPlugin implements IUBSettingPlugin{
 	@Override
 	public void gamePause() {
 		UBLogUtil.logI(TAG+"----->gamePause");
+		LenovoSDK.getInstance().gamePause();
 	}
 
 	@Override
 	public void exit() {
 		UBLogUtil.logI(TAG+"----->exit");
-		
+		LenovoSDK.getInstance().exit();
 	}
 
 	@Override

@@ -12,7 +12,6 @@ public class LenovoPayPlugin implements IUBPayPlugin{
 	private Activity mActivity;
 	private LenovoPayPlugin(Activity activity){
 		mActivity=activity;
-		LenovoSDK.getInstance().init();
 	}
 
 	@Override

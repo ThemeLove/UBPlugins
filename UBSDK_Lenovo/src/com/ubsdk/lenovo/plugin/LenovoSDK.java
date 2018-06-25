@@ -17,6 +17,7 @@ import com.umbrella.game.ubsdk.plugintype.pay.PayType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.pay.diy.PayMethodItem;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -31,7 +32,7 @@ public class LenovoSDK {
 	private String mPrivateKey;//应用私钥
 	private String mPublicKey;//平台公钥
 	private PayConfig mPayConfig;//本次支付的支付配置
-	private int mProductID;//商品ID
+	private PayDialog payDialog;
 	private LenovoSDK(){}
 	public static LenovoSDK getInstance(){
 		if (instance==null) {
@@ -43,25 +44,46 @@ public class LenovoSDK {
 	}
 	
 	public void init(){
-		UBLogUtil.logI(TAG+"----->init");
-		mActivity = UBSDKConfig.getInstance().getGameActivity();
-		mLenovoAppID = UBSDKConfig.getInstance().getParamMap().get("Lenovo_AppID");
-		mPrivateKey = UBSDKConfig.getInstance().getParamMap().get("Lenovo_PrivateKey");
-		mPublicKey = UBSDKConfig.getInstance().getParamMap().get("Lenovo_PublicKey");
-		mProductID = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("Lenovo_Pay_ProductID"));
-		
-		String mLenovoOrientation = UBSDKConfig.getInstance().getParamMap().get("Lenovo_Orientation");
-		int screenType=TextUtil.equalsIgnoreCase(mLenovoOrientation,"portrait")?IAppPay.PORTRAIT:IAppPay.LANDSCAPE;
-		IAppPay.init(mActivity,screenType, mLenovoAppID);
-		
-//		给出同步初始化成功回调
-		UBSDK.getInstance().getUBInitCallback().onSuccess();
+		try {
+			UBLogUtil.logI(TAG + "----->init");
+			mActivity = UBSDKConfig.getInstance().getGameActivity();
+			mLenovoAppID = UBSDKConfig.getInstance().getParamMap().get("Lenovo_AppID");
+			mPrivateKey = UBSDKConfig.getInstance().getParamMap().get("Lenovo_PrivateKey");
+			mPublicKey = UBSDKConfig.getInstance().getParamMap().get("Lenovo_PublicKey");
+			String mLenovoOrientation = UBSDKConfig.getInstance().getParamMap().get("UB_GameOrientation");
+			int screenType = TextUtil.equalsIgnoreCase(mLenovoOrientation, "portrait") ? IAppPay.PORTRAIT: IAppPay.LANDSCAPE;
+			IAppPay.init(mActivity, screenType, mLenovoAppID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			//		给出同步初始化成功回调
+			UBSDK.getInstance().getUBInitCallback().onSuccess();
+		}
 	}
 	
+	public void login(){
+		UBLogUtil.logI(TAG+"----->login:success----->empty implemention");
+		UBSDK.getInstance().getUBLoginCallback().onSuccess(new UBUserInfo());
+	}
+	
+	public void exit() {
+		UBLogUtil.logI(TAG,"exit----->store noImplement");
+		UBSDK.getInstance().getUBExitCallback().noImplement();
+	}
+	
+	public void logout() {
+		UBLogUtil.logI("logout:success----->simulation success");
+		UBSDK.getInstance().getUBLogoutCallback().onSuccess();
+	}
+	
+	public void gamePause() {
+		UBLogUtil.logI(TAG+"----->gamePause");
+		UBSDK.getInstance().getUBGamePauseCallback().onGamePause();
+	}
 
 	public void pay(UBRoleInfo ubRoleInfo,UBOrderInfo ubOrderInfo){
 		UBLogUtil.logI(TAG+"----->pay");
-		
+		UBLogUtil.logI(TAG+"----->pay----->ubRoleInfo="+ubRoleInfo+",ubOrderInfo="+ubOrderInfo);
 		HashMap<String, PayConfig> mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
 		if (mPayConfigMap!=null&&!TextUtils.isEmpty(ubOrderInfo.getGoodsID())) {
 			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
@@ -75,34 +97,41 @@ public class LenovoSDK {
 		final IPayResultCallback mPayResultCallback=new IPayResultCallback() {
 				
 				@Override
-				public void onPayResult(int resultCode, String signvalue, String resultInfo) {
-					UBLogUtil.logI(TAG+"----->onPayResult----->resultCode="+resultCode+",signvalue="+signvalue+",resultInfo="+resultInfo);
-					switch (resultCode) {
-		            case IAppPay.PAY_SUCCESS:
-		                boolean isPaySuccess = IAppPayOrderUtils.checkPayResult(signvalue,mPublicKey);
-		                if (isPaySuccess) {
-		                   UBSDK.getInstance().getUBPayCallback().onSuccess(tm, tm, tm, mPayConfig.getProductName(), mPayConfig.getAmount()+"", mPayConfig.getProductName());
-		                } else {
-		                   UBSDK.getInstance().getUBPayCallback().onFailed(tm, resultInfo, null);
-		                }
-		                break;
-		            case IAppPay.PAY_CANCEL:
-		            	UBSDK.getInstance().getUBPayCallback().onCancel(tm);
-		            	break;
-		            case IAppPay.PAY_ERROR:
-		            	UBSDK.getInstance().getUBPayCallback().onFailed(tm, resultInfo, null);
-		            	break;
-		            default:
-		            	UBSDK.getInstance().getUBPayCallback().onFailed(tm, resultInfo, null);
-		                break;
-					}
+				public void onPayResult(final int resultCode,final String signvalue,final String resultInfo) {
+					UBSDK.getInstance().runOnUIThread(new Runnable() {
+						@Override
+						public void run() {
+							UBLogUtil.logI(TAG+"----->onPayResult----->resultCode="+resultCode+",signvalue="+signvalue+",resultInfo="+resultInfo);
+							payDialog.dismiss();
+							
+							switch (resultCode) {
+				            case IAppPay.PAY_SUCCESS:
+				                boolean isPaySuccess = IAppPayOrderUtils.checkPayResult(signvalue,mPublicKey);
+				                if (isPaySuccess) {
+				                   UBSDK.getInstance().getUBPayCallback().onSuccess(tm, tm, tm, mPayConfig.getProductName(), mPayConfig.getAmount()+"", mPayConfig.getProductName());
+				                } else {
+				                   UBSDK.getInstance().getUBPayCallback().onFailed(tm, resultInfo, null);
+				                }
+				                break;
+				            case IAppPay.PAY_CANCEL:
+				            	UBSDK.getInstance().getUBPayCallback().onCancel(tm);
+				            	break;
+				            case IAppPay.PAY_ERROR:
+				            	UBSDK.getInstance().getUBPayCallback().onFailed(tm, resultInfo, null);
+				            	break;
+				            default:
+				            	UBSDK.getInstance().getUBPayCallback().onFailed(tm, resultInfo, null);
+				                break;
+							}
+						}
+					});
 				}
 		};
 			
 		if (PayType.PAY_TYPE_DIY==mPayConfig.getPayType()) {
 			ArrayList<PayMethodItem> payMethodItemList = mPayConfig.getPayMethodItemList();
 			
-			final PayDialog payDialog = new PayDialog(mActivity);
+			payDialog = new PayDialog(mActivity);
 			payDialog.setPayMethodItemList(payMethodItemList);
 			payDialog.updatePayInfoStatus(mPayConfig.getProductName(),mPayConfig.getAmount());
 			payDialog.setPayDialogClickListener(new PayDialogClickListener() {
@@ -113,15 +142,18 @@ public class LenovoSDK {
 			        //调用 IAppPayOrderUtils getTransdata() 获取支付参数
 			        IAppPayOrderUtils orderUtils = new IAppPayOrderUtils();
 			        orderUtils.setAppid(mLenovoAppID);
-			        orderUtils.setWaresid(mProductID);//爱贝后台申请的商品编号,可能对应计费点
-			        orderUtils.setWaresname(mPayConfig.getProductName());//商品名称，可选(用户可自定义，如果不传以后台配置为准)
+			        orderUtils.setWaresid(Integer.parseInt(mPayConfig.getBilling().getBillingID()));//爱贝后台申请的商品编号,可能对应计费点
+			        orderUtils.setWaresname(mPayConfig.getBilling().getBillingName());//商品名称，可选(用户可自定义，如果不传以后台配置为准)
 			        orderUtils.setCporderid(tm);//商户订单号
-			        orderUtils.setAppuserid("");//用户名
+			        orderUtils.setAppuserid("11111");//用户名
 			        orderUtils.setPrice((float)mPayConfig.getAmount());//单位 元,可选
 			        orderUtils.setCpprivateinfo(mPayConfig.getProductName());//透传，可选
 //			        orderUtils.setNotifyurl(PayConfig.notifyurl);//回调地址，可选
 			        
 			        String transdata = orderUtils.getTransdata(mPrivateKey);
+			        
+			        //关闭软键盘
+//		            ((InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			        
 			        if (PayMethod.ALIPAY==payMethodItem.getID()) {
 			        	IAppPay.startPay (mActivity,transdata,mPayResultCallback,IAppPay.PAY_METHOD_ALIPAY);

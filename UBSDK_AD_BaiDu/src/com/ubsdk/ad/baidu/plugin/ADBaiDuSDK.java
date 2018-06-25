@@ -54,6 +54,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 			initAD();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally{
+			UBLogUtil.logI(TAG+"----->BaiDu AD init success!");
 		}
 	}
 	

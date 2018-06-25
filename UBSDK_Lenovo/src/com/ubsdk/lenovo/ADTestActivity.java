@@ -1,5 +1,6 @@
 package com.ubsdk.lenovo;
 
+import com.umbrella.boomdots.lenovo.R;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.TextUtil;

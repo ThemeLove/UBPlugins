@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.oppo"
+    package="com.umbrella.boomdots.nearme.gamecenter"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0.1" >
 
 
     <uses-sdk
@@ -39,7 +39,8 @@
         <!-- nearme game sdk config goes here -->
         <meta-data android:name="debug_mode" android:value="true" />    <!-- 日志开关，发布时候设置为false -->
 		<meta-data android:name="is_offline_game" android:value="true" />  <!-- true:单机游戏   false:网游 -->
-		<meta-data android:name="app_key" android:value="c5217trjnrmU6gO5jG8VvUFU0" />  <!-- appKey -->
+		<meta-data android:name="app_key" android:value="9olqCZyPaccgw0sg88k8O40kW" />
+<!-- 		<meta-data android:name="app_key" android:value="c5217trjnrmU6gO5jG8VvUFU0" />  appKey -->
 		
         <activity
 			android:name="com.nearme.game.sdk.component.proxy.ProxyActivity"

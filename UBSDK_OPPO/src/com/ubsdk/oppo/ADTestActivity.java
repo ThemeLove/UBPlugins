@@ -1,5 +1,6 @@
 package com.ubsdk.oppo;
 
+import com.umbrella.boomdots.nearme.gamecenter.R;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.TextUtil;

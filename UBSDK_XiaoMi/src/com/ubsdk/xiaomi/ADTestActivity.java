@@ -1,5 +1,6 @@
 package com.ubsdk.xiaomi;
 
+import com.umbrella.boomdots.m.R;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.TextUtil;

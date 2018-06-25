@@ -12,14 +12,10 @@
 <param name="AD_BaiDu_RewardVideo_ID" value="1000003" />
 <param name="AD_BaiDu_Banner_Position" value="1" /> -->
 
-<param name="BaiDu_Game_Orientation" value="portrait" />
-<param name="BaiDu_AppId" value="11125131" />
-<param name="BaiDu_AppKey" value="uDxP9u9InnhH1DzDHsGXofVT"/>
-
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
 <param name="UB_GameOrientation" value="portrait" />
-<param name="UB_GameMainActivityName" value="com.umbrella.downthemountain" />
+<param name="UB_GameMainActivityName" value="com.umbrella.boomdots" />
 
 <param name="UB_PlatformID" value="80" />
 <param name="UB_PlatformName" value="baidu"/>

@@ -19,7 +19,11 @@ public class XiaoMiPayPlugin implements IUBPayPlugin{
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
-		XiaoMiSDK.getInstance().pay(ubRoleInfo, ubOrderInfo);
+		try {
+			XiaoMiSDK.getInstance().pay(ubRoleInfo, ubOrderInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

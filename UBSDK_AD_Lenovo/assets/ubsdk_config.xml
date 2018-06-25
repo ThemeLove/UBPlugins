@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="AD_Lenovo_Banner_ID" value="2050839" />
-<param name="AD_Lenovo_Interstitial_ID" value="2050840" />
-<param name="AD_Lenovo_Splash_ID" value="2050841" />
-<param name="AD_Lenovo_RewardVideo_ID" value="2050842" />
+
+<param name="AD_Lenovo_Banner_ID" value="1806010562504.app.lnjibovllf" />
+<param name="AD_Lenovo_Interstitial_ID" value="1806010562504.app.lnjibpzwn6" />
+<param name="AD_Lenovo_Splash_ID" value="" />
+<param name="AD_Lenovo_RewardVideo_ID" value="1806010562504.app.lnjibq1rtf" />
 <param name="AD_Lenovo_Banner_Position" value="1" />
 
-<param name="AD_Lenovo_Game_Orientation" value="portrait" />
-<param name="Lenovo_AppId" value="10871023" />
-<param name="Lenovo_AppKey" value="SlUcCVoVqNDioc6GKIqsOfZn"/>
+<!-- 测试数据 -->
+<!-- <param name="AD_Lenovo_Banner_ID" value="1603040292217.app.lno4jgtf" />
+<param name="AD_Lenovo_Interstitial_ID" value="1603040292217.app.lno4jgzz" />
+<param name="AD_Lenovo_Splash_ID" value="2050841" />
+<param name="AD_Lenovo_RewardVideo_ID" value="" />
+<param name="AD_Lenovo_Banner_Position" value="1" /> -->
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />

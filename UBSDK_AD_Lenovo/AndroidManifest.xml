@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.ad.lenovo"
+    package="com.umbrella.boomdots.lenovo"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -45,6 +45,7 @@
             android:name="com.ubsdk.ad.lenovo.plugin.ADLenovoSplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         
+        <!-- ad_lenovo   start -->
         <service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" >
@@ -52,7 +53,7 @@
 
         <activity
             android:name="com.qq.e.ads.ADActivity"
-            android:configChanges="orientation" >
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" >
         </activity>
         
         <activity android:name="com.chance.ads.AdActivity" >
@@ -61,8 +62,8 @@
         <activity
             android:name="com.chance.ads.VideoAdActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
@@ -73,12 +74,11 @@
         <!-- 1602261366672.app.ln --><!-- 测试 -->
         <!-- 1603031167669.app.ln --><!-- com.lestore.ad.demo1 ,线上 -->
         <!-- 1603040292217.app.ln --><!-- com.lestore.ad.demo，线上,本demo使用 -->
+        <!-- 1806010562504.app.ln --><!-- com.umbrella.boomdots.lenovo，线上,碰碰球使用  -->
         <meta-data
             android:name="lenovo.open.appid"
-            android:value="1603040292217.app.ln" />
+            android:value="1806010562504.app.ln" />
         <!-- value=" 在此处填入申请的 lenovo open AppID" -->
-        
-        
     </application>
 
 </manifest>

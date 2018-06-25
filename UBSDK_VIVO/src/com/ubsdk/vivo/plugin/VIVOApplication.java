@@ -18,7 +18,7 @@ public class VIVOApplication implements IChannelProxyApplication{
 //		初始化sdk
 		String VIVOAppID = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
 		UBLogUtil.logI(TAG+"----->vivoAppID="+VIVOAppID);
-		VivoUnionSDK.initSdk(application,VIVOAppID, true);//debug,正式版本设为false
+		VivoUnionSDK.initSdk(application,VIVOAppID, false);//debug,正式版本设为false
 	}
 
 	@Override

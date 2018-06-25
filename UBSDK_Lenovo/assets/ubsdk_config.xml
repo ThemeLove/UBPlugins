@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<param name="Lenovo_AppID" value="3194768" />
-<param name="Lenovo_PrivateKey" value="799dbf67e35841028df83495a1eb84e4" />
-<param name="Lenovo_PublicKey" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
-<param name="Lenovo_Pay_ProductID" value="1111"/>
-
+<param name="Lenovo_AppID" value="3019854556" />
+<param name="Lenovo_PrivateKey" value="MIICXQIBAAKBgQC4S9LMXMTGgNFuySrjhBAFtWBTRkQ0veuPaJLBT2pklYd+jjCyfWu5W9BiVuRtdh8UDFxBDtbIb1wAMp0lJZ7DfXrQ39V1WUGGUuzmQRGiAPIaAxzxGJyePme3phIMvGl2K8WbLz2x8mJzrEUPr6uNQrt23lkBoA1Y6RFbzJXdbwIDAQABAoGAMOCDHon38gFWCgC2LDLpIOpyioNXMXmxEI6WZUhPmi+CCNFjHuNef4FXKc2LtXAfW+zPRr3Nvsix6KeDv8dTbGeuYahYRwhvzJnkae4T0GFBKAIBUHlVILX57PBt/tP+OeU5Yk8jbnHzX+U5q5+Rzxs7jFlHFEuIl1pVKY5XK3ECQQDr8PfDplik6L3YgYj1W4XiPD2fRli2OcKf5PzX4g6KzmERdrha36j/WhFQ5ziSXaK6XIQMUc/b3Gcq190AWVs3AkEAx/bZtAnE7OwdMAoCmo7Z3n/+fA/xHYkE9hBGJg9dcdJ+WP1PfYuY1+e0E+i/x9eICoTdzhqc975P8vmtaCTbiQJBAMyUoqE5Cb/kN0kV+KWW+F4UkfIbUyyepM10BnFCiA1/qdc0s+HH8YeIl18pPnpbSpCBS9ZK0gr371TM28pDsL0CQHJqaVjduiMCWxUQtTqwgDMSs49TI9iNfRw6ZZkDc6lcEtViY6hnRtZLCrvVkl6LkZjLO4rhqW0MJPzXJgSQClkCQQCEJjm8Z7A2jHVD/RTKwYjbFfIa8hmR+ZYVy2/vxYogJ+7XEZZyVZl8xI1cdMa40f9h0OjK771SKWZu2KKknIjW" />
+<param name="Lenovo_PublicKey" value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTTKSRyNZZyt9LI9N7cdEDt24xKqke0SHEBCREj0e4mQjLIDHQDBpRzv+DHULkvWCVH+dbhblfoeTt+RYwQy9JEy0p16N5m2IZuaHAdHO9sr0aO5ca9oQSz7UUWUK6VXQKsT53zg4+jzDkunPolb89ns2XRVx4Od4cl8U2ENsKAQIDAQAB"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
 <param name="UB_GameOrientation" value="portrait" />
-<param name="UB_GameMainActivityName" value="com.umbrella.downthemountain" />
+<param name="UB_GameMainActivityName" value="com.umbrella.boomdots" />
 
 <param name="UB_PlatformID" value="80" />
 <param name="UB_PlatformName" value="baidu"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.ad.xiaomi"
+    package="com.umbrella.boomdots.mi"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -31,9 +31,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.xiaomi.ad.AdActivity"
-            android:configChanges="keyboard"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >

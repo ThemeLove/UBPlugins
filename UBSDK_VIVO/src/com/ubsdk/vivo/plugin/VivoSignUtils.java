@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 
 public class VivoSignUtils {
 
@@ -79,6 +81,7 @@ public class VivoSignUtils {
         String prestr = createLinkString(filteredReq, true, false);	//得到待签名字符串 需要对map进行sort，不需要对value进行URL编码
         prestr = prestr + QSTRING_SPLIT + md5Summary(key);
 
+//        Log.i("MD5","MD5before="+prestr);
         return md5Summary(prestr);
     }
 

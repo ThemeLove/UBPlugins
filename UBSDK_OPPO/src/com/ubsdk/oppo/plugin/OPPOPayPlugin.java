@@ -13,13 +13,16 @@ public class OPPOPayPlugin implements IUBPayPlugin {
 	private Activity mActivity;
 	private OPPOPayPlugin(Activity activity){
 		this.mActivity=activity;
-		OPPOSDK.getInstance().init();
 	}
 
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
-		OPPOSDK.getInstance().pay(ubRoleInfo, ubOrderInfo);
+		try {
+			OPPOSDK.getInstance().pay(ubRoleInfo, ubOrderInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

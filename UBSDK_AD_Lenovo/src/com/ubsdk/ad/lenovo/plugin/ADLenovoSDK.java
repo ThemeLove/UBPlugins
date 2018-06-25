@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import com.lestore.ad.sdk.Banner;
 import com.lestore.ad.sdk.Interstitial;
 import com.lestore.ad.sdk.LestoreAD;
+import com.lestore.ad.sdk.VideoActivity;
 import com.lestore.ad.sdk.VideoAdvert;
 import com.lestore.ad.sdk.listener.BannerListener;
 import com.lestore.ad.sdk.listener.InterstitialListener;
@@ -56,6 +57,8 @@ public class ADLenovoSDK implements IUBADPlugin{
 			initAD();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally{
+			UBLogUtil.logI(TAG+"----->Lenovosdk AD init success!");
 		}
 	}
 	
@@ -81,19 +84,22 @@ public class ADLenovoSDK implements IUBADPlugin{
 
 			@Override
 			public void onDestroy() {
+				if(mBannerAD!= null){
+					mBannerAD.DestroyBanner();
+					mBannerAD=null;
+				}
 				
 				if(mInterstitialAD!= null){
 				   mInterstitialAD.destroyIntersititial();
-				}
-				
-				if(mBannerAD!= null){
-				   mBannerAD.DestroyBanner();
+				   mInterstitialAD=null;
 				}
 				
 				if (mRewardVideoAD!= null) {
 					mRewardVideoAD.destroy();
+					mRewardVideoAD=null;
 				}
 				super.onDestroy();
+				
 			}
 		});
 	}
@@ -116,7 +122,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onBannerShowSuccess(String msg) {
-				UBLogUtil.logI(TAG+"----->onBannerADListener----->success!");
+				UBLogUtil.logI(TAG+"----->onBannerADListener----->showSuccess!");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onShow(ADType.AD_TYPE_BANNER,msg);
 				}
@@ -129,7 +135,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onBannerRequestFailed(String msg) {
-				UBLogUtil.logI(TAG+"----->onBannerADListener----->failed!");
+				UBLogUtil.logI(TAG+"----->onBannerADListener----->requestFailed!");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onFailed(ADType.AD_TYPE_BANNER, msg);
 				}
@@ -141,7 +147,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onInterstitialShowSuccess(String msg) {
-				UBLogUtil.logI(TAG+"----->interstitialListener----->success");
+				UBLogUtil.logI(TAG+"----->interstitialListener----->showSuccess");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL, msg);
 				}
@@ -149,7 +155,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onInterstitialRequestFailed(String msg) {
-				UBLogUtil.logI(TAG+"----->interstitialListener----->fail:msg="+msg);
+				UBLogUtil.logI(TAG+"----->interstitialListener----->requestFail:msg="+msg);
 				if (mUBADCallback!=null) {
 					mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL, msg);
 				}
@@ -169,9 +175,9 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onVideoShowSuccess() {
-				UBLogUtil.logI(TAG+"----->videoListener----->success!");
+				UBLogUtil.logI(TAG+"----->videoListener----->showSuccess!");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_REWARDVIDEO,"video show!");
+					mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO,"video complete!");
 				}
 			}
 			
@@ -192,7 +198,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 			public void onVideoDismiss() {
 				UBLogUtil.logI(TAG+"----->videoListener----->dismiss");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO, "dismiss");
+					mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO, "dismiss");
 				}
 			}
 		};
@@ -254,25 +260,30 @@ public class ADLenovoSDK implements IUBADPlugin{
 	}
 	
 	@Override
-	public void showADWithADType(int adType) {
+	public void showADWithADType(final int adType) {
 		UBLogUtil.logI(TAG+"----->showADWithADType");
-		hideADWithADType(adType);//显示之前先隐藏广告
-		switch (adType) {
-		case ADType.AD_TYPE_BANNER:
-			showBannerAD();
-			break;
-		case ADType.AD_TYPE_INTERSTITIAL:
-			showInterstitialAD();
-			break;
-		case ADType.AD_TYPE_SPLASH:
-			showSplashAD();
-			break;
-		case ADType.AD_TYPE_REWARDVIDEO:
-			showVideoAD();
-			break;
-		default:
-			break;
-		}
+		UBSDK.getInstance().runOnUIThread(new Runnable() {
+			@Override
+			public void run() {
+				hideADWithADType(adType);//显示之前先隐藏广告
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					showBannerAD();
+					break;
+				case ADType.AD_TYPE_INTERSTITIAL:
+					showInterstitialAD();
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					showSplashAD();
+					break;
+				case ADType.AD_TYPE_REWARDVIDEO:
+					showVideoAD();
+					break;
+				default:
+					break;
+				}
+			}
+		});
 	}
 
 	private void showBannerAD() {
@@ -299,16 +310,18 @@ public class ADLenovoSDK implements IUBADPlugin{
 	
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
-		if (mRewardVideoAD==null) {
+/*		if (mRewardVideoAD==null) {
 			mRewardVideoAD = new VideoAdvert(mActivity, mRewardVideoID, mRewardVideoListener);
+			mRewardVideoAD.loadVideoAd(); // 加载视频
 		}
-		mRewardVideoAD.loadVideoAd(); // 加载视频
+		mRewardVideoAD.showVideoAd(); // 加载视频
+*/		
+		new VideoActivity(mActivity,mRewardVideoID, mRewardVideoListener);
 	}
 
 	@Override
 	public void hideADWithADType(int adType) {
 		UBLogUtil.logI(TAG+"----->hideADWithADType");
-		
 		switch (adType) {
 		case ADType.AD_TYPE_BANNER:
 			hideBannerAD();

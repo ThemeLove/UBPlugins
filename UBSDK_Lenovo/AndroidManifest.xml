@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubsdk.lenovo"
+    package="com.umbrella.boomdots.lenovo"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -23,6 +23,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    
 
     <!--  联想 广告弹窗权限 -->
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
@@ -36,6 +38,7 @@
         <activity
             android:name="com.ubsdk.lenovo.UBSDK_Lenovo_MainActivity"
             android:label="@string/app_name"
+            android:configChanges="screenSize|orientation|keyboard|navigation|layoutDirection"
             android:screenOrientation="portrait"
              >
             <intent-filter>
@@ -50,7 +53,7 @@
         <!-- 联想 广告弹窗    start -->
         <meta-data
             android:name="lenovo.open.appid"
-            android:value="1606121236133.app.ln" />
+            android:value="1806010562504.app.ln" />
         <!-- 游戏接入时请直接复制此项内容；其他应用此处填写分配给应用的token -->
         <meta-data
             android:name="lenovo:applicationToken"
@@ -58,13 +61,13 @@
 
         <activity
             android:name="com.lenovo.pop.ui.FlexibleActivity"
-            android:configChanges="orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize|navigation"
             android:screenOrientation="portrait"
             android:theme="@style/com_lenovo_lsf_Translucent_NoTitle_Dialog" >
         </activity>
         <activity
             android:name="com.lenovo.pop.ui.QuiteActivity"
-            android:configChanges="orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize|navigation"
             android:screenOrientation="portrait"
             android:theme="@style/com_lenovo_lsf_Translucent_NoTitle_Dialog" >
         </activity>
@@ -79,7 +82,8 @@
         <!-- 爱贝微信回调界面-->
         <activity
             android:name="com.iapppay.alpha.pay.channel.weixinpay.WeixinWapPayActivity"
-            android:configChanges="orientation"
+            android:configChanges="screenSize|orientation|keyboard|navigation|layoutDirection"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent"/>
 
 
@@ -89,7 +93,7 @@
             android:required="false" />
         <activity
             android:name="com.unionpay.uppay.PayActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
@@ -109,6 +113,8 @@
             android:exported="false"
             android:screenOrientation="behind"></activity>
         <!-- alipay sdk end -->
+
+
     </application>
 
 </manifest>

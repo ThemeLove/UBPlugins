@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <payconfig>
-    <product productID="101"  productName="60元宝" amount="6" payType="3">
-	    <billing billingID="47033" billingName="更多主题"  billingPrice="4.9"/>
+    <product productID="102"  productName="去除广告" amount="4.9" payType="3">
+	    <billing billingID="remove_ads" billingName="去除广告"  billingPrice="4.9"/>
 	    <paymethoditems>
 	    	<paymethoditem payID="1" payName="支付宝"  payDesc="" isSelect="true"/>
 	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
 	    	<paymethoditem payID="3" payName="QQ支付"  payDesc=""/>
 	    </paymethoditems>   
-	    <orderinfo orderID="1000" amount="6" productName="60元宝" productDesc="60元宝"  ext="ext" />     
+	    <orderinfo orderID="1000" amount="4.9" productName="去除广告" productDesc="去除广告"  ext="ext" />     
 	</product>
-    <product productID="2" payType="1">
-	    <billing billingID="47033" billingName="更多主题"  billingPrice="4.9"/>
+	<product productID="101"  productName="测试001" amount="0.01" payType="3">
+	    <billing billingID="test001" billingName="测试001"  billingPrice="0.01"/>
 	    <paymethoditems>
-	    	<paymethoditem payName="支付宝" payIcon="1" amount="6" productName="60元宝" productDesc=""/>
+	    	<paymethoditem payID="1" payName="支付宝"  payDesc="" isSelect="true"/>
+	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
+	    	<paymethoditem payID="3" payName="QQ支付"  payDesc=""/>
 	    </paymethoditems>   
-	    <orderinfo orderID="1" amount="1" productName="1" productDesc="1"  ext="3" />     
+	    <orderinfo orderID="1000" amount="0.01" productName="测试001" productDesc="测试001"  ext="ext" />     
 	</product>
 </payconfig>

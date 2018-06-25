@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<!-- <param name="VIVO_AppID" value="2fc58425695e5ab299ebee06af69d1d9" />
+<param name="AD_VIVO_Banner_ID" value="ac18823f12b4ca6c6f209f7aed75cdc9" />
+<param name="AD_VIVO_Interstitial_ID" value="bccda9553ca678d19c36558dc04d7936" />
+<param name="AD_VIVO_Splash_ID" value="8b7bcc89a946b6ef5bf5b7210d76c4b8"/>
+<param name="AD_VIVO_RewardVideo_ID" value="7edb857ef29adef00c0cd2d8a0b0bc60"/>
+<param name="AD_VIVO_Banner_Position" value="1"/> -->
+
+<param name="OPPO_AppID" value="100"/>
+<param name="AD_OPPO_Splash_App_Name" value="碰碰球" />
+<param name="AD_OPPO_Splash_App_Desc" value="休闲益智首选" />
+
+<param name="AD_OPPO_Banner_ID" value="328" />
+<param name="AD_OPPO_Interstitial_ID" value="329" />
+<param name="AD_OPPO_Splash_ID" value="331"/>
+<param name="AD_OPPO_RewardVideo_ID" value="332"/>
+<param name="AD_OPPO_Banner_Position" value="1"/>
+
+<param name="UB_GameID" value="1123" />
+<param name="UB_GameDebug" value="true" />
+<param name="UB_GameOrientation" value="portrait" />
+<param name="UB_GameMainActivityName" value="com.umbrella.boomdots" />
+
+<param name="UB_PlatformID" value="80" />
+<param name="UB_PlatformName" value="oppo"/>
+<param name="UB_SubPlatformID" value="0" />
+<param name="UB_ChannelID" value="1" />
+<param name="UB_SubChannelID" value="1" />
+<plugins>
+    <plugin name="com.ubsdk.ad.oppo.plugin.ADOPPOSDK" type="4" />
+</plugins>
+<applications>
+</applications>
+</config>

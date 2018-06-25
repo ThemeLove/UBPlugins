@@ -117,11 +117,13 @@ public class BaiDuSDK {
 
 												initPingXuan();// 初始化品宣
 												callSupplement();// 补单接口
+											}else{
+												UBSDK.getInstance().getUBInitCallback().onFailed("BaiDu sdk init failed:functionCode="+mFunctionCode, null);
 											}
 										} catch (Exception e) {
 											e.printStackTrace();
+											UBSDK.getInstance().getUBInitCallback().onFailed("BaiDu sdk init failed:exceptrion="+e.getMessage(), null);
 										}
-
 									}
 								});
 					} catch (Exception e) {

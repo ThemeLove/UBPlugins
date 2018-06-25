@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.json.JSONObject;
 
@@ -131,7 +130,7 @@ public class VIVOSDK {
 		final String tm=System.currentTimeMillis()+"";//系统时间用作商户订单号
 		if (PayType.PAY_TYPE_DIY==mPayConfig.getPayType()) {//vivo是自定义支付
 			ArrayList<PayMethodItem> payMethodItemList = mPayConfig.getPayMethodItemList();
-			final PayDialog payDialog = new PayDialog(mActivity);
+			payDialog = new PayDialog(mActivity);
 			payDialog.setPayMethodItemList(payMethodItemList);
 			payDialog.updatePayInfoStatus("VIVO", "",mPayConfig.getProductName(),mPayConfig.getAmount());
 			payDialog.setPayDialogClickListener(new PayDialogClickListener() {
@@ -154,6 +153,7 @@ public class VIVOSDK {
 						@Override
 						public void onFailed(String errorMsg) {
 							UBSDK.getInstance().getUBPayCallback().onFailed(tm, "get vivo orderInfo error!",null);
+							payDialog.dismiss();
 						}
 					});
 				}
@@ -170,18 +170,24 @@ public class VIVOSDK {
 	VivoPayCallback vivoPayCallback = new VivoPayCallback() {
 		
 		@Override
-		public void onVivoPayResult(String transNo, boolean isSuccess, String errorCode) {
+		public void onVivoPayResult(final String transNo,final boolean isSuccess,final String errorCode) {
 			UBLogUtil.logI(TAG+"----->vivoPay----->transNo="+transNo+",isSuccess="+isSuccess+",errorCode="+errorCode);
-			
-			if (isSuccess) {
-				UBSDK.getInstance().getUBPayCallback().onSuccess(transNo, transNo, mPayConfig.getProductID(), mPayConfig.getProductName(), mPayConfig.getAmount()+"", mPayConfig.getProductName());
-			}else{
-				UBSDK.getInstance().getUBPayCallback().onFailed(transNo, errorCode, null);
-			}
+			UBSDK.getInstance().runOnUIThread(new Runnable() {
+				@Override
+				public void run() {
+					payDialog.dismiss();
+					if (isSuccess) {
+						UBSDK.getInstance().getUBPayCallback().onSuccess(transNo, transNo, mPayConfig.getProductID(), mPayConfig.getProductName(), mPayConfig.getAmount()+"", mPayConfig.getProductName());
+					}else{
+						UBSDK.getInstance().getUBPayCallback().onFailed(transNo, errorCode, null);
+					}
+				}
+			});
 		}
 	};
 	private String mVIVO_AppKey;
 	private String mVIVOPayVersion;
+	private PayDialog payDialog;
 	/**
 	 * 从VIVO服务器交互获取订单信息
 	 * @param payConfig
@@ -194,9 +200,8 @@ public class VIVOSDK {
 		Request<String> VIVOOrderRequest = NoHttp.createStringRequest(VIVOOrderUrl,RequestMethod.POST);
 	    //订单推送接口请在服务器端访问
 	    final HashMap<String, String> params = new HashMap<String, String>();
-	    params.put("notifyUrl","http://113.98.231.125:8051/vcoin/notifyStubAction");//回调地址
+	    params.put("notifyUrl","");//回调地址
 	    params.put("orderAmount",Float.parseFloat(mPayConfig.getAmount()+"")+"");  //注意：精确到小数点后两位；
-//	    params.put("orderAmount","6.00");  //注意：精确到小数点后两位；
 	    params.put("orderDesc",mPayConfig.getProductName());
 	    params.put("orderTitle",mPayConfig.getProductName());
 	    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -211,9 +216,9 @@ public class VIVOSDK {
 	    params.put("signMethod", "MD5");
 	    UBLogUtil.logI(TAG+"----->params="+params);
 		VIVOOrderRequest.add(params);
-		 UBLogUtil.logI(TAG+"----->signStr="+signStr);
-		boolean verifySignature = VivoSignUtils.verifySignature(params, mVIVO_AppKey);
-		UBLogUtil.logI(TAG+"----->验证签名="+verifySignature);
+//		UBLogUtil.logI(TAG+"----->signStr="+signStr);
+//		boolean verifySignature = VivoSignUtils.verifySignature(params, mVIVO_AppKey);
+//		UBLogUtil.logI(TAG+"----->验证签名="+verifySignature);
 		
 		UBHttpManager.getInstance().addRequest(VIVORequestWhat, VIVOOrderRequest, new OnResponseListener<String>() {
 

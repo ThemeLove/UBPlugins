@@ -12,17 +12,19 @@ public class LenovoUserPlugin implements IUBUserPlugin{
 	private Activity mActivity;
 	private LenovoUserPlugin(Activity activity){
 		this.mActivity=activity;
-//		LenovoSDK.getInstance().init();
+		LenovoSDK.getInstance().init();
 	}
 	
 	@Override
 	public void login() {
 		UBLogUtil.logI(TAG+"----->login");
+		LenovoSDK.getInstance().login();
 	}
 
 	@Override
 	public void logout() {
 		UBLogUtil.logI(TAG+"----->logout");
+		LenovoSDK.getInstance().logout();
 	}
 
 	@Override
@@ -36,7 +38,6 @@ public class LenovoUserPlugin implements IUBUserPlugin{
 		UBLogUtil.logI(TAG+"----->setGameDataInfo");
 	}
 	
-
 	@Override
 	public boolean isSupportMethod(String methodName, Object[] args) {
 		UBLogUtil.logI(TAG+"----->isSupportMethod");

@@ -18,6 +18,7 @@ import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -57,6 +58,7 @@ public class UBSDK_Lenovo_MainActivity extends Activity
     {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mActivity = this;
     	UBLogUtil.logI(TAG+"----->"+"onCreate");
         

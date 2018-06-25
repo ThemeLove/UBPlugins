@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <payconfig>
-    <product productID="101"  productName="60元宝" amount="6" payType="3">
-	    <billing billingID="47033" billingName="更多主题"  billingPrice="4.9"/>
+    <product productID="101"  productName="去除广告" amount="4.9" payType="3">
+	    <billing billingID="1" billingName="去除广告"  billingPrice="4.9"/>
 	    <paymethoditems>
 	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
 	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
-	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
-	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
-	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
-	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
-	    	<paymethoditem payID="2" payName="微信支付"  payDesc=""/>
-	    	<paymethoditem payID="1" payName="支付宝支付"  payDesc=""/>
 	    </paymethoditems>   
-	    <orderinfo orderID="1000" amount="6" productName="60元宝" productDesc="60元宝"  ext="ext" />     
+	    <orderinfo orderID="1000" amount="4.9" productName="去除广告" productDesc="4.9"  ext="ext" />     
 	</product>
 </payconfig>

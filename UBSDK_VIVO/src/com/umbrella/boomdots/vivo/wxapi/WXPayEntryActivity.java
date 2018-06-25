@@ -1,4 +1,4 @@
-package com.ubsdk.vivo.wxapi;
+package com.umbrella.boomdots.vivo.wxapi;
 
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
