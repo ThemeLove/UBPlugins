@@ -325,6 +325,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	@Override
 	public void showADWithADType(int adType) {
 		UBLogUtil.logI(TAG+"----->showADWithADType");
+		mUBADCallback = UBAD.getInstance().getUBADCallback();
 		hideADWithADType(adType);//显示之前先隐藏广告
 		switch (adType) {
 		case ADType.AD_TYPE_BANNER:

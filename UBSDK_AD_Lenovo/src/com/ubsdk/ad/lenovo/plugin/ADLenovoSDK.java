@@ -46,9 +46,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 	private VideoAdvert mRewardVideoAD;
 	private ADLenovoSDK(Activity activity){
 		mActivity=activity;
-		mUBADCallback = UBAD.getInstance().getUBADCallback();
 		mWM=(WindowManager) activity.getSystemService(Activity.WINDOW_SERVICE);
-		
 		try {
 			setActivityListener();
 //			加载百度广告参数
@@ -265,6 +263,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 		UBSDK.getInstance().runOnUIThread(new Runnable() {
 			@Override
 			public void run() {
+				mUBADCallback = UBAD.getInstance().getUBADCallback();
 				hideADWithADType(adType);//显示之前先隐藏广告
 				switch (adType) {
 				case ADType.AD_TYPE_BANNER:

@@ -44,7 +44,6 @@ public class ADVIVOSDK implements IUBADPlugin{
 	private ADVIVOSDK(Activity activity){
 		this.mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
-		mUBADCallback = UBAD.getInstance().getUBADCallback();
 		try {
 			setActivityListener();
 			loadADParams();

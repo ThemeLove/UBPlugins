@@ -1,8 +1,11 @@
 package com.ubsdk.ad.xiaomi.plugin;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
+import com.miui.zeus.mimo.sdk.ad.AdWorkerFactory;
+import com.miui.zeus.mimo.sdk.ad.IAdWorker;
+import com.miui.zeus.mimo.sdk.ad.IVideoAdWorker;
+import com.miui.zeus.mimo.sdk.listener.MimoAdListener;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
@@ -12,20 +15,16 @@ import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
-import com.xiaomi.ad.AdListener;
-import com.xiaomi.ad.NativeAdInfoIndex;
-import com.xiaomi.ad.NativeAdListener;
-import com.xiaomi.ad.SplashAdListener;
-import com.xiaomi.ad.adView.BannerAd;
-import com.xiaomi.ad.adView.BannerAd.BannerListener;
-import com.xiaomi.ad.adView.InterstitialAd;
-import com.xiaomi.ad.adView.SplashAd;
-import com.xiaomi.ad.adView.StandardNewsFeedAd;
-import com.xiaomi.ad.common.pojo.AdError;
-import com.xiaomi.ad.common.pojo.AdEvent;
+import com.xiaomi.ad.common.pojo.AdType;
 
-import android.R;
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -42,23 +41,19 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	
 	private String mBannerID;//bannerID
 	private String mInterstitialID;//InterstitialID
-	private String mSplashID;//SplashID
-	private String mRewardVideoID;//RewardVideoID
 	private FrameLayout mBannerADContainer;
-	private BannerListener mBannerADListener;
-	private BannerAd mBannerAD;
-	private AdListener mInterstitialADListener;
-	private InterstitialAd mInterstitialAD;
-	private SplashAdListener mSplashADListener;
 	private FrameLayout mSplashADContainer;
-	private SplashAd mSplashAD;
-	private StandardNewsFeedAd mRewardVideoAD;
-	private NativeAdListener mRewardVideoListener;
 	private FrameLayout mRewardVideoADContainer;
 	private UBADCallback mUBADCallback;
+	private IAdWorker mSplashAD;
+	private MimoAdListener mInterstitialADListener;
+	private IAdWorker mInterstitialAD;
+	private IVideoAdWorker mVideoAD;
+	private MimoAdListener mBannerADListener;
+	private IAdWorker mBannerAD;
+	private int mBannerADPosition=1;//默认为顶部
 	private ADXiaoMiSDK(Activity activity){
 		mActivity=activity;
-		mUBADCallback = UBAD.getInstance().getUBADCallback();
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
 		mContainer = (ViewGroup) ((ViewGroup)mActivity.findViewById(android.R.id.content)).getChildAt(0);
 		try {
@@ -77,13 +72,71 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 
 			@Override
+			public void onCreate(Bundle savedInstanceState) {
+				 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//version>23时
+					 if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+			             || ContextCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+			             || ContextCompat.checkSelfPermission(mActivity, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+						 
+						 ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+			                        Manifest.permission.READ_PHONE_STATE, Manifest.permission.INTERNET}, 1001);
+					}
+				}
+				super.onCreate(savedInstanceState);
+			}
+
+			@Override
+			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
+				super.onRequestPermissionResult(requestCode, permissions, grantResults);
+				if (requestCode == 1001) {
+		            if (grantResults.length >= 2) {
+		                if (grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+							UBLogUtil.logI(TAG+"----->获得读写权限");
+						}else{
+							UBLogUtil.logI(TAG+"----->申请读写权限失败");
+						}
+		                if (grantResults[1]==PackageManager.PERMISSION_GRANTED) {
+							UBLogUtil.logI(TAG+"----->获得电话权限");
+						}else{
+							UBLogUtil.logI(TAG+"----->申请电话权限失败");
+						}
+		                if (grantResults[2]==PackageManager.PERMISSION_GRANTED) {
+							UBLogUtil.logI(TAG+"----->获得联网权限");
+						}else{
+							UBLogUtil.logI(TAG+"----->申请联网权限失败");
+						}
+		            }
+		        }
+			}
+
+			@Override
 			public void onDestroy() {
-				mBannerAD.recycle();
+				try {
+					if (mBannerAD!=null) {
+						mWM.removeView(mBannerADContainer);
+						mBannerADContainer=null;
+						mBannerAD.recycle();
+					}
+					if (mSplashAD!=null) {
+						mSplashAD.recycle();
+					}
+					if (mInterstitialAD!=null) {
+						mInterstitialAD.recycle();
+					}
+					if (mVideoAD!=null) {
+						mVideoAD.recycle();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				super.onDestroy();
 			}
 
 			@Override
 			public void onBackPressed() {
+				if (mSplashADContainer.getVisibility()==View.VISIBLE) {//闪屏广告和插屏广告显示的时候屏蔽返回键
+					return;
+				}
 				super.onBackPressed();
 			}
 		});
@@ -108,166 +161,108 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		mRewardVideoADContainer.setLayoutParams(rewardVideoLayoutParams);
 		mContainer.addView(mRewardVideoADContainer,rewardVideoLayoutParams);
 		
-		mBannerADListener = new BannerAd.BannerListener() {
+//		BannerAD
+		mBannerADListener = new MimoAdListener(){
+
 			@Override
-			public void onAdEvent(AdEvent adEvent) {
-				UBLogUtil.logI(TAG+"----->adBanner----->adEvent="+adEvent.toString());
-				if (adEvent.mType==AdEvent.TYPE_CLICK) {
-					UBLogUtil.logI(TAG+"----->on Banner Click!");
-					if (mUBADCallback!=null) {
-						mUBADCallback.onClick(ADType.AD_TYPE_BANNER, "Banner AD click!");
-					}
-				}else if(adEvent.mType==AdEvent.TYPE_SKIP){
-					UBLogUtil.logI(TAG+"----->on Banner Closed!");
-					if (mUBADCallback!=null) {
-						mUBADCallback.onClosed(ADType.AD_TYPE_BANNER,"Banner AD closed!");
-					}
-				}else if (adEvent.mType==AdEvent.TYPE_VIEW) {
-					UBLogUtil.logI(TAG+"----->on Banner Show!");
-					if (mUBADCallback!=null) {
-						mUBADCallback.onClosed(ADType.AD_TYPE_BANNER,"Banner AD show!");
-					}
-				}
-			}
-		};
-		
-		mInterstitialADListener = new AdListener() {
-			
-			@Override
-			public void onViewCreated(View view) {
-				UBLogUtil.logI(TAG+"----->on Interstitial onViewCreated");
-				if (mInterstitialAD!=null&&mInterstitialAD.isReady()) {
-					mInterstitialAD.show();
-				}
-			}
-			
-			@Override
-			public void onAdLoaded() {
-				UBLogUtil.logI(TAG+"----->on Interstitial onAdLoaded");
+			public void onAdClick() {
+				UBLogUtil.logI(TAG+"----->Banner AD click!");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD show success!");
+					mUBADCallback.onClick(ADType.AD_TYPE_BANNER,"Banner AD click!");
 				}
 			}
-			
+
 			@Override
-			public void onAdEvent(AdEvent adEvent) {
-				UBLogUtil.logI(TAG+"----->on Interstitial onAdEvent");
-				if (AdEvent.TYPE_SKIP==adEvent.mType) {
-					UBLogUtil.logI(TAG+"----->on Interstitial close!");
-					if (mUBADCallback!=null) {
-						mUBADCallback.onClosed(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD close!");
-					}
-				}else if(AdEvent.TYPE_CLICK==adEvent.mType){
-					UBLogUtil.logI(TAG+"----->on Interstitial click!");
-					if (mUBADCallback!=null) {
-						mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD click!");
-					}
-				}
-			}
-			
-			@Override
-			public void onAdError(AdError adError) {
-				UBLogUtil.logI(TAG+"----->on Interstitial onAdError----->msg="+adError.toString());
+			public void onAdDismissed() {
+				UBLogUtil.logI(TAG+"----->Banner AD show closed!");
+				mBannerADContainer.setVisibility(View.GONE);
 				if (mUBADCallback!=null) {
-					mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD failed!");
-				}
-			}
-		};
-		
-		mSplashADListener = new SplashAdListener() {
-			
-			@Override
-			public void onAdPresent() {
-				UBLogUtil.logI(TAG+"----->Splash AD show success!");
-				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_SPLASH, "Splash AD show success!");
+					mUBADCallback.onClosed(ADType.AD_TYPE_BANNER,"Banner AD closed!");
 				}
 			}
 			
 			@Override
 			public void onAdFailed(String msg) {
-				UBLogUtil.logI(TAG+"----->Splash AD show failed!----->msg="+msg);
+				UBLogUtil.logI(TAG+"----->Banner AD show failed!----->msg="+msg);
+				mBannerADContainer.setVisibility(View.GONE);
 				if (mUBADCallback!=null) {
-					mUBADCallback.onFailed(ADType.AD_TYPE_SPLASH, msg);
+					mUBADCallback.onFailed(ADType.AD_TYPE_BANNER, msg);
 				}
 			}
-			
+
 			@Override
-			public void onAdDismissed() {
-				UBLogUtil.logI(TAG+"----->Splash AD show closed!");
+			public void onAdLoaded() {
+				UBLogUtil.logI(TAG+"----->Banner AD onLoaded");
+				try {
+					if (mBannerAD.isReady()) {
+						mBannerAD.show();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onAdPresent() {
+				UBLogUtil.logI(TAG+"----->Banner AD show success!");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onClick(ADType.AD_TYPE_SPLASH,"Splash AD closed!");
+					mUBADCallback.onShow(ADType.AD_TYPE_BANNER, "Banners AD show success!");
 				}
-			}
+			}};
 			
-			@Override
-			public void onAdClick() {
-				UBLogUtil.logI(TAG+"----->Splash AD click!");
-				if (mUBADCallback!=null) {
-					mUBADCallback.onClick(ADType.AD_TYPE_SPLASH,"Splash AD click!");
+//			InterstitialAD
+			mInterstitialADListener = new MimoAdListener(){
+
+				@Override
+				public void onAdClick() {
+					UBLogUtil.logI(TAG+"----->on Interstitial click!");
+					if (mUBADCallback!=null) {
+						mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD click!");
+					}
 				}
-			}
-		};
-		
-		mRewardVideoListener = new NativeAdListener() {
-			@Override
-			public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-				UBLogUtil.logI(TAG+"----->onNativeInfoSuccess!");
-				if (list!=null&&list.size()>0) {
-					NativeAdInfoIndex response = list.get(0);
-					mRewardVideoAD.buildViewAsync(response, 1, new AdListener() {
-						
-						@Override
-						public void onViewCreated(View view) {
-							UBLogUtil.logI(TAG+"----->RewardVideo onViewCreated!");
-							mRewardVideoADContainer.removeAllViews();
-							mRewardVideoADContainer.addView(view);
-						}
-						
-						@Override
-						public void onAdLoaded() {
-							UBLogUtil.logI(TAG+"----->RewardVideo onAdLoaded!");
-						}
-						
-						@Override
-						public void onAdEvent(AdEvent adEvent) {
-							if (AdEvent.TYPE_SKIP==adEvent.mType) {
-								UBLogUtil.logI(TAG+"----->RewardVideo AD closed!");
-								if (mUBADCallback!=null) {
-									mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD closed!");
-								}
-							}else if(AdEvent.TYPE_CLICK==adEvent.mType){
-								UBLogUtil.logI(TAG+"----->RewardVideo AD click!");
-								if (mUBADCallback!=null) {
-									mUBADCallback.onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD click!");
-								}
-							}else if(AdEvent.TYPE_VIEW==adEvent.mType){
-								UBLogUtil.logI(TAG+"----->RewardVideo AD show success!");
-								if (mUBADCallback!=null) {
-									mUBADCallback.onShow(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show success!");
-								}
-							}
-						}
-						
-						@Override
-						public void onAdError(AdError adError) {
-							UBLogUtil.logI(TAG+"----->RewardVideo AD failed!");
-							mRewardVideoADContainer.removeAllViews();
-							if (mUBADCallback!=null) {
-								mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD failed!");
-							}
-						}
-					});
+
+				@Override
+				public void onAdDismissed() {
+					UBLogUtil.logI(TAG+"----->on Interstitial close!");
+					if (mUBADCallback!=null) {
+						mUBADCallback.onClosed(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD close!");
+					}
+					try {
+						if (mInterstitialAD != null) {
+							mInterstitialAD.recycle();
+						} 
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			
-			@Override
-			public void onNativeInfoFail(AdError adError) {
-				UBLogUtil.logI(TAG+"----->Video AD show Failed!");
-				UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO,"Video AD show Failed!");
-				mRewardVideoADContainer.removeAllViews();
-			}
-		};
+
+				@Override
+				public void onAdFailed(String msg) {
+					UBLogUtil.logI(TAG+"----->on Interstitial onAdError----->msg="+msg);
+					if (mUBADCallback!=null) {
+						mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD failed!");
+					}
+				}
+
+				@Override
+				public void onAdLoaded() {
+					UBLogUtil.logI(TAG+"----->on Interstitial onAdLoaded");
+					try {
+						if (mInterstitialAD.isReady()) {
+							mInterstitialAD.show();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+
+				@Override
+				public void onAdPresent() {
+					UBLogUtil.logI(TAG+"----->on Interstitial onAdPresent");
+					if (mUBADCallback!=null) {
+						mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL,"Interstitial AD show success!");
+					}
+				}};
 	}
 
 	/**
@@ -277,13 +272,13 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		UBLogUtil.logI(TAG+"----->loadADParams");
 		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Banner_ID");
 		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Interstitial_ID");
-		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Splash_ID");
-		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_RewardVideo_ID");
+		mBannerADPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Banner_Position"));
 	}
 
 	@Override
 	public void showADWithADType(int adType) {
 		UBLogUtil.logI(TAG+"----->showADWithADType");
+		mUBADCallback = UBAD.getInstance().getUBADCallback();
 		hideADWithADType(adType);//显示之前先隐藏广告
 		switch (adType) {
 		case ADType.AD_TYPE_BANNER:
@@ -306,39 +301,73 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 
 	private void showSplashAD() {
 		UBLogUtil.logI(TAG+"----->showSplashAD");
-		if (mSplashAD==null) {
-			mSplashAD = new SplashAd(mActivity, mSplashADContainer, R.drawable.screen_background_light, mSplashADListener);
-		}
-		mSplashAD.requestAd(mSplashID);
+		
+		Intent intent = new Intent(mActivity,ADXiaoMiSplashActivity.class);
+		mActivity.startActivity(intent);
+		
+/*		mSplashADContainer.setVisibility(View.VISIBLE);
+		try {
+			if (mSplashAD==null) {
+				mSplashAD = AdWorkerFactory.getAdWorker(mActivity, mSplashADContainer, mSplashADListener,AdType.AD_SPLASH);
+			}
+			mSplashAD.loadAndShow(mSplashID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
 	}
-
+	
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
-		if (mRewardVideoAD==null) {
-			mRewardVideoAD = new StandardNewsFeedAd(mActivity);
-		}
-		mRewardVideoAD.requestAd(mRewardVideoID, 1, mRewardVideoListener);
+		
+		Intent intent = new Intent(mActivity,ADXiaoMiRewardVideoActivity.class);
+		mActivity.startActivity(intent);
+/*		
+		mRewardVideoADContainer.setVisibility(View.VISIBLE);
+		try {
+			if (mVideoAD==null) {
+				mVideoAD = AdWorkerFactory.getVideoAdWorker(mActivity, mRewardVideoID, AdType.AD_PLASTER_VIDEO);
+				mVideoAD.setListener(mVideoADListener);
+			}
+			mVideoAD.recycle();
+			mVideoAD.load();;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	private void showInterstitialAD() {
 		UBLogUtil.logI(TAG+"----->showInterstitialAD");	
-		
-		if (mInterstitialAD==null) {
-			mInterstitialAD = new InterstitialAd(mActivity.getApplicationContext(),mActivity);
+//		开启插屏的时候把banner隐藏
+		mBannerADContainer.setVisibility(View.GONE);
+		try {
+			if (mInterstitialAD==null) {
+				mInterstitialAD = AdWorkerFactory.getAdWorker(mActivity, mContainer, mInterstitialADListener,AdType.AD_INTERSTITIAL);
+			}
+			mInterstitialAD.load(mInterstitialID);
+//			mInterstitialAD.loadAndShow(mInterstitialID);
+/*			if (mInterstitialAD.isReady()) {
+				mInterstitialAD.show();
+			}else{
+				
+			}*/
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		mInterstitialAD.requestAd(mInterstitialID,mInterstitialADListener);
 	}
 
 	private void showBannerAD() {
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		mBannerADContainer.setVisibility(View.VISIBLE);
-		if (mBannerAD==null) {
-			ADHelper.addBannerView(mWM, mBannerADContainer, 1);
-			mBannerAD = new BannerAd(mActivity, mBannerADContainer, mBannerADListener);
+		try {
+			if (mBannerAD==null) {
+				ADHelper.addBannerView(mWM, mBannerADContainer,mBannerADPosition);
+				mBannerAD = AdWorkerFactory.getAdWorker(mActivity, mBannerADContainer, mBannerADListener,AdType.AD_BANNER);
+			}
+			mBannerAD.loadAndShow(mBannerID);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		mBannerAD.show(mBannerID);
 	}
- 
 
 	@Override
 	public void hideADWithADType(int adType) {
