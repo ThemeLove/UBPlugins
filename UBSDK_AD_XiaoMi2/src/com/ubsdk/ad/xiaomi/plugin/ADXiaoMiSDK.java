@@ -32,7 +32,8 @@ import android.widget.FrameLayout;
 
 public class ADXiaoMiSDK implements IUBADPlugin{
 	private final String TAG=ADXiaoMiSDK.class.getSimpleName();
-	private final int[] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_BANNER,ADType.AD_TYPE_REWARDVIDEO,ADType.AD_TYPE_SPLASH};
+	//小米广告建议直接入banner和插屏 这2中广告，预算相对充足，外加系统开屏在广告后台开启即可
+	private final int[] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL};
 	
 	
 	private Activity mActivity;

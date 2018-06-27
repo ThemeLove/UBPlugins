@@ -23,7 +23,7 @@ public class ADXiaoMiApplication implements IChannelProxyApplication{
 	public void onProxyCreate(Application application) {
 		UBLogUtil.logI(TAG+"----->onProxyCreate");
 		UBLogUtil.logI(TAG+"----->onProxyCreate----->mADXiaoMiAppID="+mADXiaoMiAppID);
-		MimoSdk.setDebugOn();
+//		MimoSdk.setDebugOn();
 //		MimoSdk.setStageOn();
 		MimoSdk.init(application, mADXiaoMiAppID,"fake_app_key","fake_app_token");
 	}

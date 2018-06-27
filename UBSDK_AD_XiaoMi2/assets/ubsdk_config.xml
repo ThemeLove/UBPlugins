@@ -3,14 +3,13 @@
 <param name="AD_XiaoMi_Banner_Position" value="1"/>
 
 <!-- 测试数据 -->
-<param name="AD_XiaoMi_APP_ID" value="2882303761517411490"/>
+<!-- <param name="AD_XiaoMi_APP_ID" value="2882303761517411490"/>
 <param name="AD_XiaoMi_Banner_ID" value="802e356f1726f9ff39c69308bfd6f06a" />
 <param name="AD_XiaoMi_Interstitial_ID" value="67b05e7cc9533510d4b8d9d4d78d0ae9" />
 <param name="AD_XiaoMi_Splash_ID" value="b373ee903da0c6fc9c9da202df95a500"/>
-<param name="AD_XiaoMi_RewardVideo_ID" value="20c070adf42787a99f8146881a640306"/>
+<param name="AD_XiaoMi_RewardVideo_ID" value="20c070adf42787a99f8146881a640306"/> -->
 
 <!--  碰碰球参数 -->
-
 <param name="AD_XiaoMi_APP_ID" value="2882303761517707344"/>
 <param name="AD_XiaoMi_Banner_ID" value="6a5ec9ac8263788400c141b4f22cea48" />
 <param name="AD_XiaoMi_Interstitial_ID" value="5a069dfa53b3f2303b271818210dac51" />
