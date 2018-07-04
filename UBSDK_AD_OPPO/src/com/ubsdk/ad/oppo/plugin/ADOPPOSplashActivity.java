@@ -53,7 +53,7 @@ public class ADOPPOSplashActivity extends Activity implements ISplashAdListener 
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        setContentView(R.layout.activity_splash);
+//        setContentView(R.layout.activity_splash);  
         
         mOPPOSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_OPPO_Splash_ID");
         mAppName = UBSDKConfig.getInstance().getParamMap().get("AD_OPPO_App_Name");

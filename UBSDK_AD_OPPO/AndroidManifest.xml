@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.oppo.mobaddemo"
-    android:versionCode="1"
+    package="com.umbrella.boomdots.nearme.gamecenter"
+    android:versionCode="1000"
     android:versionName="3.3" >
 
     <uses-sdk
@@ -32,36 +32,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--闪屏广告必须全屏展示，通过android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"设置你的SplashActivity为全屏显示，
-        闪屏只支持竖屏展示，通过android:screenOrientation="portrait" 设置你的SplashActivity为竖屏显示-->
         <activity
-            android:name="com.oppo.mobaddemo.activity.SplashActivity"
+            android:name="com.ubsdk.ad.oppo.UBSDK_AD_OPPO_MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="screenSize|orientation|keyboard|navigation|layoutDirection"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.oppo.mobaddemo.activity.MainActivity" />
-        <activity android:name="com.oppo.mobaddemo.activity.BannerActivity" />
-        <activity android:name="com.oppo.mobaddemo.activity.InterstitialActivity" />
-        <activity android:name="com.oppo.mobaddemo.activity.NativeActivity" />
-        <activity android:name="com.oppo.mobaddemo.activity.NativeOneActivity" />
+        <!--闪屏广告必须全屏展示，通过android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"设置你的SplashActivity为全屏显示，
+        闪屏只支持竖屏展示，通过android:screenOrientation="portrait" 设置你的SplashActivity为竖屏显示-->
         <activity
-            android:name="com.oppo.mobaddemo.activity.MixActivity"
+            android:name="com.ubsdk.ad.oppo.plugin.ADOPPOSplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="ad"
-                    android:path="/mix"
-                    android:scheme="mobad" />
-            </intent-filter>
         </activity>
 
         <!--SDK 必选组件配置开始-->
@@ -73,7 +61,7 @@
         <!--Demo 分渠道打包渠道号-->
         <meta-data
             android:name="OPPO_CHANNEL"
-            android:value="${OPPO_CHANNEL_VALUE}" />
+            android:value="123" />
         <!--适配异形屏-->
         <meta-data
             android:name="android.max_aspect"

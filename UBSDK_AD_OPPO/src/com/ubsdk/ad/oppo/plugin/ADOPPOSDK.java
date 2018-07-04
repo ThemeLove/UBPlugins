@@ -2,6 +2,8 @@ package com.ubsdk.ad.oppo.plugin;
 
 import java.lang.reflect.Method;
 
+import com.oppo.mobad.api.InitParams;
+import com.oppo.mobad.api.MobAdManager;
 import com.oppo.mobad.api.ad.BannerAd;
 import com.oppo.mobad.api.ad.InterstitialAd;
 import com.oppo.mobad.api.listener.IBannerAdListener;
@@ -39,6 +41,7 @@ public class ADOPPOSDK implements IUBADPlugin{
 	private BannerAd mBannerAD;
 	private IInterstitialAdListener mInterstitialADListener;
 	private InterstitialAd mInterstitialAD;
+	private String mOPPOID;
 	private ADOPPOSDK(Activity activity){
 		this.mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
@@ -58,11 +61,15 @@ public class ADOPPOSDK implements IUBADPlugin{
 
 			@Override
 			public void onDestroy() {
-				mBannerAD.destroyAd();
-				mBannerAD=null;
-
-				mInterstitialAD.destroyAd();
-				mInterstitialAD=null;
+				if (mBannerAD!=null) {
+					mBannerAD.destroyAd();
+					mBannerAD=null;
+				}
+				if (mInterstitialAD!=null) {
+					mInterstitialAD.destroyAd();
+					mInterstitialAD=null;
+				}
+				MobAdManager.getInstance().exit(mActivity);
 				super.onDestroy();
 			}
 		});
@@ -70,6 +77,7 @@ public class ADOPPOSDK implements IUBADPlugin{
 	
 	private void loadADParams() {
 		UBLogUtil.logI(TAG+"----->loadADParams");
+		mOPPOID = UBSDKConfig.getInstance().getParamMap().get("OPPO_AppID");
 		mOPPOBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_OPPO_Banner_ID");
 		mOPPOInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_OPPO_Interstitial_ID");
 		mOPPORewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_OPPO_RewardVideo_ID");
@@ -107,14 +115,13 @@ public class ADOPPOSDK implements IUBADPlugin{
 			public void onAdClick() {
 				UBLogUtil.logI(TAG+"----->showBanner----->onADClick");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onFailed(ADType.AD_TYPE_BANNER,"banner ad click!");
+					mUBADCallback.onClick(ADType.AD_TYPE_BANNER,"banner ad click!");
 				}
 			}
 			
 			@Override
 			public void onAdReady() {
 				UBLogUtil.logI(TAG+"----->showBanner----->onADReady");
-				
 			}
 			
 			@Override
@@ -123,6 +130,7 @@ public class ADOPPOSDK implements IUBADPlugin{
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClosed(ADType.AD_TYPE_BANNER,"banner ad close!");
 				}
+				mBannerContainer.setVisibility(View.GONE);
 			}
 		};
 		
@@ -141,7 +149,7 @@ public class ADOPPOSDK implements IUBADPlugin{
 			public void onAdFailed(String msg) {
 				UBLogUtil.logI(TAG+"----->showInterstitial----->onADFailed");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad show failed:msg="+msg);
+					mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad show failed:msg="+msg);
 				}
 			}
 			
@@ -149,7 +157,7 @@ public class ADOPPOSDK implements IUBADPlugin{
 			public void onAdClick() {
 				UBLogUtil.logI(TAG+"----->showInterstitial----->onADClick");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad click");
+					mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad click");
 				}
 			}
 			
@@ -163,10 +171,16 @@ public class ADOPPOSDK implements IUBADPlugin{
 			public void onAdClose() {
 				UBLogUtil.logI(TAG+"----->showInterstitial----->onADClose");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad close");
+					mUBADCallback.onClosed(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad close");
 				}
 			}
 		};
+		
+//		初始化广告sdk
+        InitParams initParams = new InitParams.Builder()
+                .setDebug(true)//true打开SDK日志，当应用发布Release版本时，必须注释掉这行代码的调用，或者设为false
+                .build();
+        MobAdManager.getInstance().init(mActivity,mOPPOID,initParams);
 	}
 	
 	@Override
@@ -258,11 +272,12 @@ public class ADOPPOSDK implements IUBADPlugin{
 			mBannerAD = new BannerAd(mActivity, mOPPOBannerID);
 			mBannerAD.setAdListener(mBannerADListener);
 			mBannerADView = mBannerAD.getAdView();
-			
-			mBannerContainer.addView(mBannerADView);
+			if (mBannerADView!=null) {
+				mBannerContainer.addView(mBannerADView);
+			}
 			ADHelper.addBannerView(mWM, mBannerContainer,mBannerADPosition);
 		}
-		
+		mBannerAD.loadAd();
 		mBannerContainer.setVisibility(View.VISIBLE);
 	}
 	
@@ -292,7 +307,6 @@ public class ADOPPOSDK implements IUBADPlugin{
 			mInterstitialAD = new InterstitialAd(mActivity,mOPPOInterstitialID);
 	        mInterstitialAD.setAdListener(mInterstitialADListener);
 		}
-		
         mInterstitialAD.loadAd();
 	}
 	

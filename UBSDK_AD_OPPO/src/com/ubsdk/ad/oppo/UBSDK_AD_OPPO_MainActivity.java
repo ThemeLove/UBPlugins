@@ -1,6 +1,6 @@
 package com.ubsdk.ad.oppo;
 
-import com.oppo.mobaddemo.R;
+import com.umbrella.boomdots.nearme.gamecenter.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
