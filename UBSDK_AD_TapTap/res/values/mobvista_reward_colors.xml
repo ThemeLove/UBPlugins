@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2012 Jake Wharton
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <color name="mobvista_reward_green">#5ad70f</color>
+    <color name="mobvista_reward_black_transparent">#90000000</color>
+    <color name="mobvista_reward_six_black_transparent">#60000000</color>
+    <color name="mobvista_reward_black">#ff000000</color>
+    <color name="mobvista_reward_gray">#ff999999</color>
+    <color name="mobvista_reward_white">#FFFFFF</color>
+    <color name="mobvista_reward_cta_color">#274f0a</color>
+    <color name="mobvista_reward_line_one_color">#2c8e02</color>
+    <color name="mobvista_reward_line_two_color">#79f216</color>
+    <color name="mobvista_reward_end_pager_cta_color">#1e7fda</color>
+</resources>
