@@ -56,7 +56,7 @@ public class OPPOSDK {
 			@Override
 			public void onDestroy() {
 				super.onDestroy();
-			}
+			} 
 
 			@Override
 			public void onBackPressed() {

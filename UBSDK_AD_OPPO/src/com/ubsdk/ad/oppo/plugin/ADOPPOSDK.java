@@ -1,6 +1,8 @@
 package com.ubsdk.ad.oppo.plugin;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.oppo.mobad.api.InitParams;
 import com.oppo.mobad.api.MobAdManager;
@@ -18,8 +20,13 @@ import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,6 +49,10 @@ public class ADOPPOSDK implements IUBADPlugin{
 	private IInterstitialAdListener mInterstitialADListener;
 	private InterstitialAd mInterstitialAD;
 	private String mOPPOID;
+	
+    private List<String> mNeedRequestPMSList = new ArrayList<>();
+    private static final int REQUEST_PERMISSIONS_CODE = 100;
+    
 	private ADOPPOSDK(Activity activity){
 		this.mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
@@ -64,16 +75,101 @@ public class ADOPPOSDK implements IUBADPlugin{
 				if (mBannerAD!=null) {
 					mBannerAD.destroyAd();
 					mBannerAD=null;
+//					解决内存泄漏，一定要用这个api
+					mWM.removeViewImmediate(mBannerContainer);
+//					mWM.removeView(mBannerContainer);
+					mBannerContainer=null;
 				}
 				if (mInterstitialAD!=null) {
 					mInterstitialAD.destroyAd();
 					mInterstitialAD=null;
 				}
 				MobAdManager.getInstance().exit(mActivity);
+			
 				super.onDestroy();
 			}
+
+			@Override
+			public void onCreate(Bundle savedInstanceState) {
+		        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+		            /**
+		             * 如果你的targetSDKVersion >= 23，就要主动申请好权限。如果您的App没有适配到Android6.0（即targetSDKVersion < 23），那么只需要在这里直接调用fetchSplashAd方法。
+		             *
+		             */
+		            checkAndRequestPermissions();
+		        } 
+				super.onCreate(savedInstanceState);
+			}
+
+			@Override
+			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
+					switch (requestCode) {
+		            /**
+		             *处理SDK申请权限的结果。
+		             */
+		            case REQUEST_PERMISSIONS_CODE:
+		                if (hasNecessaryPMSGranted()) {
+		                	UBLogUtil.logI(TAG+"----->request Permission success");
+		                } else {
+		                	UBLogUtil.logI(TAG+"----->request Permission failed");
+		                }
+		                break;
+		            default:
+		                break;
+		        }
+				super.onRequestPermissionResult(requestCode, permissions, grantResults);
+			}
+			
 		});
 	}
+	
+    /**
+     * 判断应用是否已经获得SDK运行必须的READ_PHONE_STATE、WRITE_EXTERNAL_STORAGE两个权限。
+     * @return
+     */
+    private boolean hasNecessaryPMSGranted() {
+        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_PHONE_STATE)) {
+            if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
+	   /**
+     * 申请SDK运行需要的权限
+     * 注意：READ_PHONE_STATE、WRITE_EXTERNAL_STORAGE 两个权限是必须权限，没有这两个权限SDK无法正常获得广告。
+     * WRITE_CALENDAR、ACCESS_FINE_LOCATION 是两个可选权限；没有不影响SDK获取广告；但是如果应用申请到该权限，会显著提升应用的广告收益。
+     */
+    private void checkAndRequestPermissions() {
+        /**
+         * READ_PHONE_STATE、WRITE_EXTERNAL_STORAGE 两个权限是必须权限，没有这两个权限SDK无法正常获得广告。
+         */
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_PHONE_STATE)) {
+            mNeedRequestPMSList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            mNeedRequestPMSList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        /**
+         * WRITE_CALENDAR、ACCESS_FINE_LOCATION 是两个可选权限；没有不影响SDK获取广告；但是如果应用申请到该权限，会显著提升应用的广告收益。
+         */
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_CALENDAR)) {
+            mNeedRequestPMSList.add(Manifest.permission.WRITE_CALENDAR);
+        }
+        if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            mNeedRequestPMSList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        //
+        if (0 != mNeedRequestPMSList.size()) {
+            /**
+             * 有权限需要申请，主动申请。
+             */
+            String[] temp = new String[mNeedRequestPMSList.size()];
+            mNeedRequestPMSList.toArray(temp);
+            ActivityCompat.requestPermissions(mActivity, temp, REQUEST_PERMISSIONS_CODE);
+        }
+    }
 	
 	private void loadADParams() {
 		UBLogUtil.logI(TAG+"----->loadADParams");
@@ -274,8 +370,10 @@ public class ADOPPOSDK implements IUBADPlugin{
 			mBannerADView = mBannerAD.getAdView();
 			if (mBannerADView!=null) {
 				mBannerContainer.addView(mBannerADView);
+				UBLogUtil.logI(TAG+"----->--------------------->mBannerADView");
+//				放在这里，保证只添加一次，多次添加会报错，有些机型在拒绝存储权限后，mBannerADView会为null
+				ADHelper.addBannerView(mWM, mBannerContainer,mBannerADPosition);
 			}
-			ADHelper.addBannerView(mWM, mBannerContainer,mBannerADPosition);
 		}
 		mBannerAD.loadAd();
 		mBannerContainer.setVisibility(View.VISIBLE);
