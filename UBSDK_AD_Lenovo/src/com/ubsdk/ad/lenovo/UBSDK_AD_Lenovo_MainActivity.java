@@ -3,6 +3,7 @@ package com.ubsdk.ad.lenovo;
 import com.umbrella.boomdots.lenovo.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
+import com.umbrella.game.ubsdk.callback.UBExitCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;
 import com.umbrella.game.ubsdk.callback.UBSwitchAccountCallback;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
@@ -14,6 +15,7 @@ import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Process;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -259,7 +261,29 @@ public class UBSDK_AD_Lenovo_MainActivity extends Activity implements OnClickLis
     @Override
     public void onBackPressed() {
     	UBSDK.getInstance().onBackPressed();
-        super.onBackPressed();
+    	UBSDK.getInstance().exit(new UBExitCallback() {
+			
+			@Override
+			public void onExit() {
+				UBLogUtil.logI(TAG+"----->onExit");
+				finish();
+				Process.killProcess(Process.myPid());
+				System.exit(0);
+			}
+			
+			@Override
+			public void onCancel(String message, String trace) {
+				UBLogUtil.logI(TAG+"----->onCancel");
+			}
+			
+			@Override
+			public void noImplement() {
+				UBLogUtil.logI(TAG+"----->noImplement");
+			}
+		});
+    	
+//    	屏蔽系统闪屏
+//        super.onBackPressed();
     }
 
     @Override

@@ -44,6 +44,7 @@ public class ADLenovoSDK implements IUBADPlugin{
 	private Interstitial mInterstitialAD;
 	private VideoAdvertListener mRewardVideoListener;
 	private VideoAdvert mRewardVideoAD;
+	private boolean isCanReward=false;//激励视频是否可以给用户发奖励
 	private ADLenovoSDK(Activity activity){
 		mActivity=activity;
 		mWM=(WindowManager) activity.getSystemService(Activity.WINDOW_SERVICE);
@@ -85,6 +86,9 @@ public class ADLenovoSDK implements IUBADPlugin{
 				if(mBannerAD!= null){
 					mBannerAD.DestroyBanner();
 					mBannerAD=null;
+//					避免窗体泄漏
+					mWM.removeViewImmediate(mBannerADContainer);
+					mBannerADContainer=null;
 				}
 				
 				if(mInterstitialAD!= null){
@@ -173,9 +177,11 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onVideoShowSuccess() {
+//				联想视频广告倒计时结束的时候会回调该方法
 				UBLogUtil.logI(TAG+"----->videoListener----->showSuccess!");
+				isCanReward=true;
 				if (mUBADCallback!=null) {
-					mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO,"video complete!");
+					mUBADCallback.onShow(ADType.AD_TYPE_REWARDVIDEO,"rewardVideo Countdown completed");
 				}
 			}
 			
@@ -194,9 +200,15 @@ public class ADLenovoSDK implements IUBADPlugin{
 			
 			@Override
 			public void onVideoDismiss() {
+//				激励视频关闭的时候会被调用，有以下几种情况，我们只在第二种情况下给用户发奖励：即播放完成再退出。
+//				1.激励视频播放中途用户点击物理返回键或者广告右上角的关闭按钮，并点击弹出框中的"退出播放"
+//				2.激励视频倒计时结束，用户点击物理返回键或者右上角的关闭按钮
 				UBLogUtil.logI(TAG+"----->videoListener----->dismiss");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO, "dismiss");
+					if (isCanReward) {
+						mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO, "video complete!");
+					}
 				}
 			}
 		};
@@ -360,5 +372,6 @@ public class ADLenovoSDK implements IUBADPlugin{
 	
 	private void hideRewardVideoAD() {
 		UBLogUtil.logI(TAG+"----->hideRewardVideoAD");
+		isCanReward=false;
 	}
 }

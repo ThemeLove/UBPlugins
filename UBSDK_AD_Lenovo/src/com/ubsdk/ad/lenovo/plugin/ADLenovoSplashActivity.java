@@ -67,7 +67,7 @@ public class ADLenovoSplashActivity extends Activity {
 			public void onSplashShowSuccess() {
 				UBLogUtil.logI(TAG+"----->splashListener----->success!");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onShow(ADType.AD_TYPE_REWARDVIDEO, "splash AD show!");
+					mUBADCallback.onShow(ADType.AD_TYPE_SPLASH, "splash AD show!");
 				}
 			}
 			
@@ -86,7 +86,7 @@ public class ADLenovoSplashActivity extends Activity {
 			public void onSplashDismiss() {
 				UBLogUtil.logI(TAG+"----->splashListener----->splashDismiss");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO, "dismiss");
+					mUBADCallback.onClosed(ADType.AD_TYPE_SPLASH, "dismiss");
 				}
 				finish();
 //				next();
@@ -96,7 +96,7 @@ public class ADLenovoSplashActivity extends Activity {
 			public void onSplashClick() {
 				UBLogUtil.logI(TAG+"----->splashListener----->splashClick");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onClick(ADType.AD_TYPE_REWARDVIDEO,"click");
+					mUBADCallback.onClick(ADType.AD_TYPE_SPLASH,"click");
 				}
 			}
 		});
@@ -131,4 +131,11 @@ public class ADLenovoSplashActivity extends Activity {
 		mSplashAD.destroy();
 		super.onDestroy();
 	}
+
+	@Override
+	public void onBackPressed() {
+		UBLogUtil.logI(TAG+"----->onBackPressed");
+		return;
+	}
+
 }

@@ -55,6 +55,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	private FullScreenAdListener mSplashScreenADListener;
 	
 	private String mRewardVideoID;//魅族RewardVideo广告id
+	private boolean isCanReward=false;//激励视频是否可以给用户发奖励
 	
 	
 	public ADMeiZuSDK (Activity activity){
@@ -79,13 +80,16 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			@Override
 			public void onDestroy() {
 				UBLogUtil.logI(TAG+"----->onDestroy");
-				mWM.removeView(mBannerADContainer);
-				mContainer=null;
-				mSplashADContainer=null;
-				mBannerADContainer=null;
+
 				if (mBannerAD!=null) {
 					mBannerAD.destory();
+//					避免内存泄漏
+					mWM.removeViewImmediate(mBannerADContainer);
+					mBannerADContainer=null;
 				}
+				
+				mContainer=null;
+				mSplashADContainer=null;
 				super.onDestroy();
 			}
 		});
@@ -200,7 +204,8 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			public void onFullScreenAdDismiss() {
 				UBLogUtil.logI(TAG+"----->onSplashADDismiss");
 				mSplashADContainer.setVisibility(View.GONE);
-				if (mUBADCallback!=null) {
+				if (mUBADCallback!=null) {//同时给出2个回调
+					mUBADCallback.onComplete(ADType.AD_TYPE_SPLASH, "Splash AD complete!");
 					mUBADCallback.onClosed(ADType.AD_TYPE_SPLASH, "Splash AD dismiss!");
 				}
 			}
@@ -232,10 +237,12 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			
 			@Override
 			public void onVideoAdPlayComplete() {
+//				魅族视频广告倒计时结束的时候会回调该方法
 				UBLogUtil.logI(TAG+"----->onVideoAdPlayComplete");
 				if (mUBADCallback!=null) {
-					mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete!");
+					mUBADCallback.onShow(ADType.AD_TYPE_REWARDVIDEO, "rewardVideo Countdown completed");
 				}
+				isCanReward=true;
 			}
 			
 			@Override
@@ -248,9 +255,14 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			
 			@Override
 			public void onVideoAdClose() {
+//			魅族激励视频播放时页面上没有关闭按钮，同时屏蔽了物理返回键，激励视频倒计时播放完毕后页面上会出现一个关闭按钮，
+//			单机关闭按钮才能关闭视频广告，回调此方法，所以在该回调了给用户发奖励，给出onComplete回调
 				UBLogUtil.logI(TAG+"----->onVideoAdClose");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD close!");
+					if (isCanReward) {
+						mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD complete!");
+					}
 				}
 			}
 		};
@@ -323,26 +335,31 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	}
 
 	@Override
-	public void showADWithADType(int adType) {
+	public void showADWithADType(final int adType) {
 		UBLogUtil.logI(TAG+"----->showADWithADType");
-		mUBADCallback = UBAD.getInstance().getUBADCallback();
-		hideADWithADType(adType);//显示之前先隐藏广告
-		switch (adType) {
-		case ADType.AD_TYPE_BANNER:
-			showBannerAD();
-			break;
-		case ADType.AD_TYPE_INTERSTITIAL:
-			showInterstitialAD();
-			break;
-		case ADType.AD_TYPE_SPLASH:
-			showSplashAD();
-			break;
-		case ADType.AD_TYPE_REWARDVIDEO:
-			showVideoAD();
-			break;
-		default:
-			break;
-		}
+		UBSDK.getInstance().runOnUIThread(new Runnable() {
+			@Override
+			public void run() {
+				mUBADCallback = UBAD.getInstance().getUBADCallback();
+				hideADWithADType(adType);//显示之前先隐藏广告
+				switch (adType) {
+				case ADType.AD_TYPE_BANNER:
+					showBannerAD();
+					break;
+				case ADType.AD_TYPE_INTERSTITIAL:
+					showInterstitialAD();
+					break;
+				case ADType.AD_TYPE_SPLASH:
+					showSplashAD();
+					break;
+				case ADType.AD_TYPE_REWARDVIDEO:
+					showVideoAD();
+					break;
+				default:
+					break;
+				}
+			}
+		});
 	}
 
 	private void showSplashAD() {
@@ -437,5 +454,6 @@ public class ADMeiZuSDK implements IUBADPlugin{
 	
 	private void hideRewardVideoAD() {
 		UBLogUtil.logI(TAG+"----->hideRewardVideoAD");
+		isCanReward=false;
 	}
 }

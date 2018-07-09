@@ -119,7 +119,6 @@ public class ADXiaoMiRewardVideoActivity extends Activity{
 			@Override
 			public void onVideoPause() {
 				UBLogUtil.logI(TAG+"----->on RewardVideo onVideoPause");
-				
 			}
 			
 			@Override

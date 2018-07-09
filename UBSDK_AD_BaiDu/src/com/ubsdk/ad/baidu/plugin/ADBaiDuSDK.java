@@ -10,6 +10,7 @@ import com.duoku.alone.ssp.listener.CallBackListener;
 import com.duoku.alone.ssp.listener.InitListener;
 import com.duoku.alone.ssp.listener.ViewClickListener;
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBADPlugin;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
@@ -41,11 +42,12 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	private String mRewardVideoID;
 
 	private ViewClickListener mBannerADListener;
+	
+	private UBADCallback mUBADCallback;
 
 	private ADBaiDuSDK(Activity activity){
 		mActivity=activity;
 		mWM=(WindowManager) activity.getSystemService(Activity.WINDOW_SERVICE);
-	
 		try {
 			setActivityListener();
 //			加载百度广告参数
@@ -71,24 +73,32 @@ public class ADBaiDuSDK implements IUBADPlugin{
 				@Override
 				public void onSuccess(String adID) {
 					UBLogUtil.logI(TAG+"----->showBannerView----->onSuccess----->adID="+adID);
-					UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
+					if (mUBADCallback!=null) {
+						mUBADCallback.onShow(ADType.AD_TYPE_BANNER, "Banner AD show success!");
+					}
 				}
 				
 				@Override
 				public void onFailed(int errorCode) {
 					UBLogUtil.logI(TAG+"----->showBannerView----->onFailed----->errorCode:"+errorCode);
-					UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_BANNER,"Banner AD show failed:errorCode="+errorCode);
+					if (mUBADCallback!=null) {
+						mUBADCallback.onFailed(ADType.AD_TYPE_BANNER,"Banner AD show failed:errorCode="+errorCode);
+					}
 				}
 				
 				@Override
 				public void onClick(int type) {
 					if (type==1) {//关闭广告
-						UBLogUtil.logI(TAG+"----->onClick----->type=1,banner AD close");
-						UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_BANNER, "Banner AD closed!");
+						UBLogUtil.logI(TAG+"----->onColsed----->type=1,banner AD close");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onClosed(ADType.AD_TYPE_BANNER, "Banner AD closed!");
+						}
 						hideBannerAD();
 					}else if(type==2){//点击广告
 						UBLogUtil.logI(TAG+"----->onClick----->type=2,banner AD click");
-						UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_BANNER, "Banner AD click!");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onClick(ADType.AD_TYPE_BANNER, "Banner AD click!");
+						}
 					}
 				}
 			};
@@ -99,23 +109,31 @@ public class ADBaiDuSDK implements IUBADPlugin{
 				@Override
 				public void onSuccess(String adID) {
 					UBLogUtil.logI(TAG+"----->showInterstitial----->onSuccess----->adID="+adID);
-					UBAD.getInstance().getUBADCallback().onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show success!");
+					if (mUBADCallback!=null) {
+						mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show success!");
+					}
 				}
 				
 				@Override
 				public void onFailed(int errorCode) {
 					UBLogUtil.logI(TAG+"----->showFullScreen----->errorCode="+errorCode);
-					UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show failed:errorCode="+errorCode);
+					if (mUBADCallback!=null) {
+						mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD show failed:errorCode="+errorCode);
+					}
 				}
 				
 				@Override
 				public void onClick(int type) {
 					if (type==1) {//用户关闭
-						UBLogUtil.logI(TAG+"----->onClick----->type=1,interstitial AD close");
-						UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD　 closed!");
+						UBLogUtil.logI(TAG+"----->onClosed----->type=1,interstitial AD close");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onClosed(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD　 closed!");
+						}
 					}else if(type==2){//用户点击
 						UBLogUtil.logI(TAG+"----->onClick----->type=2,interstitial AD click");
-						UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD  click!");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL, "Interstitial AD  click!");
+						}
 					}
 				}
 			};
@@ -126,29 +144,38 @@ public class ADBaiDuSDK implements IUBADPlugin{
 				@Override
 				public void onReady() {
 					UBLogUtil.logI(TAG+"----->showVideoAD----->onReady");
-					 DuoKuAdSDK.getInstance().showVideoImmediate(mActivity,mRewardVideoEntity);
+					
+					DuoKuAdSDK.getInstance().showVideoImmediate(mActivity,mRewardVideoEntity);
 				}
 				
 				@Override
 				public void onFailMsg(String msg) {
 					UBLogUtil.logI(TAG+"----->showVideoAD----->onFailMsg----->msg="+msg);
-					UBAD.getInstance().getUBADCallback().onFailed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show failed:msg="+msg);
+					if (mUBADCallback!=null) {
+						mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD show failed:msg="+msg);
+					}
 				}
 				
 				@Override
 				public void onComplete() {
 					UBLogUtil.logI(TAG+"----->showVideoAD----->onComplete");
-					UBAD.getInstance().getUBADCallback().onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete");
+					if (mUBADCallback!=null) {
+						mUBADCallback.onComplete(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD complete");
+					}
 				}
 				
 				@Override
 				public void onClick(int type) {
 					if (type==1) {
-						UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=1,rewardVideo AD close");
-						UBAD.getInstance().getUBADCallback().onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD closed!");
+						UBLogUtil.logI(TAG+"----->showVideoAD----->onClose----->type=1,rewardVideo AD close");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onClosed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD closed!");
+						}
 					}else if(type==2){
 						UBLogUtil.logI(TAG+"----->showVideoAD----->onClick----->type=2,rewardVideo AD click");
-						UBAD.getInstance().getUBADCallback().onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD click!");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onClick(ADType.AD_TYPE_REWARDVIDEO, "RewardVideo AD click!");
+						}
 					}
 				}
 			};
@@ -187,8 +214,12 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		        DuoKuAdSDK.getInstance().onDestoryBanner();
 		        DuoKuAdSDK.getInstance().onDestoryBlock();
 		        DuoKuAdSDK.getInstance().onDestoryVideo();
-		        mWM=null;
-		        mBannerContainer=null;
+		        
+		        if (mBannerViewEntity!=null) {//如果有Banner广告，退出的时候从WindowManager移除
+					mWM.removeViewImmediate(mBannerContainer);
+					mWM=null;
+			        mBannerContainer=null;
+				}
 				super.onDestroy();
 			}
 		});
@@ -252,9 +283,9 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		UBLogUtil.logI(TAG+"----->showADWithADType");
 		
 		UBSDK.getInstance().runOnUIThread(new Runnable() {
-			
 			@Override
 			public void run() {
+				mUBADCallback = UBAD.getInstance().getUBADCallback();
 				hideADWithADType(adType);//显示之前先隐藏广告
 				switch (adType) {
 				case ADType.AD_TYPE_BANNER:
@@ -337,7 +368,6 @@ public class ADBaiDuSDK implements IUBADPlugin{
 			}else{
 				mBannerViewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
 			}
-			
 			mBannerViewEntity.setSeatId(Integer.parseInt(mBannerID));//广告位id
 		}
 		mBannerContainer.setVisibility(View.VISIBLE);

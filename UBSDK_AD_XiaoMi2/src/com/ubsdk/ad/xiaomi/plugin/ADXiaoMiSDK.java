@@ -114,9 +114,10 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 			public void onDestroy() {
 				try {
 					if (mBannerAD!=null) {
-						mWM.removeView(mBannerADContainer);
-						mBannerADContainer=null;
+//						避免窗体泄漏
+						mWM.removeViewImmediate(mBannerADContainer);
 						mBannerAD.recycle();
+						mBannerADContainer=null;
 					}
 					if (mSplashAD!=null) {
 						mSplashAD.recycle();
@@ -135,7 +136,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 
 			@Override
 			public void onBackPressed() {
-				if (mSplashADContainer.getVisibility()==View.VISIBLE) {//闪屏广告和插屏广告显示的时候屏蔽返回键
+				if (mSplashADContainer.getVisibility()==View.VISIBLE) {//闪屏广告和插屏广告显示的时候屏蔽返回键，这里屏蔽不了返回键，因为退出是在外层activity里执行的
 					return;
 				}
 				super.onBackPressed();
