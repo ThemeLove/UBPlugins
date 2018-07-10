@@ -52,7 +52,7 @@ public class ADBaiDuSplashActivity extends Activity {
      */
     private void loadADParams() {
 		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Splash_ID");
-		mGameOrientation = UBSDKConfig.getInstance().getParamMap().get("BaiDu_Game_Orientation");
+		mGameOrientation = UBSDKConfig.getInstance().getUBGame().getOrientation();
 		mUBADCallback = UBAD.getInstance().getUBADCallback();
 	}
 
@@ -65,7 +65,7 @@ public class ADBaiDuSplashActivity extends Activity {
     };
     
 	private String mSplashID;
-	private String mGameOrientation;
+	private String mGameOrientation="portrait";//默认竖屏
 	private UBADCallback mUBADCallback;
 
     /**

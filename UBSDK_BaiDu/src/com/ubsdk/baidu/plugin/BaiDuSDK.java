@@ -51,15 +51,17 @@ public class BaiDuSDK {
 		UBLogUtil.logI(TAG+"----->init");
 		try {
 			mActivity = UBSDKConfig.getInstance().getGameActivity();
+			String orientation = UBSDKConfig.getInstance().getUBGame().getOrientation();
+			if (TextUtil.equalsIgnoreCase("portrait", orientation)) {
+				baiDu_Game_isLandscape = false;
+			}
+			
 			if (mActivity == null) {
 				UBLogUtil.logW("the mAcitivity is null");
 				UBSDK.getInstance().getUBInitCallback().onFailed("gameActivity is null", null);
 				return;
 			}
-			String orientation = UBSDKConfig.getInstance().getParamMap().get("BaiDu_Game_Orientation");
-			if (TextUtil.equalsIgnoreCase("portrait", orientation)) {
-				baiDu_Game_isLandscape = false;
-			}
+
 
 			UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl() {
 
@@ -96,9 +98,10 @@ public class BaiDuSDK {
 					try {
 
 						UBLogUtil.logI(TAG, "thread:" + Thread.currentThread().getName());
-
 						// SDK初始化
-						DKPlatform.getInstance().init(mActivity, baiDu_Game_isLandscape, SdkMode.SDK_PAY, // 接入模式，支付版
+						DKPlatform.getInstance().init(mActivity, 
+								baiDu_Game_isLandscape, //true:横屏；false:竖屏
+								SdkMode.SDK_PAY, // 接入模式，支付版
 								null, // DKCMMMData,移动MM初始化参数
 								null, // DKCMGBData,移动基地初始化参数
 								null, // DKCpWoStoreDaa,Cp版沃商店初始化数据
@@ -167,7 +170,13 @@ public class BaiDuSDK {
 
 	public void login() {
 		UBLogUtil.logI(TAG+"----->login:success----->simulation empty implementation");
-		UBSDK.getInstance().getUBLoginCallback().onSuccess(new UBUserInfo());
+		UBUserInfo ubUserInfo = new UBUserInfo();
+		ubUserInfo.setUid("123456");
+		ubUserInfo.setUserName("ubsdktest");
+		ubUserInfo.setToken("123456ABCDEFG");
+		ubUserInfo.setExtra("extra");
+//		成功回调
+		UBSDK.getInstance().getUBLoginCallback().onSuccess(ubUserInfo);
 	}
 
 	public void logout() {

@@ -18,6 +18,7 @@ import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
 import com.umbrella.game.ubsdk.plugintype.ad.BannerPosition;
+import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
@@ -203,6 +204,7 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Interstitial_ID");
 		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_RewardVideo_ID");
 		mBannerPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_BaiDu_Banner_Position"));
+		mGameOrientation = UBSDKConfig.getInstance().getUBGame().getOrientation();
 	}
 	
 	private void setActivityListener(){
@@ -324,7 +326,11 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		if (mRewardVideoEntity==null) {
 			mRewardVideoEntity = new ViewEntity();
 			mRewardVideoEntity.setType(FastenEntity.VIEW_VIDEO);
-			mRewardVideoEntity.setDirection(FastenEntity.VIEW_VERTICAL);
+			if (TextUtil.equals("horizontal",mGameOrientation)) {//展示方向
+				mBannerViewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);
+			}else{
+				mBannerViewEntity.setDirection(FastenEntity.VIEW_VERTICAL);
+			}
 			mRewardVideoEntity.setSeatId(Integer.parseInt(mRewardVideoID));
 		}
 		DuoKuAdSDK.getInstance().cacheVideo(mActivity, mRewardVideoEntity, mRewardVideoADListener);
@@ -337,7 +343,11 @@ public class ADBaiDuSDK implements IUBADPlugin{
 		UBLogUtil.logI(TAG+"----->showInterstitialAD");
 		ViewEntity viewEntity = new ViewEntity();
 		viewEntity.setType(FastenEntity.VIEW_BLOCK);
-		viewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);
+		if (TextUtil.equals("horizontal",mGameOrientation)) {//展示方向
+			mBannerViewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);
+		}else{
+			mBannerViewEntity.setDirection(FastenEntity.VIEW_VERTICAL);
+		}
 		viewEntity.setSeatId(Integer.parseInt(mInterstitialID));
 		DuoKuAdSDK.getInstance().showBlockView(mActivity, viewEntity, mInterstitialAdListener);
 	}
@@ -349,6 +359,8 @@ public class ADBaiDuSDK implements IUBADPlugin{
 	private ViewEntity mRewardVideoEntity;
 
 	private ViewEntity mBannerViewEntity;
+
+	private String mGameOrientation="portrait";//默认竖屏
 	/**
 	 * 显示Banner广告
 	 */
@@ -359,7 +371,11 @@ public class ADBaiDuSDK implements IUBADPlugin{
 			ADHelper.addBannerView(mWM, mBannerContainer,mBannerPosition);//只添加一次
 			mBannerViewEntity = new ViewEntity();
 			mBannerViewEntity.setType(FastenEntity.VIEW_BANNER);//banner 类型
-			mBannerViewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);//展示方向
+			if (TextUtil.equals("horizontal",mGameOrientation)) {//展示方向
+				mBannerViewEntity.setDirection(FastenEntity.VIEW_HORIZONTAL);
+			}else{
+				mBannerViewEntity.setDirection(FastenEntity.VIEW_VERTICAL);
+			}
 			
 			if (BannerPosition.TOP==mBannerPosition) {
 				mBannerViewEntity.setPostion(FastenEntity.POSTION_TOP);//展示位置
