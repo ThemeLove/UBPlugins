@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/com_tencent_ysdk_icon_floatwindow"
+    android:layout_width="54dp"
+    android:layout_height="match_parent"
+    android:background="#0A0B16"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/com_tencent_ysdk_icon_xiaoxi_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/com_tencent_ysdk_icon_xiaoxi_icon" />
+
+    <TextView
+        android:id="@+id/com_tencent_ysdk_icon_float_view_screen_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="6dp"
+        android:clickable="true"
+        android:drawablePadding="2dp"
+        android:drawableTop="@drawable/com_tencent_ysdk_icon_screen_capture"
+        android:gravity="center"
+        android:text="截屏"
+        android:textSize="12sp" />
+    <!--竖的Item-->
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:scrollbars="none"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_above="@+id/com_tencent_ysdk_icon_float_view_screen_capture"
+        android:layout_below="@+id/com_tencent_ysdk_icon_xiaoxi_icon"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:id="@+id/com_tencent_ysdk_icon_float_view_vertical_Item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
+
+    <ImageView
+        android:id="@+id/com_tencent_ysdk_icon_mengban_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/com_tencent_ysdk_icon_head" />
+</RelativeLayout><!-- From: file:/data/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_icon_float_menu_view.xml -->
