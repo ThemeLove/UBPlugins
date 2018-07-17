@@ -50,8 +50,6 @@ public class UBSDK_YYB_MainActivity extends Activity
     
     public final String TAG =UBSDK_YYB_MainActivity.class.getSimpleName();
 
-	private Button mStepToADBtn;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -101,7 +99,6 @@ public class UBSDK_YYB_MainActivity extends Activity
         mExitBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_exit"));
         mCreatRoleBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_createRole"));
         mCommitRoleInfoBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_commitRoleInfo"));
-        mStepToADBtn = (Button) findViewById(ResUtil.getViewID(this, "btn_jumpToTestAD"));
         mInfoTv = (TextView) findViewById(ResUtil.getViewID(this, "tv_info"));
     }
 
@@ -264,15 +261,6 @@ public class UBSDK_YYB_MainActivity extends Activity
             	setGameDataInfo(DataType.LEVEL_UP);
             }
         });
-        
-        mStepToADBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(UBSDK_YYB_MainActivity.this,ADTestActivity.class);
-				startActivity(intent);
-			}
-		});
         
     }
 

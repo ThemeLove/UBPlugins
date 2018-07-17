@@ -57,12 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="setGameDataInfo" />
-        <Button
-            android:id="@+id/btn_jumpToTestAD"
-            android:layout_marginTop="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="jumpToTestADActivity"/>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_info"
