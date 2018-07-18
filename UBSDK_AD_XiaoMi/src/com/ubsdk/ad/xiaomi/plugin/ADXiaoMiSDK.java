@@ -56,6 +56,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	private NativeAdListener mRewardVideoListener;
 	private FrameLayout mRewardVideoADContainer;
 	private UBADCallback mUBADCallback;
+	private int mBannerPostion;
 	private ADXiaoMiSDK(Activity activity){
 		mActivity=activity;
 		mUBADCallback = UBAD.getInstance().getUBADCallback();
@@ -275,6 +276,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	 */
 	private void loadADParams() {
 		UBLogUtil.logI(TAG+"----->loadADParams");
+		mBannerPostion = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Banner_Position"));
 		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Banner_ID");
 		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Interstitial_ID");
 		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_XiaoMi_Splash_ID");
@@ -334,7 +336,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		mBannerADContainer.setVisibility(View.VISIBLE);
 		if (mBannerAD==null) {
-			ADHelper.addBannerView(mWM, mBannerADContainer, 1);
+			ADHelper.addBannerView(mWM, mBannerADContainer, mBannerPostion);
 			mBannerAD = new BannerAd(mActivity, mBannerADContainer, mBannerADListener);
 		}
 		mBannerAD.show(mBannerID);

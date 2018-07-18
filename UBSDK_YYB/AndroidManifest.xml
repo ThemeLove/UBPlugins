@@ -86,14 +86,14 @@
 
         <!-- TODO GAME SDK 微信接入配置 START -->
         <activity
-            android:name="com.tencent.tmgp.yybtestsdk.wxapi.WXEntryActivity"
+            android:name="com.tencent.tmgp.umbrella.boomdots.wxapi.WXEntryActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="WXEntryActivity"
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:taskAffinity="com.tencent.tmgp.yybtestsdk.diff">
+            android:taskAffinity="com.tencent.tmgp.umbrella.boomdots.diff">
             <!-- TODO GAME 这里为游戏微信登录的配置，游戏需要修改为自己的包名加.diff -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

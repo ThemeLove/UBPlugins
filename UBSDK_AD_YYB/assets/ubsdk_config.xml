@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<param name="AD_YYB_Banner_Position" value="1"/>
+
+<!-- 测试数据 -->
+<!-- 
+<param name="AD_YYB_APP_ID" value="2882303761517707344"/>
+<param name="AD_YYB_Banner_ID" value="6a5ec9ac8263788400c141b4f22cea48" />
+<param name="AD_YYB_Interstitial_ID" value="5a069dfa53b3f2303b271818210dac51" />
+<param name="AD_YYB_Splash_ID" value="2ee681c365d4e588bb31b28ac3bdad3a"/>s
+<param name="AD_YYB_RewardVideo_ID" value="c073eb92f9357a8fd6531e71a6513a6e"/>
+ -->
+
+<!--  碰碰球参数 -->
+<param name="AD_YYB_APP_ID" value="2882303761517707344"/>
+<param name="AD_YYB_Banner_ID" value="6a5ec9ac8263788400c141b4f22cea48" />
+<param name="AD_YYB_Interstitial_ID" value="5a069dfa53b3f2303b271818210dac51" />
+<param name="AD_YYB_Splash_ID" value="2ee681c365d4e588bb31b28ac3bdad3a"/>
+<param name="AD_YYB_RewardVideo_ID" value="c073eb92f9357a8fd6531e71a6513a6e"/>
+
+<param name="UB_GameID" value="1123" />
+<param name="UB_GameDebug" value="true" />
+<param name="UB_GameOrientation" value="portrait" />
+<param name="UB_GameMainActivityName" value="com.umbrella.boomdots" />
+
+<param name="UB_PlatformID" value="80" />
+<param name="UB_PlatformName" value="xiaomi"/>
+<param name="UB_SubPlatformID" value="0" />
+<param name="UB_ChannelID" value="1" />
+<param name="UB_SubChannelID" value="1" />
+<plugins>
+    <plugin name="com.ubsdk.ad.yyb.plugin.ADYYBSDK" type="4" />
+</plugins>
+<applications>
+</applications>
+</config>

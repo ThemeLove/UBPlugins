@@ -100,18 +100,18 @@ public class YYBSDK {
 			
 			@Override
 			public void OnWakeupNotify(WakeupRet arg0) {
-				// TODO Auto-generated method stub
-				
+				UBLogUtil.logI(TAG+"----->login----->OnWakeupNotify");
 			}
 			
 			@Override
 			public void OnRelationNotify(UserRelationRet arg0) {
-				// TODO Auto-generated method stub
+				UBLogUtil.logI(TAG+"----->login----->OnRelationNotify");
 				
 			}
 			
 			@Override
 			public void OnLoginNotify(UserLoginRet ret) {
+				UBLogUtil.logI(TAG+"----->login----->OnLoginNotify----->msg="+ret.msg);
 				 switch (ret.flag) {
 		            case eFlag.Succ://登录成功
 		            	UBLogUtil.logI(TAG+"----->login----->success!");
@@ -154,7 +154,11 @@ public class YYBSDK {
 		            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
 		                // 显示登录界面
 		                break;
+		            case eFlag.GUEST_LoginFail://游客登录失败
+		            	UBLogUtil.logI(TAG+"----->login----->failed:Guest msg="+ret.toString());
+		            	break;
 		            default:
+		            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
 		                break;
 		            }
 			}
@@ -172,6 +176,9 @@ public class YYBSDK {
 				return null;
 			}
 		});
+		
+//		同步给出初始化成功回调
+		UBSDK.getInstance().getUBInitCallback().onSuccess();
 	}
 	
 	public void login() {
@@ -180,6 +187,7 @@ public class YYBSDK {
 		if (platform!=platform.None) {//有登录态
 //			TODO
 		}else{
+			UBLogUtil.logI(TAG+"----->guest login");
 			YSDKApi.login(ePlatform.Guest);
 		}
 	}

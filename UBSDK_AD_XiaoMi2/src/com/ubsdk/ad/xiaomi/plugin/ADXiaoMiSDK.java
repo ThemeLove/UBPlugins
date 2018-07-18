@@ -149,6 +149,7 @@ public class ADXiaoMiSDK implements IUBADPlugin{
 	 */
 	private void initAD() {
 		UBLogUtil.logI(TAG+"----->initAD");
+		
 		mBannerADContainer = new FrameLayout(mActivity);
 		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		mBannerADContainer.setLayoutParams(bannerLayoutParams);
