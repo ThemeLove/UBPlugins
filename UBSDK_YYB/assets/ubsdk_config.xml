@@ -4,7 +4,11 @@
 <param name="MeiZu_AppKey" value="799dbf67e35841028df83495a1eb84e4" />
 <param name="MeiZu_AppSecret" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
 
-<param name="Midas_AppKey" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
+<!-- 米大师沙箱appKey -->
+<param name="Midas_AppKey" value="M2UDM1HzkYtlEWPU"/>
+
+<!-- 米大师现网appKey -->
+<!-- <param name="Midas_AppKey" value="3i7J41JcdPQIdZSnNkhUxFtxVnjaD39H"/> -->
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />

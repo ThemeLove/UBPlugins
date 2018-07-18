@@ -73,7 +73,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent1104936059" />
+                <data android:scheme="tencent1106939610" />
                 <!-- TODO GAME 这里为游戏QQ登录的配置，游戏需要修改为自己手Q的appid -->
             </intent-filter>
         </activity>
@@ -98,7 +98,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="wxfcefed3f366fa606" />
+                <data android:scheme="wxdf5430a98acd0b31" />
                 <!-- TODO GAME 这里为游戏微信登录的配置，游戏需要修改为自己的微信appid -->
             </intent-filter>
         </activity>
