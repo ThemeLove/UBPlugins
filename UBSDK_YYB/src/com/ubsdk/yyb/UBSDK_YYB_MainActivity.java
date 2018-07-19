@@ -155,10 +155,12 @@ public class UBSDK_YYB_MainActivity extends Activity
                     	UBLogUtil.logI(TAG+"----->"+loginSuccessStr);
                         mInfoTv.setText(loginSuccessStr);
                         
-                        int platfromId = UBSDK.getInstance().getPlatformID();
+                        String platformName = UBSDK.getInstance().getPlatformName();
+                        UBLogUtil.logI(TAG+"----->platform="+platformName+"----->login success!");
+/*                        int platfromId = UBSDK.getInstance().getPlatformID();
                         int subPlatformId = UBSDK.getInstance().getSubPlatformID();
                     	UBLogUtil.logI(TAG+"----->"+"platfromId : " + platfromId);
-                    	UBLogUtil.logI(TAG+"----->"+"subPlatformId : " + subPlatformId);
+                    	UBLogUtil.logI(TAG+"----->"+"subPlatformId : " + subPlatformId);*/
                         
 //                      TODO 去2次登录验签
                         
