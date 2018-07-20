@@ -9,7 +9,6 @@ import com.qq.e.ads.banner.AbstractBannerADListener;
 import com.qq.e.ads.banner.BannerView;
 import com.qq.e.ads.interstitial.AbstractInterstitialADListener;
 import com.qq.e.ads.interstitial.InterstitialAD;
-import com.qq.e.ads.interstitial.InterstitialADListener;
 import com.qq.e.comm.util.AdError;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
@@ -38,6 +37,7 @@ import android.widget.FrameLayout;
 
 public class ADYYBSDK implements IUBADPlugin{
 	private final String TAG=ADYYBSDK.class.getSimpleName();
+	private final int[] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH,ADType.AD_TYPE_REWARDVIDEO};
 	private Activity mActivity;
 	private ADYYBSDK(Activity activity){
 		this.mActivity=activity;
@@ -108,7 +108,6 @@ public class ADYYBSDK implements IUBADPlugin{
 	private String mADYYBAppID;
 	private String mBannerID;
 	private String mInterstitialID;
-	private String mSplashID;
 	private String mRewardVideo;
 	private UBADCallback mUBADCallback;
 	private BannerView mBannerView;
@@ -168,7 +167,6 @@ public class ADYYBSDK implements IUBADPlugin{
 		mBannerPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Banner_Position"));
 		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Banner_ID");
 		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Interstitial_ID");
-		mSplashID = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Splash_ID");
 		mRewardVideo = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_RewardVideo_ID");
 	}
 
@@ -269,12 +267,6 @@ public class ADYYBSDK implements IUBADPlugin{
 	}
 
 	@Override
-	public boolean isSupportADType(int adType) {
-		UBLogUtil.logI(TAG+"----->isSupportADType");
-		return false;
-	}
-
-	@Override
 	public void showADWithADType(int adType) {
 		UBLogUtil.logI(TAG+"----->showADWithADType");
 		mUBADCallback = UBAD.getInstance().getUBADCallback();
@@ -327,12 +319,12 @@ public class ADYYBSDK implements IUBADPlugin{
 
 	private void showSplashAD() {
 		UBLogUtil.logI(TAG+"----->showSplashAD");
-		
+		Intent intent = new Intent(mActivity,ADYYBSplashActivity.class);
+		mActivity.startActivity(intent);
 	}
 
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
-		
 	}
 
 	@Override
@@ -414,5 +406,17 @@ public class ADYYBSDK implements IUBADPlugin{
 		}
 		return null;
 	}
-
+	
+	@Override
+	public boolean isSupportADType(int adType) {
+		UBLogUtil.logI(TAG+"----->isSupportADType");
+		if (supportedADTypeArray!=null&&supportedADTypeArray.length>0) {
+			for (int i : supportedADTypeArray) {
+				if (i==adType) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

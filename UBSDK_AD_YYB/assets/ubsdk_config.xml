@@ -12,11 +12,11 @@
  -->
 
 <!--  碰碰球参数 -->
-<param name="AD_YYB_APP_ID" value="2882303761517707344"/>
-<param name="AD_YYB_Banner_ID" value="6a5ec9ac8263788400c141b4f22cea48" />
-<param name="AD_YYB_Interstitial_ID" value="5a069dfa53b3f2303b271818210dac51" />
-<param name="AD_YYB_Splash_ID" value="2ee681c365d4e588bb31b28ac3bdad3a"/>
-<param name="AD_YYB_RewardVideo_ID" value="c073eb92f9357a8fd6531e71a6513a6e"/>
+<param name="AD_YYB_APP_ID" value="1101152570"/>
+<param name="AD_YYB_Banner_ID" value="9079537218417626401" />
+<param name="AD_YYB_Interstitial_ID" value="8575134060152130849" />
+<param name="AD_YYB_Splash_ID" value="8863364436303842593"/>
+<param name="AD_YYB_RewardVideo_ID" value="5090421627704602"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
