@@ -15,12 +15,12 @@ public class ADYYBRewardVideoActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
-		setContentView(ResUtil.getLayoutId(this,""));
+		setContentView(ResUtil.getLayoutId(this,"activity_ad_yyb_rewardvideo"));
 		initViewAndListener();
 	}
 
 	private void initViewAndListener() {
-		
+		findViewById(ResUtil.getViewID(this,""));
 	}
 
 	@Override

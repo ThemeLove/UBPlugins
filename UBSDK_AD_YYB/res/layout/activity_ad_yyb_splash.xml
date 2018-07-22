@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.qq.e.union.demo.SplashActivity" >
+    >
 
     <!-- 广点通开屏广告支持“半屏/全屏”展示，开发者可以把Logo区域放在屏幕底部，然后在Logo上方提供一个容器来放置半开屏广告，请注意此容器高度不得小于400dp -->
 
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/gdt_splash_logo" />
+        android:src="@drawable/ic_ad_yyb_splash_app_logo" />
 
     <!-- 2.开屏广告容器区域：-->
     <!-- 注意：该区域高度不得小于400dp。在本示例中没有写死splash_container的高度值，是因为第1部分的app_logo区域是一个高度很小的图片。 -->
@@ -35,7 +35,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
-        android:background="@drawable/background_circle"
+        android:background="@drawable/shape_ad_yyb_splash_skip_view"
         android:gravity="center"
         android:text="点击跳过"
         android:textColor="@android:color/white"
@@ -53,5 +53,5 @@
         android:layout_height="match_parent"
         android:layout_above="@id/ad_yyb_splash_app_logo"
         android:scaleType="fitXY"
-        android:src="@drawable/splash_holder" />
+        android:src="@drawable/ic_ad_yyb_splash_holder" />
 </RelativeLayout>
