@@ -27,6 +27,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -63,6 +64,7 @@ public class ADYYBSplashActivity extends Activity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 

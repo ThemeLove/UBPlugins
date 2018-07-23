@@ -9,6 +9,9 @@ import com.qq.e.ads.banner.AbstractBannerADListener;
 import com.qq.e.ads.banner.BannerView;
 import com.qq.e.ads.interstitial.AbstractInterstitialADListener;
 import com.qq.e.ads.interstitial.InterstitialAD;
+import com.qq.e.ads.nativ.NativeMediaAD;
+import com.qq.e.ads.nativ.NativeMediaADData;
+import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
@@ -108,7 +111,7 @@ public class ADYYBSDK implements IUBADPlugin{
 	private String mADYYBAppID;
 	private String mBannerID;
 	private String mInterstitialID;
-	private String mRewardVideo;
+	private String mRewardVideoID;
 	private UBADCallback mUBADCallback;
 	private BannerView mBannerView;
 	private AbstractBannerADListener mBannerADListener;
@@ -117,6 +120,10 @@ public class ADYYBSDK implements IUBADPlugin{
 	private int mBannerPosition;
 	private InterstitialAD mInterstitialAD;
 	private AbstractInterstitialADListener mInterstitialListener;
+	private NativeMediaAD.NativeMediaADListener mVideoADListener;
+	private NativeMediaAD mVideoADManager;
+	private int LOAD_VIDEO_COUNT=8;//加载广告的数量
+    private static NativeMediaADData mVideoAD;//视频广告AD
 	 
 	 /**
 	  * 检测并请求sdk必要权限
@@ -167,7 +174,7 @@ public class ADYYBSDK implements IUBADPlugin{
 		mBannerPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Banner_Position"));
 		mBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Banner_ID");
 		mInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_Interstitial_ID");
-		mRewardVideo = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_RewardVideo_ID");
+		mRewardVideoID = UBSDKConfig.getInstance().getParamMap().get("AD_YYB_RewardVideo_ID");
 	}
 
 	private void initAD() {
@@ -264,6 +271,85 @@ public class ADYYBSDK implements IUBADPlugin{
 		    	  }
 		      }
 		    };
+		    
+//		    RewardVideo
+		    mVideoADListener = new NativeMediaAD.NativeMediaADListener() {
+	
+
+
+				@Override
+			      public void onADLoaded(List<NativeMediaADData> yybADs) {
+			    	UBLogUtil.logI(TAG+"----->RewardVideo AD onADLoaded!");
+			    	if (yybADs!=null&&yybADs.size()>0) {
+			    		for (NativeMediaADData yybAD : yybADs) {
+			    			int yybADType = yybAD.getAdPatternType();
+							if (yybADType==AdPatternType.NATIVE_VIDEO) {
+								mVideoAD = yybAD;
+								break;
+							}
+						}
+					}
+			    	
+			    	if (mVideoAD!=null) {//有视频广告，先预加载视频
+			    		mVideoAD.preLoadVideo();//先预加载视频，预加载视频成功之后会回调onADVideoLoaded接口
+					}else{//如果没有视频广告
+						ToastUtil.showToast(mActivity, "抱歉，暂时没有视频广告！");
+						if (mUBADCallback!=null) {
+							mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD error!msg=no video ad");
+						}
+					}
+			      }
+
+			      @Override
+			      public void onNoAD(AdError adError) {
+			    	  UBLogUtil.logI(TAG+"----->RewardVideo AD onNoAD");
+			    	  ToastUtil.showToast(mActivity, String.format("广告加载失败，错误码：%d，错误信息：%s", adError.getErrorCode(), adError.getErrorMsg()));
+			    	  if (mUBADCallback!=null) {
+			    		  mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD error!msg="+adError.getErrorMsg());
+					}
+			      }
+
+			      @Override
+			      public void onADStatusChanged(NativeMediaADData ad) {
+			    	  UBLogUtil.logI(TAG+"----->RewardVideo AD onADStatusChanged");
+			      }
+
+			      @Override
+			      public void onADError(NativeMediaADData adData, AdError adError) {
+			    	  UBLogUtil.logI(TAG+"----->RewardVideo AD onADError:adTitle="+adData.getTitle()+",errorCode="+adError.getErrorCode()+",errorMsg="+adError.getErrorMsg());
+			    	  if (mUBADCallback!=null) {
+						mUBADCallback.onFailed(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD error!msg="+adError.getErrorMsg());
+			    	  }
+			      }
+
+			      @Override
+			      public void onADVideoLoaded(NativeMediaADData adData) {
+			    	// 仅仅是加载视频文件完成，如果没有绑定MediaView视频仍然不可以播放
+			    	  UBLogUtil.logI(TAG+"----->RewardVideo AD onADVideoLoaded");
+			    	  mVideoAD=adData;
+			    	  
+//			    	  注意这里的NativeMediaADData 要传递到ADYYBRewardVideoActivity里 是直接保存到内存中的，
+//			    	  然后在ADYYBRewardVideoActivity中用ADYYBSDK.getVideoAD()方法获取的，因为NativeMediaADData没有实现序列化接口
+			    	  Intent intent = new Intent(mActivity,ADYYBRewardVideoActivity.class);
+			    	  mActivity.startActivity(intent);
+			      }
+
+			      @Override
+			      public void onADExposure(NativeMediaADData adData) {
+			    	  UBLogUtil.logI(TAG+"----->RewardVideo AD onADExposure:adTitle="+adData.getTitle());
+			    	  if (mUBADCallback!=null) {
+			    		  mUBADCallback.onShow(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD show!");
+					}
+			      }
+
+			      @Override
+			      public void onADClicked(NativeMediaADData adData) {
+			    	  UBLogUtil.logI(TAG+"----->RewardVideo AD onADClicked:adTitle="+adData.getTitle());
+			    	  if (mUBADCallback!=null) {
+						  mUBADCallback.onClick(ADType.AD_TYPE_REWARDVIDEO,"RewardVideo AD click!");
+			    	  }
+			      }
+			    };
 	}
 
 	@Override
@@ -323,8 +409,18 @@ public class ADYYBSDK implements IUBADPlugin{
 		mActivity.startActivity(intent);
 	}
 
+	
 	private void showVideoAD() {
 		UBLogUtil.logI(TAG+"----->showVideoAD");
+		
+		mVideoAD=null;
+		if (mVideoADManager==null) {
+			mVideoADManager = new NativeMediaAD(mActivity,mADYYBAppID, mRewardVideoID, mVideoADListener);
+		}
+		
+		if (mVideoADManager!=null) {
+			mVideoADManager.loadAD(LOAD_VIDEO_COUNT);
+		}
 	}
 
 	@Override
@@ -418,5 +514,14 @@ public class ADYYBSDK implements IUBADPlugin{
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * 获取加载成功的广告视频数据
+	 * ADYYBRewardVideoActivity里调用
+	 * @return
+	 */
+	public static NativeMediaADData getVideoAD(){
+		return mVideoAD;
 	}
 }
