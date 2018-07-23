@@ -185,7 +185,6 @@ public class ADYYBSDK implements IUBADPlugin{
 		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		mBannerADContainer.setLayoutParams(bannerLayoutParams);
 		
-		
 		mBannerADListener = new AbstractBannerADListener() {
 			
 			@Override
@@ -274,8 +273,6 @@ public class ADYYBSDK implements IUBADPlugin{
 		    
 //		    RewardVideo
 		    mVideoADListener = new NativeMediaAD.NativeMediaADListener() {
-	
-
 
 				@Override
 			      public void onADLoaded(List<NativeMediaADData> yybADs) {
