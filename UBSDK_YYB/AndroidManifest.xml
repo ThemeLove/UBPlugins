@@ -55,15 +55,15 @@
         
         
         
-               <!-- TODO GAME SDK接入YSDK登陆接入配置 START -->
+        <!-- TODO GAME SDK接入YSDK登陆接入配置 START -->
         <activity
             android:name="com.tencent.ysdk.module.realName.impl.RegisterRealNameActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
-
         <!-- TODO GAME SDK接入YSDK登陆接入配置 END -->
+        
         <!-- TODO GAME SDK QQ接入配置 START -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

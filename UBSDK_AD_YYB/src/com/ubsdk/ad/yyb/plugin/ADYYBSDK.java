@@ -94,7 +94,7 @@ public class ADYYBSDK implements IUBADPlugin{
 			@Override
 			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
 				UBLogUtil.logI(TAG+"----->onBackPressed");
-			    if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
+			    if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
 			    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
 			      } else {
 			        // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
@@ -102,7 +102,7 @@ public class ADYYBSDK implements IUBADPlugin{
 			        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 			        intent.setData(Uri.parse("package:" + mActivity.getPackageName()));
 			        mActivity.startActivity(intent);
-			      }
+			     }
 			}
 		});
 	}
@@ -184,7 +184,6 @@ public class ADYYBSDK implements IUBADPlugin{
 		mBannerADContainer = new FrameLayout(mActivity);
 		FrameLayout.LayoutParams bannerLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		mBannerADContainer.setLayoutParams(bannerLayoutParams);
-		
 		
 		mBannerADListener = new AbstractBannerADListener() {
 			
@@ -274,9 +273,6 @@ public class ADYYBSDK implements IUBADPlugin{
 		    
 //		    RewardVideo
 		    mVideoADListener = new NativeMediaAD.NativeMediaADListener() {
-	
-
-
 				@Override
 			      public void onADLoaded(List<NativeMediaADData> yybADs) {
 			    	UBLogUtil.logI(TAG+"----->RewardVideo AD onADLoaded!");

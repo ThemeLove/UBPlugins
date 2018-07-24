@@ -1,6 +1,8 @@
 package com.ubsdk.yyb.plugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.tencent.ysdk.api.YSDKApi;
 import com.tencent.ysdk.framework.common.eFlag;
@@ -15,6 +17,7 @@ import com.tencent.ysdk.module.user.UserLoginRet;
 import com.tencent.ysdk.module.user.UserRelationRet;
 import com.tencent.ysdk.module.user.WakeupRet;
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.model.UBPayConfigModel;
@@ -23,20 +26,30 @@ import com.umbrella.game.ubsdk.plugintype.pay.PayType;
 import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
+import com.umbrella.game.ubsdk.utils.TextUtil;
 import com.umbrella.game.ubsdk.utils.ToastUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 
 public class YYBSDK {
+	
 	private final String TAG=YYBSDK.class.getSimpleName();
 	private static YYBSDK instance;
 	private Activity mActivity;
 	private String mMidasAppKey;//米大师appKey
 	private PayConfig mPayConfig;//本次支付的支付配置
 	private int mMidasPayRate;//米大师支付比例1:10
+	private static final int PERMISSION_REQUEST_CODE = 1024;//权限申请请求Request_code
 	private YYBSDK(){}
 	public static YYBSDK getInstance(){
 		if (instance==null) {
@@ -48,14 +61,166 @@ public class YYBSDK {
 	}
 
 	public void init() {
-		mActivity = UBSDKConfig.getInstance().getGameActivity();
-		mMidasPayRate = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("Midas_Pay_Rate"));
-		mMidasAppKey = UBSDKConfig.getInstance().getParamMap().get("Midas_AppKey");
-		
-//		YSDK初始化
-		YSDKApi.onCreate(mActivity);
-		
+		UBLogUtil.logI(TAG+"----->init");
+		try {
+			loadParams();
+			setActivityListener();
+			initYYBSDK();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+//			同步给出初始化成功回调
+			UBSDK.getInstance().getUBInitCallback().onSuccess();
+		}
+	}
+	
+	 private void initYYBSDK() {
+		 	UBLogUtil.logI(TAG+"----->initYYBSDK");
+		 
+//			显示申请登录必要权限android.permission.READ_PHONE_STATE
+			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+				checkAndRequestPermission();
+			}
+			
+//			YSDK初始化
+			YSDKApi.onCreate(mActivity);
+			
+			YSDKApi.setUserListener(new UserListener() {
+				
+				@Override
+				public void OnWakeupNotify(WakeupRet arg0) {
+					UBLogUtil.logI(TAG+"----->login----->OnWakeupNotify");
+				}
+				
+				@Override
+				public void OnRelationNotify(UserRelationRet arg0) {
+					UBLogUtil.logI(TAG+"----->login----->OnRelationNotify");
+					
+				}
+				
+				@Override
+				public void OnLoginNotify(UserLoginRet ret) {
+					UBLogUtil.logI(TAG+"----->login----->OnLoginNotify----->msg="+ret.msg);
+					 
+					 switch (ret.flag) {
+			            case eFlag.Succ://登录成功
+			            	UBLogUtil.logI(TAG+"----->login----->success!");
+			            	mUid = ret.open_id;
+			            	String accessToken = ret.getAccessToken();
+			            	
+							UBUserInfo ubUserInfo = new UBUserInfo();
+							ubUserInfo.setUid(mUid);
+							ubUserInfo.setUserName(TextUtil.isEmpty(ret.nick_name)?mUid:ret.nick_name);
+							ubUserInfo.setToken(TextUtil.isEmpty(accessToken)?mUid:accessToken);
+							ubUserInfo.setExtra(TextUtil.isEmpty(accessToken)?mUid:accessToken);
+			            	 
+							if (mUBLoginCallback!=null) {//这里做一下为空兼容
+								mUBLoginCallback.onSuccess(ubUserInfo);
+							}
+							
+//							登录成功展示悬浮icon
+							IconApi.getInstance().loadIcon();
+			                break;
+			                
+			            // 用户取消  
+			            case eFlag.QQ_UserCancel://QQ登录，用户取消
+			            case eFlag.WX_UserCancel://WX登录，用户取消
+			            	UBLogUtil.logI(TAG+"----->login----->cancel:cancel by user");
+			            	if (mUBLoginCallback!=null) {
+								mUBLoginCallback.onCancel();
+							}
+			            	IconApi.getInstance().hideIcon();
+			            	mUid=null;
+			            	break;
+			            	
+			            // 游戏逻辑，对登录失败情况分别进行处理
+			            case eFlag.QQ_LoginFail://QQ登录失败
+			            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
+			            	
+			            case eFlag.QQ_NetworkErr://QQ登录异常
+			            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
+			            	
+			            case eFlag.QQ_NotInstall://手机未安装QQ
+			            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
+			            	
+			            case eFlag.QQ_NotSupportApi://QQ版本太低
+			            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
+			            	
+			            case eFlag.WX_NotInstall://手机未安装WX
+			            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
+			            	
+			            case eFlag.WX_NotSupportApi://WX版本太低
+			            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
+			            	
+			            case eFlag.WX_UserDeny://WX登录，用户拒绝了授权
+			            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
+			            	
+			            case eFlag.WX_LoginFail://WX登录失败
+			            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
+			            	
+			            case eFlag.Login_TokenInvalid://您尚未登录或者之前的登录已过期，请重试
+			            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
+			            	
+			            case eFlag.Login_NotRegisterRealName://您的账号没有进行实名认证，请实名认证后重试
+			            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
+			            	
+			                // 显示登录界面
+			            case eFlag.GUEST_LoginFail://游客登录失败
+			            	UBLogUtil.logI(TAG+"----->login----->failed:Guest msg="+ret.toString());
+			            	
+			            default:
+			            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
+//			            	默认给出失败回调
+			            	if (mUBLoginCallback!=null) {
+								mUBLoginCallback.onFailed(ret.msg,null);
+							}
+			            	mUid=null;
+			            	IconApi.getInstance().hideIcon();
+			                break;
+			            }
+				}
+			});
+			
+			YSDKApi.setBuglyListener(new BuglyListener() {
+				
+				@Override
+				public String OnCrashExtMessageNotify() {
+					return null;
+				}
+				
+				@Override
+				public byte[] OnCrashExtDataNotify() {
+					return null;
+				}
+			});
+	}
+	 
+	private void setActivityListener() {
+		UBLogUtil.logI(TAG+"----->setActivityListener");
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
+
+			@Override
+			public void onCreate(Bundle savedInstanceState) {
+				UBLogUtil.logI(TAG+"----->onCreate");
+//					显示申请登录必要权限android.permission.READ_PHONE_STATE
+				if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+					checkAndRequestPermission();
+				}
+			}
+
+			@Override
+			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
+				UBLogUtil.logI(TAG+"----->onRequestPermissionResult");
+				if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
+			    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
+			      } else {
+			        // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
+			    	ToastUtil.showToast(mActivity, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。");
+			        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+			        intent.setData(Uri.parse("package:" + mActivity.getPackageName()));
+			        mActivity.startActivity(intent);
+			     }
+			}
 
 			@Override
 			public void onRestart() {
@@ -102,124 +267,69 @@ public class YYBSDK {
 				YSDKApi.onActivityResult(requestCode, resultCode, data);
 			}
 		});
-		
-
-		
-		YSDKApi.setUserListener(new UserListener() {
-			
-			@Override
-			public void OnWakeupNotify(WakeupRet arg0) {
-				UBLogUtil.logI(TAG+"----->login----->OnWakeupNotify");
-			}
-			
-			@Override
-			public void OnRelationNotify(UserRelationRet arg0) {
-				UBLogUtil.logI(TAG+"----->login----->OnRelationNotify");
-				
-			}
-			
-			@Override
-			public void OnLoginNotify(UserLoginRet ret) {
-				UBLogUtil.logI(TAG+"----->login----->OnLoginNotify----->msg="+ret.msg);
-				 
-				 switch (ret.flag) {
-		            case eFlag.Succ://登录成功
-		            	UBLogUtil.logI(TAG+"----->login----->success!");
-		            	mUid = ret.open_id;
-		            	String accessToken = ret.getAccessToken();
-		            	
-						UBUserInfo ubUserInfo = new UBUserInfo();
-						ubUserInfo.setUid(mUid);
-						ubUserInfo.setUserName(ret.nick_name);
-						ubUserInfo.setToken(accessToken);
-						ubUserInfo.setExtra(accessToken);
-		            	 
-						if (UBSDK.getInstance().getUBLoginCallback()!=null) {//这里做一下为空兼容
-							UBSDK.getInstance().getUBLoginCallback().onSuccess(ubUserInfo);
-						}
-						
-//						登录成功展示悬浮icon
-						IconApi.getInstance().loadIcon();
-		                break;
-		                
-		            // 用户取消  
-		            case eFlag.QQ_UserCancel://QQ登录，用户取消
-		            case eFlag.WX_UserCancel://WX登录，用户取消
-		            	UBLogUtil.logI(TAG+"----->login----->cancel:cancel by user");
-		            	UBSDK.getInstance().getUBLoginCallback().onCancel();
-		            	IconApi.getInstance().hideIcon();
-		            	mUid=null;
-		            	break;
-		            	
-		            // 游戏逻辑，对登录失败情况分别进行处理
-		            case eFlag.QQ_LoginFail://QQ登录失败
-		            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
-		            	
-		            case eFlag.QQ_NetworkErr://QQ登录异常
-		            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
-		            	
-		            case eFlag.QQ_NotInstall://手机未安装QQ
-		            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
-		            	
-		            case eFlag.QQ_NotSupportApi://QQ版本太低
-		            	UBLogUtil.logI(TAG+"----->login----->failed:QQ msg="+ret.msg);
-		            	
-		            case eFlag.WX_NotInstall://手机未安装WX
-		            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
-		            	
-		            case eFlag.WX_NotSupportApi://WX版本太低
-		            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
-		            	
-		            case eFlag.WX_UserDeny://WX登录，用户拒绝了授权
-		            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
-		            	
-		            case eFlag.WX_LoginFail://WX登录失败
-		            	UBLogUtil.logI(TAG+"----->login----->failed:WX msg="+ret.msg);
-		            	
-		            case eFlag.Login_TokenInvalid://您尚未登录或者之前的登录已过期，请重试
-		            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
-		            	
-		            case eFlag.Login_NotRegisterRealName://您的账号没有进行实名认证，请实名认证后重试
-		            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
-		            	
-		                // 显示登录界面
-		            case eFlag.GUEST_LoginFail://游客登录失败
-		            	UBLogUtil.logI(TAG+"----->login----->failed:Guest msg="+ret.toString());
-		            	
-		            default:
-		            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
-//		            	默认给出失败回调
-		            	UBSDK.getInstance().getUBLoginCallback().onFailed(ret.msg,null);
-		            	mUid=null;
-		            	IconApi.getInstance().hideIcon();
-		                break;
-		            }
-			}
-		});
-		
-		YSDKApi.setBuglyListener(new BuglyListener() {
-			
-			@Override
-			public String OnCrashExtMessageNotify() {
-				return null;
-			}
-			
-			@Override
-			public byte[] OnCrashExtDataNotify() {
-				return null;
-			}
-		});
-		
-
-		
-//		同步给出初始化成功回调
-		UBSDK.getInstance().getUBInitCallback().onSuccess();
 	}
+	 
+	private void loadParams() {
+		UBLogUtil.logI(TAG+"----->loadParams");
+		mActivity = UBSDKConfig.getInstance().getGameActivity();
+		mMidasPayRate = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("Midas_Pay_Rate"));
+		mMidasAppKey = UBSDKConfig.getInstance().getParamMap().get("Midas_AppKey");
+	 }
+	/**
+	  * 检测并请求sdk必要权限
+	  */
+	 @TargetApi(Build.VERSION_CODES.M)
+	 private void checkAndRequestPermission() {
+	    List<String> lackedPermission = new ArrayList<String>();
+	    if (!(mActivity.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+	      lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+	    }
+
+	    if (!(mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+	      lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+	    }
+
+	    if (!(mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+	      lackedPermission.add(Manifest.permission.ACCESS_FINE_LOCATION);
+	    }
+
+	    // 权限都已经有了，那么直接调用SDK
+	    if (lackedPermission.size() == 0) {
+	    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
+	    } else {
+	      // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+	      String[] requestPermissions = new String[lackedPermission.size()];
+	      lackedPermission.toArray(requestPermissions);
+	      mActivity.requestPermissions(requestPermissions, PERMISSION_REQUEST_CODE);
+	    }
+	  }
+	 
+	 /**
+	  * 权限是否获取成功
+	  * @param grantResults
+	  * @return
+	  */
+	 private boolean hasAllPermissionsGranted(int[] grantResults) {
+		    for (int grantResult : grantResults) {
+		      if (grantResult == PackageManager.PERMISSION_DENIED) {
+		        return false;
+		      }
+		    }
+		    return true;
+	 }
 	
 /******************************************************************login****************************************************************/
 	private String mUid;//ysdk 游客登录成功的uid
+	private UBLoginCallback mUBLoginCallback;
 	public void login() {
 		UBLogUtil.logI(TAG+"----->login");
+		
+//		显示申请登录必要权限android.permission.READ_PHONE_STATE
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+			checkAndRequestPermission();
+		}
+		
+		mUBLoginCallback = UBSDK.getInstance().getUBLoginCallback();
 		
 		YSDKApi.login(ePlatform.Guest);
 		
@@ -306,7 +416,7 @@ public class YYBSDK {
 			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
 		}
 		if (mPayConfig==null) {
-			throw new RuntimeException("Lenovo store pay config error!!");
+			throw new RuntimeException("YYB store pay config error!!");
 		}
 		
 		final String tm=System.currentTimeMillis()+"";
@@ -389,7 +499,7 @@ public class YYBSDK {
 			payItem.num=1;//这里固定为1
 			
 			YSDKApi.buyGoods(false,//是否可以修改订单金额
-					ubRoleInfo.getServerID(),//大区id，服务器id
+					"1",//大区id，服务器id,固定为1，单机游戏没有这个
 					payItem,//payItem(道具id,道具名称，道具描述，道具价格，道具数量)
 					mMidasAppKey,//midas_appKey
 					null,//byte[] 商品图片

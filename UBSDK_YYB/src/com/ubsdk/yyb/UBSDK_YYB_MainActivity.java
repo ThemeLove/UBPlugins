@@ -51,7 +51,7 @@ public class UBSDK_YYB_MainActivity extends Activity
     public final String TAG =UBSDK_YYB_MainActivity.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(final Bundle savedInstanceState)
     {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
@@ -74,6 +74,7 @@ public class UBSDK_YYB_MainActivity extends Activity
             	UBLogUtil.logI(TAG+"----->"+successStr);
                 Toast.makeText(mActivity,successStr, Toast.LENGTH_SHORT).show();
                 mInfoTv.setText(successStr);
+//                UBSDK.getInstance().onCreate(savedInstanceState);
             }
 
             @Override
@@ -85,8 +86,8 @@ public class UBSDK_YYB_MainActivity extends Activity
                 mInfoTv.setText(failStr);
             }
         });
-        UBSDK.getInstance().onCreate(savedInstanceState);
         
+        UBSDK.getInstance().onCreate(savedInstanceState);
     }
 
     private void initView()

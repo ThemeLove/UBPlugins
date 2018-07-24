@@ -30,7 +30,6 @@
     <!-- From: file:/data/rdm/projects/18500/ysdk/src/main/res/values/com_tencent_ysdk_icon_strings.xml -->
     <eat-comment/>
     <string name="action_settings">Settings</string>
-    <string name="app_name">FloatWindow</string>
     <!-- From: file:/data/rdm/projects/18500/ysdk/src/main/res/values/com_tencent_ysdk_string.xml -->
     <eat-comment/>
     <string name="com_tencent_ysdk_real_name_agreement"><u>用户隐私和保护策略</u></string>

@@ -20,7 +20,11 @@ public class YYBPayPlugin implements IUBPayPlugin{
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
-		YYBSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
+		try {
+			YYBSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
