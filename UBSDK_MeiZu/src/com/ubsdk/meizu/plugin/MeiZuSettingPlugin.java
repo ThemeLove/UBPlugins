@@ -36,8 +36,7 @@ public class MeiZuSettingPlugin implements IUBSettingPlugin{
 	@Override
 	public String getPlatformName() {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
-		
-		String platformName="demo";
+		String platformName="meizu";
 		try {
 			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
 		} catch (NumberFormatException e) {

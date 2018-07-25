@@ -38,7 +38,7 @@
         android:name="com.umbrella.game.ubsdk.ui.UBApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="UBSDK_YYB"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.ubsdk.yyb.UBSDK_YYB_MainActivity"

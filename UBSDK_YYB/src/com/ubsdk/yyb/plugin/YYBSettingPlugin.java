@@ -2,6 +2,7 @@ package com.ubsdk.yyb.plugin;
 
 import java.lang.reflect.Method;
 
+import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -76,7 +77,14 @@ public class YYBSettingPlugin implements IUBSettingPlugin {
 	@Override
 	public String getPlatformName() {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
-		return "YYB";
+		String platformName="yyb";
+		try {
+			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return platformName;
+		}
+		return platformName;
 	}
 
 	@Override

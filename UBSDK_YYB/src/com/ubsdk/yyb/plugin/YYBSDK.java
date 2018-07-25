@@ -17,7 +17,6 @@ import com.tencent.ysdk.module.user.UserLoginRet;
 import com.tencent.ysdk.module.user.UserRelationRet;
 import com.tencent.ysdk.module.user.WakeupRet;
 import com.umbrella.game.ubsdk.UBSDK;
-import com.umbrella.game.ubsdk.callback.UBLoginCallback;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.model.UBPayConfigModel;
@@ -78,9 +77,9 @@ public class YYBSDK {
 		 	UBLogUtil.logI(TAG+"----->initYYBSDK");
 		 
 //			显示申请登录必要权限android.permission.READ_PHONE_STATE
-			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+/*			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
 				checkAndRequestPermission();
-			}
+			}*/
 			
 //			YSDK初始化
 			YSDKApi.onCreate(mActivity);
@@ -106,9 +105,9 @@ public class YYBSDK {
 			            case eFlag.Succ://登录成功
 			            	UBLogUtil.logI(TAG+"----->login----->success!");
 			            	mUid = ret.open_id;
-			            	String accessToken = ret.getAccessToken();
+//			            	String accessToken = ret.getAccessToken();
 			            	
-							UBUserInfo ubUserInfo = new UBUserInfo();
+/*							UBUserInfo ubUserInfo = new UBUserInfo();
 							ubUserInfo.setUid(mUid);
 							ubUserInfo.setUserName(TextUtil.isEmpty(ret.nick_name)?mUid:ret.nick_name);
 							ubUserInfo.setToken(TextUtil.isEmpty(accessToken)?mUid:accessToken);
@@ -116,7 +115,7 @@ public class YYBSDK {
 			            	 
 							if (mUBLoginCallback!=null) {//这里做一下为空兼容
 								mUBLoginCallback.onSuccess(ubUserInfo);
-							}
+							}*/
 							
 //							登录成功展示悬浮icon
 							IconApi.getInstance().loadIcon();
@@ -126,9 +125,9 @@ public class YYBSDK {
 			            case eFlag.QQ_UserCancel://QQ登录，用户取消
 			            case eFlag.WX_UserCancel://WX登录，用户取消
 			            	UBLogUtil.logI(TAG+"----->login----->cancel:cancel by user");
-			            	if (mUBLoginCallback!=null) {
+/*			            	if (mUBLoginCallback!=null) {
 								mUBLoginCallback.onCancel();
-							}
+							}*/
 			            	IconApi.getInstance().hideIcon();
 			            	mUid=null;
 			            	break;
@@ -171,9 +170,9 @@ public class YYBSDK {
 			            default:
 			            	UBLogUtil.logI(TAG+"----->login----->failed:msg="+ret.msg);
 //			            	默认给出失败回调
-			            	if (mUBLoginCallback!=null) {
+/*			            	if (mUBLoginCallback!=null) {
 								mUBLoginCallback.onFailed(ret.msg,null);
-							}
+							}*/
 			            	mUid=null;
 			            	IconApi.getInstance().hideIcon();
 			                break;
@@ -203,9 +202,9 @@ public class YYBSDK {
 			public void onCreate(Bundle savedInstanceState) {
 				UBLogUtil.logI(TAG+"----->onCreate");
 //					显示申请登录必要权限android.permission.READ_PHONE_STATE
-				if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+/*				if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
 					checkAndRequestPermission();
-				}
+				}*/
 			}
 
 			@Override
@@ -320,7 +319,7 @@ public class YYBSDK {
 	
 /******************************************************************login****************************************************************/
 	private String mUid;//ysdk 游客登录成功的uid
-	private UBLoginCallback mUBLoginCallback;
+//	private UBLoginCallback mUBLoginCallback;
 	public void login() {
 		UBLogUtil.logI(TAG+"----->login");
 		
@@ -329,9 +328,17 @@ public class YYBSDK {
 			checkAndRequestPermission();
 		}
 		
-		mUBLoginCallback = UBSDK.getInstance().getUBLoginCallback();
+//		mUBLoginCallback = UBSDK.getInstance().getUBLoginCallback();
 		
 		YSDKApi.login(ePlatform.Guest);
+		
+		UBUserInfo ubUserInfo = new UBUserInfo();
+		ubUserInfo.setUid("123456");
+		ubUserInfo.setUserName("ubsdktest");
+		ubUserInfo.setToken("123456ABCDEFG");
+		ubUserInfo.setExtra("extra");
+		
+		UBSDK.getInstance().getUBLoginCallback().onSuccess(ubUserInfo);
 		
 /*		if (!isYSDKLogin()) {//没有登录态，游客登录
 			YSDKApi.login(ePlatform.Guest);
@@ -405,11 +412,10 @@ public class YYBSDK {
 		UBLogUtil.logI(TAG+"----->pay");
 		UBLogUtil.logI(TAG+"----->pay----->ubRoleInfo="+ubRoleInfo+",ubOrderInfo="+ubOrderInfo);
 //		判断登录态
-/*		if (TextUtil.isEmpty(mUid)) {
-			mPayLoadingDialog.show();
-			YSDKApi.login(ePlatform.Guest);
+		if (TextUtil.isEmpty(mUid)) {
+			login();
 			return;
-		}*/
+		}
 		
 		HashMap<String, PayConfig> mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
 		if (mPayConfigMap!=null&&!TextUtils.isEmpty(ubOrderInfo.getGoodsID())) {
@@ -497,7 +503,6 @@ public class YYBSDK {
 				return;
 			}
 			payItem.num=1;//这里固定为1
-			
 			YSDKApi.buyGoods(false,//是否可以修改订单金额
 					"1",//大区id，服务器id,固定为1，单机游戏没有这个
 					payItem,//payItem(道具id,道具名称，道具描述，道具价格，道具数量)

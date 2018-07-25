@@ -1,5 +1,6 @@
 package com.ubsdk.xiaomi.plugin;
 
+import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -46,7 +47,14 @@ public class XiaoMiSettingPlugin implements IUBSettingPlugin{
 	@Override
 	public String getPlatformName() {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
-		return "XiaoMi";
+		String platformName="xiaomi";
+		try {
+			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return platformName;
+		}
+		return platformName;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.ubsdk.lenovo.plugin;
 
 import com.umbrella.game.ubsdk.UBSDK;
+import com.umbrella.game.ubsdk.config.UBSDKConfig;
 import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
@@ -34,7 +35,14 @@ public class LenovoSettingPlugin implements IUBSettingPlugin{
 	@Override
 	public String getPlatformName() {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
-		return null;
+		String platformName="lenovo";
+		try {
+			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return platformName;
+		}
+		return platformName;
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <payconfig>
-    <product productID="102"  productName="1元宝" amount="0.1" payType="1">
+    <product productID="101"  productName="1元宝" amount="0.1" payType="1">
 	    <orderinfo orderID="1000" amount="0.1" productName="1元宝" productDesc="1元宝"  ext="ext" />     
 	</product>
-	<product productID="101"  productName="去除广告" amount="4.9" payType="1">
+    <product productID="102"  productName="去除广告" amount="4.9" payType="1">
 	    <orderinfo orderID="1000" amount="4.9" productName="去除广告" productDesc="去除广告"  ext="ext" />     
 	</product>
 </payconfig>
