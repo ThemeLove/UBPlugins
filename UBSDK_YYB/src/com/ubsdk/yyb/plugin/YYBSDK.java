@@ -212,6 +212,8 @@ public class YYBSDK {
 				UBLogUtil.logI(TAG+"----->onRequestPermissionResult");
 				if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
 			    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
+//			    	这里如果获得了权限，就去调用一次登录
+			    	login();
 			      } else {
 			        // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
 			    	ToastUtil.showToast(mActivity, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。");

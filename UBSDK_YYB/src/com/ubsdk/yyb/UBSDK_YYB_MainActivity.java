@@ -467,6 +467,12 @@ public class UBSDK_YYB_MainActivity extends Activity
         super.onConfigurationChanged(newConfig);
         UBSDK.getInstance().onConfigurationChanged(newConfig);
     }
+    
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    	super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    	UBSDK.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults);
+    }
 
 /*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {

@@ -4,10 +4,10 @@
 <!-- 米大师支付比例为1元/10  -->
 <param name="Midas_Pay_Rate" value="10"/>
 <!-- 米大师沙箱appKey -->
-<param name="Midas_AppKey" value="M2UDM1HzkYtlEWPU"/>
+<!-- <param name="Midas_AppKey" value="M2UDM1HzkYtlEWPU"/> -->
 
 <!-- 米大师现网appKey -->
-<!-- <param name="Midas_AppKey" value="3i7J41JcdPQIdZSnNkhUxFtxVnjaD39H"/> -->
+<param name="Midas_AppKey" value="3i7J41JcdPQIdZSnNkhUxFtxVnjaD39H"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
