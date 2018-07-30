@@ -12,6 +12,7 @@ import com.umbrella.game.ubsdk.utils.ToastUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Process;
@@ -54,6 +55,8 @@ public class UBSDK_AD_YYB_MainActivity extends Activity implements OnClickListen
 				
 			}
 		});
+        
+        UBSDK.getInstance().onCreate(savedInstanceState);
         
         mADTypeOrMethod = (EditText) findViewById(R.id.et_ADTypeOrMethodInput);
         
@@ -256,7 +259,55 @@ public class UBSDK_AD_YYB_MainActivity extends Activity implements OnClickListen
         }
     }
 
+	
     @Override
+	protected void onStart() {
+    	UBSDK.getInstance().onStart();
+		super.onStart();
+	}
+	@Override
+	protected void onRestart() {
+		UBSDK.getInstance().onRestart();
+		super.onRestart();
+	}
+	@Override
+	protected void onResume() {
+		UBSDK.getInstance().onResume();
+		super.onResume();
+	}
+	@Override
+	protected void onNewIntent(Intent intent) {
+		UBSDK.getInstance().onNewIntent(intent);
+		super.onNewIntent(intent);
+	}
+	@Override
+	protected void onPause() {
+		UBSDK.getInstance().onPause();
+		super.onPause();
+	}
+	@Override
+	protected void onStop() {
+		UBSDK.getInstance().onStop();
+		super.onStop();
+	}
+	@Override
+	public void onTrimMemory(int level) {
+//		UBSDK.getInstance().on
+		super.onTrimMemory(level);
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		UBSDK.getInstance().onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		UBSDK.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults);
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+	@Override
     public void onBackPressed() {
     	UBSDK.getInstance().onBackPressed();
     	UBSDK.getInstance().exit(new UBExitCallback() {

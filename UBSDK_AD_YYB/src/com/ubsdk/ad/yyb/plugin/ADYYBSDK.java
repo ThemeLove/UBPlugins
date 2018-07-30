@@ -186,13 +186,13 @@ public class ADYYBSDK implements IUBADPlugin{
 		mBannerADContainer.setLayoutParams(bannerLayoutParams);
 		
 		mBannerADListener = new AbstractBannerADListener() {
-			
 			@Override
 			public void onNoAD(AdError adError) {
 				UBLogUtil.logI(TAG+"----->Banner AD show failed!----->errorCode="+adError.getErrorCode()+",errorMsg="+adError.getErrorMsg());
 				if (mUBADCallback!=null) {
 					mUBADCallback.onFailed(ADType.AD_TYPE_BANNER,adError.getErrorMsg());
 				}
+				isInitBannerADSuccess=false;
 			}
 			
 			@Override
@@ -201,6 +201,7 @@ public class ADYYBSDK implements IUBADPlugin{
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClick(ADType.AD_TYPE_BANNER,"Banner AD click!");
 				}
+				isInitBannerADSuccess=true;
 			}
 
 			@Override
@@ -209,6 +210,7 @@ public class ADYYBSDK implements IUBADPlugin{
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClosed(ADType.AD_TYPE_BANNER,"Banner AD closed");
 				}
+				isInitBannerADSuccess=false;
 			}
 
 			@Override
@@ -217,11 +219,13 @@ public class ADYYBSDK implements IUBADPlugin{
 				if (mUBADCallback!=null) {
 					mUBADCallback.onShow(ADType.AD_TYPE_BANNER,"Banner AD show success!");
 				}
+				isInitBannerADSuccess=true;
 			}
 
 			@Override
 			public void onADReceiv() {
 				UBLogUtil.logI(TAG+"----->Banner AD show receiv");
+				isInitBannerADSuccess=true;
 			}
 		};
 		
@@ -371,18 +375,27 @@ public class ADYYBSDK implements IUBADPlugin{
 		}
 	}
 
+	private boolean isFirstShowBannerAD=true;//是否是第一次调用显示Banner广告
+	private boolean isInitBannerADSuccess=false;//是否初始化Banner成功
 	private void showBannerAD() {
 		UBLogUtil.logI(TAG+"----->showBannerAD");
 		mBannerADContainer.setVisibility(View.VISIBLE);
-		if (mBannerView==null) {
+		
+		if (isFirstShowBannerAD) {
+			ADHelper.addBannerView(mWM, mBannerADContainer, mBannerPosition);//只添加一次
+			isFirstShowBannerAD=false;
+		}
+		
+		if (!isInitBannerADSuccess) {//初始化没有成功
 			mBannerView = new BannerView(mActivity, ADSize.BANNER,mADYYBAppID,mBannerID);
 			if (mBannerView!=null) {
-				ADHelper.addBannerView(mWM, mBannerADContainer, mBannerPosition);//只添加一次
+				mBannerADContainer.removeAllViews();
 				mBannerADContainer.addView(mBannerView);
 				mBannerView.setRefresh(30);
 				mBannerView.setADListener(mBannerADListener);	
 			}
 		}
+		
 		if (mBannerView!=null) {
 			mBannerView.loadAD();
 		}

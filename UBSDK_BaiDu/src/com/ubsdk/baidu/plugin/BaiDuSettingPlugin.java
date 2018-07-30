@@ -39,7 +39,7 @@ public class BaiDuSettingPlugin implements IUBSettingPlugin{
 		
 		String platformName="baidu";
 		try {
-			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+			platformName = UBSDKConfig.getInstance().getUBChannel().getUbPlatformName();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return platformName;

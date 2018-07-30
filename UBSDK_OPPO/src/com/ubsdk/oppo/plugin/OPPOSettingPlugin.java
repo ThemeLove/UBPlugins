@@ -49,7 +49,7 @@ public class OPPOSettingPlugin implements IUBSettingPlugin{
 		UBLogUtil.logI(TAG+"----->getPlatformName");
 		String platformName="oppo";
 		try {
-			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+			platformName = UBSDKConfig.getInstance().getUBChannel().getUbPlatformName();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return platformName;

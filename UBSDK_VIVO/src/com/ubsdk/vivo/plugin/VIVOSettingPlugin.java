@@ -33,7 +33,7 @@ public class VIVOSettingPlugin implements IUBSettingPlugin {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
 		String platformName="vivo";
 		try {
-			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+			platformName = UBSDKConfig.getInstance().getUBChannel().getUbPlatformName();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return platformName;

@@ -79,7 +79,7 @@ public class YYBSettingPlugin implements IUBSettingPlugin {
 		UBLogUtil.logI(TAG+"----->getPlatformName");
 		String platformName="yyb";
 		try {
-			platformName = UBSDKConfig.getInstance().getParamMap().get(UBSDKConfig.UB_PlatformName);
+			platformName = UBSDKConfig.getInstance().getUBChannel().getUbPlatformName();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return platformName;
