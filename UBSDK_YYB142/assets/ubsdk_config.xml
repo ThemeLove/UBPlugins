@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+
+<!-- 米大师支付比例为1元/10  -->
+<param name="Midas_Pay_Rate" value="10"/>
+<!-- 米大师沙箱appKey -->
+<!-- <param name="Midas_AppKey" value="M2UDM1HzkYtlEWPU"/> -->
+
+<!-- 米大师现网appKey -->
+<param name="Midas_AppKey" value="3i7J41JcdPQIdZSnNkhUxFtxVnjaD39H"/>
+
+<param name="UB_GameID" value="1123" />
+<param name="UB_GameDebug" value="true" />
+<param name="UB_GameOrientation" value="portrait" />
+<param name="UB_GameMainActivityName" value="com.umbrella.boomdots" />
+
+<param name="UB_PlatformID" value="80" />
+<param name="UB_PlatformName" value="yyb"/>
+<param name="UB_SubPlatformID" value="0" />
+<param name="UB_ChannelID" value="1" />
+<param name="UB_SubChannelID" value="1" />
+<plugins>
+	<plugin name="com.ubsdk.yyb.plugin.YYBUserPlugin" type="1" />
+	<plugin name="com.ubsdk.yyb.plugin.YYBPayPlugin"  type="2"/>
+	<plugin name="com.ubsdk.yyb.plugin.YYBSettingPlugin"  type="3"/>
+</plugins>
+<applications>
+<!-- 	<application name="com.ubsdk.yyb.plugin.YYBApplication"/> -->
+</applications>
+</config>

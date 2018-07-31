@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/com_tencent_ysdk_ad_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:src="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/com_tencent_ysdk_ad_jumpover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="32dp"
+        android:background="#e0e3e3e3"
+        android:paddingBottom="8dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="8dp"
+        android:text="跳过"
+        android:textColor="#e0404040"
+        android:textSize="9sp" />
+</RelativeLayout><!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_ad.xml -->

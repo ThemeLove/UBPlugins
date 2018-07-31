@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.tencent.ysdk.module.user.impl.wx.qrcode.QRActivity">
+
+    <com.tencent.ysdk.module.user.impl.wx.qrcode.SquareImageView
+        android:id="@+id/com_tencent_ysdk_qrCodeIm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="45dp" />
+
+
+    <ProgressBar
+        android:id="@+id/com_tencent_ysdk_loadingIm"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/com_tencent_ysdk_tipsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/com_tencent_ysdk_qrCodeIm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-40dp"
+        android:textColor="@color/com_tencent_ysdk_real_name_title_color"
+        android:textSize="18dp" />
+
+</RelativeLayout>
+<!-- From: file:/data1/rdm/projects/18500/ysdk/src/main/res/layout/com_tencent_ysdk_qr.xml -->

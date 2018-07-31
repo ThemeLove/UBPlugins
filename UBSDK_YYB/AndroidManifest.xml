@@ -40,6 +40,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <!-- 游戏的主Activity一定要配置横竖屏,且一定要是singleTop -->
         <activity
             android:name="com.ubsdk.yyb.UBSDK_YYB_MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -77,6 +78,7 @@
                 <!-- TODO GAME 这里为游戏QQ登录的配置，游戏需要修改为自己手Q的appid -->
             </intent-filter>
         </activity>
+        <!-- com.tencent.connect.common.AssistActivity必须是portrait -->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -106,6 +108,7 @@
 
 
         <!-- TODO GAME SDK Midas接入配置 START -->
+        <!-- APMidasPayProxyActivity中横竖屏的配置一定要和游戏主Activity的横竖屏配置一致 -->
         <activity
             android:name="com.tencent.midas.proxyactivity.APMidasPayProxyActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
