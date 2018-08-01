@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class UBSDK_MeiZu_MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
+    	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         mActivity = this;
     	UBLogUtil.logI(TAG+"----->"+"onCreate");
@@ -85,6 +87,7 @@ public class UBSDK_MeiZu_MainActivity extends Activity
                 mInfoTv.setText(failStr);
             }
         });
+        
         UBSDK.getInstance().onCreate(savedInstanceState);
         
     }
