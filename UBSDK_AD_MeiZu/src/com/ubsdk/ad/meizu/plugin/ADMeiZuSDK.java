@@ -84,7 +84,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 				if (mBannerAD!=null) {
 					mBannerAD.destory();
 //					避免内存泄漏
-					mWM.removeViewImmediate(mBannerADContainer);
+					if (mBannerADContainer!=null) {
+						mWM.removeViewImmediate(mBannerADContainer);
+					}
 					mBannerADContainer=null;
 				}
 				

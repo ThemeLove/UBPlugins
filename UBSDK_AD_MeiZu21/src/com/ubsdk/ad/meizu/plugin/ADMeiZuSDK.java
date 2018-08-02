@@ -66,8 +66,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 		mUBADCallback = UBAD.getInstance().getUBADCallback();
 //		mContainer = (ViewGroup) ((ViewGroup)mActivity.findViewById(android.R.id.content)).getChildAt(0);
 		try {
-			
-			checkAndRequestPermission();
+			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+				checkAndRequestPermission();
+			}
 			setActivityListener();
 			loadADParams();
 			initAD();
@@ -91,7 +92,7 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			
 			@Override
 			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
-				UBLogUtil.logI(TAG+"----->onBackPressed");
+				UBLogUtil.logI(TAG+"----->onRequestPermissionResult");
 			    if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
 			    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
 			      } else {
@@ -110,7 +111,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 				if (mBannerAD!=null) {
 					mBannerAD.destory();
 //					避免内存泄漏
-					mWM.removeViewImmediate(mBannerADContainer);
+					if (mBannerADContainer!=null) {
+						mWM.removeViewImmediate(mBannerADContainer);
+					}
 					mBannerADContainer=null;
 				}
 				
@@ -466,7 +469,9 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			public void run() {
 				mUBADCallback = UBAD.getInstance().getUBADCallback();
 //				显示广告之前检查权限
-				checkAndRequestPermission();
+				if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+					checkAndRequestPermission();
+				}
 				hideADWithADType(adType);//显示之前先隐藏广告
 				switch (adType) {
 				case ADType.AD_TYPE_BANNER:
@@ -531,7 +536,15 @@ public class ADMeiZuSDK implements IUBADPlugin{
 			isFirstShowBannerAD=false;
 		}
 		
-		if (!isInitBannerADSuccess) {//初始化没有成功
+		mBannerAD = new AdBanner(mActivity, mBannerID);
+		if (mBannerAD!=null) {
+			UBLogUtil.logI(TAG+"----->mBannerAD");
+			mBannerAD.setAdBannerListener(mBannerADListener);
+			mBannerADContainer.removeAllViews();
+			mBannerADContainer.addView(mBannerAD);
+		}
+		
+/*		if (!isInitBannerADSuccess) {//初始化没有成功
 			mBannerAD = new AdBanner(mActivity, mBannerID);
 			if (mBannerAD!=null) {
 				UBLogUtil.logI(TAG+"----->mBannerAD");
@@ -539,7 +552,8 @@ public class ADMeiZuSDK implements IUBADPlugin{
 				mBannerADContainer.removeAllViews();
 				mBannerADContainer.addView(mBannerAD);
 			}
-		}
+		}*/
+		
 		mBannerADContainer.setVisibility(View.VISIBLE);
 	}
  

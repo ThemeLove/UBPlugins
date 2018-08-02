@@ -46,6 +46,9 @@ public class ADYYBSDK implements IUBADPlugin{
 		this.mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
 		try {
+			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+				checkAndRequestPermission();
+			}
 			setActivityListener();
 			loadADParams();
 			initAD();
@@ -93,7 +96,7 @@ public class ADYYBSDK implements IUBADPlugin{
 
 			@Override
 			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
-				UBLogUtil.logI(TAG+"----->onBackPressed");
+				UBLogUtil.logI(TAG+"----->onRequestPermissionResult");
 			    if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
 			    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
 			      } else {

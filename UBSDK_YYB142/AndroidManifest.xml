@@ -8,7 +8,7 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="23" />
     
-        <!-- TODO GAME SDK接入必须权限模块 START -->
+    <!-- TODO GAME SDK接入必须权限模块 START -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
@@ -98,7 +98,7 @@
                 <!-- TODO GAME 这里为游戏QQ登录的配置，游戏需要修改为自己手Q的appid -->
             </intent-filter>
         </activity>
-        
+                <!-- com.tencent.connect.common.AssistActivity必须是portrait -->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -257,11 +257,11 @@
         <!-- 【必须】 请将YOUR_ACCESS_ID修改为游戏的AccessId，如果没有自己注册信鸽可以在OPEN官网后台查询，“21”开头的10位数字，中间没空格 -->
         <meta-data
             android:name="XG_V2_ACCESS_ID"
-            android:value="2100285369" />
+            android:value="2100301846" />
         <!-- 【必须】 同上，请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
         <meta-data
             android:name="XG_V2_ACCESS_KEY"
-            android:value="AFAT6M3137HG" />
+            android:value="AL5GR9892YXZ" />
         <!-- 【必须】 CHANNEL_ID无需修改保持不变-->
         <meta-data
             android:name="XG_V4_CHANNEL_ID"

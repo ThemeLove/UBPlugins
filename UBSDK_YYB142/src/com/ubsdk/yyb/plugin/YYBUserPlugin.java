@@ -66,7 +66,6 @@ public class YYBUserPlugin implements IUBUserPlugin{
 	public void logout() {
 		UBLogUtil.logI(TAG+"----->logout");
 		YYBSDK.getInstance().logout();
-		
 	}
 
 	@Override

@@ -78,9 +78,9 @@ public class YYBSDK {
 		 	UBLogUtil.logI(TAG+"----->initYYBSDK");
 		 
 //			显示申请登录必要权限android.permission.READ_PHONE_STATE
-/*			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+			if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
 				checkAndRequestPermission();
-			}*/
+			}
 			
 //			YSDK初始化
 			YSDKApi.onCreate(mActivity);
@@ -406,7 +406,12 @@ public class YYBSDK {
 		UBSDK.getInstance().getUBExitCallback().noImplement();
 	}
 	
-	/******************************************************************login****************************************************************/
+	public void gamePause() {
+		UBLogUtil.logI(TAG+"----->gamePause");
+		UBSDK.getInstance().getUBGamePauseCallback().onGamePause();
+	}
+	
+	/******************************************************************pay****************************************************************/
 	
 	/**
 	 * 支付 ：midas支付的时候需要登录态，所以要先判断是否有登录态，如果没有登录，先去游客登录

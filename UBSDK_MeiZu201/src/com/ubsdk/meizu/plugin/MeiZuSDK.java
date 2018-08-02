@@ -1,6 +1,8 @@
 package com.ubsdk.meizu.plugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -18,11 +20,19 @@ import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
 import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.TextUtil;
+import com.umbrella.game.ubsdk.utils.ToastUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import com.umbrella.game.ubsdk.utils.UBMD5Util;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 
 /**
  * 1.主要接入sdk初始化，支付和补单接口，支付时注意参照文档和demo进行参数的拼接
@@ -54,16 +64,33 @@ public class MeiZuSDK {
 		mMeiZuAppID = UBSDKConfig.getInstance().getParamMap().get("MeiZu_AppID");
 		mMeiZuAppSecret = UBSDKConfig.getInstance().getParamMap().get("MeiZu_AppSecret");
 		
+//		动态权限
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+			checkAndRequestPermission();
+		}
+		
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 
 			@Override
-			public void onPause() {
-				UBLogUtil.logI(TAG+"----->onPause");
+			public void onCreate(Bundle savedInstanceState) {
+				UBLogUtil.logI(TAG+"----->onCreate");
+				if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {//23以上要动态获取权限
+					checkAndRequestPermission();
+				}
 			}
 
 			@Override
-			public void onResume() {
-				UBLogUtil.logI(TAG+"----->onResume");
+			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
+				UBLogUtil.logI(TAG+"----->onRequestPermissionResult");
+			    if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
+			    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
+			      } else {
+			        // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
+			    	ToastUtil.showToast(mActivity, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。");
+			        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+			        intent.setData(Uri.parse("package:" + mActivity.getPackageName()));
+			        mActivity.startActivity(intent);
+			     }
 			}
 
 			@Override
@@ -249,5 +276,47 @@ public class MeiZuSDK {
 	public void setGameDataInfo(Object obj, int dataType) {
 		UBLogUtil.logI(TAG,"setGameDataInfo----->simulation empty implementation");
 	}
+	
+	
+	/****************************************************动态权限相关****************************************************/
+	private final int PERMISSION_REQUEST_CODE=1024;//权限请求的code
+	 /**
+	  * 检测并请求sdk必要权限
+	  */
+	 @TargetApi(Build.VERSION_CODES.M)
+	 private void checkAndRequestPermission() {
+	    List<String> lackedPermission = new ArrayList<String>();
+	    if (!(mActivity.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+	      lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+	    }
+
+	    if (!(mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+	      lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+	    }
+
+	    // 权限都已经有了，那么直接调用SDK
+	    if (lackedPermission.size() == 0) {
+	    	UBLogUtil.logI(TAG+"----->have got the request permissioins");
+	    } else {
+	      // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+	      String[] requestPermissions = new String[lackedPermission.size()];
+	      lackedPermission.toArray(requestPermissions);
+	      mActivity.requestPermissions(requestPermissions, PERMISSION_REQUEST_CODE);
+	    }
+	  }
+
+	 /**
+	  * 权限是否获取成功
+	  * @param grantResults
+	  * @return
+	  */
+	 private boolean hasAllPermissionsGranted(int[] grantResults) {
+		    for (int grantResult : grantResults) {
+		      if (grantResult == PackageManager.PERMISSION_DENIED) {
+		        return false;
+		      }
+		    }
+		    return true;
+	 }
 	
 }

@@ -5,16 +5,16 @@
 
 
 <!-- 碰碰球参数 -->
-<param name="AD_MeiZu_Banner_ID" value="ac18823f12b4ca6c6f209f7aed75cdc9" />
+<!-- <param name="AD_MeiZu_Banner_ID" value="ac18823f12b4ca6c6f209f7aed75cdc9" />
 <param name="AD_MeiZu_Interstitial_ID" value="bccda9553ca678d19c36558dc04d7936" />
 <param name="AD_MeiZu_Splash_ID" value="8b7bcc89a946b6ef5bf5b7210d76c4b8"/>
-<param name="AD_MeiZu_RewardVideo_ID" value="7edb857ef29adef00c0cd2d8a0b0bc60"/>
+<param name="AD_MeiZu_RewardVideo_ID" value="7edb857ef29adef00c0cd2d8a0b0bc60"/> -->
 
 <!-- Demo参数 -->
-<!-- <param name="AD_MeiZu_Banner_ID" value="9b8fc2b321d5f29d23c6dab7cca7d3d6" />
+<param name="AD_MeiZu_Banner_ID" value="9b8fc2b321d5f29d23c6dab7cca7d3d6" />
 <param name="AD_MeiZu_Interstitial_ID" value="4e1ce16814e24674114c658a943219c7" />
 <param name="AD_MeiZu_Splash_ID" value="8849c9c62b47fcc0a3091a80e7115172"/>
-<param name="AD_MeiZu_RewardVideo_ID" value="951d77defe9e82424974eae760b3f800"/> -->
+<param name="AD_MeiZu_RewardVideo_ID" value="951d77defe9e82424974eae760b3f800"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />

@@ -59,7 +59,7 @@ public class YYBSettingPlugin implements IUBSettingPlugin {
 	@Override
 	public void gamePause() {
 		UBLogUtil.logI(TAG+"----->gamePause");
-		
+		YYBSDK.getInstance().gamePause();
 	}
 
 	@Override
