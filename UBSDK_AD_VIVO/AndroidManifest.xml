@@ -34,6 +34,7 @@
             </intent-filter>
         </activity>
                 
+        <!-- 开屏广告必须全屏展示而且开屏广告只支持竖屏 -->
         <activity
             android:name="com.ubsdk.ad.vivo.plugin.ADVIVOSplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -46,7 +47,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
-        <!--如果targetSdkVersion设置值>=24，则需要添加provider申明，否则不需要添加，注意需要替换包名-->
+        <!--如果targetSdkVersion设置值>=24，则需要添加provider申明，否则不需要添加，authorities属性注意需要替换包名-->
         <provider
             android:name="com.baidu.mobads.openad.FileProvider"
             android:authorities="com.jd.game.onetpet.vivo.bd.provider"

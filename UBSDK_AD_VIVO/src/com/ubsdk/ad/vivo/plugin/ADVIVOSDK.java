@@ -1,6 +1,8 @@
 package com.ubsdk.ad.vivo.plugin;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
@@ -10,6 +12,7 @@ import com.umbrella.game.ubsdk.listener.UBActivityListenerImpl;
 import com.umbrella.game.ubsdk.pluginimpl.UBAD;
 import com.umbrella.game.ubsdk.plugintype.ad.ADHelper;
 import com.umbrella.game.ubsdk.plugintype.ad.ADType;
+import com.umbrella.game.ubsdk.utils.ToastUtil;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 import com.vivo.mobilead.banner.VivoBannerAd;
 import com.vivo.mobilead.interstitial.VivoInterstialAd;
@@ -17,8 +20,14 @@ import com.vivo.mobilead.listener.IAdListener;
 import com.vivo.mobilead.manager.VivoAdManager;
 import com.vivo.mobilead.model.VivoAdError;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,7 +40,6 @@ public class ADVIVOSDK implements IUBADPlugin{
 	private String mVIVOAppID;
 	private String mVIVOBannerID;
 	private String mVIVOInterstitialID;
-	private String mVIVONativeID;
 	private IAdListener mBannerADListener;
 	private VivoBannerAd mBannerAD;
 	private View mBannerADView;
@@ -45,6 +53,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 		this.mActivity=activity;
 		mWM = (WindowManager) mActivity.getSystemService(Activity.WINDOW_SERVICE);
 		try {
+			checkAndRequestPermission();
 			setActivityListener();
 			loadADParams();
 			initAD();
@@ -57,30 +66,47 @@ public class ADVIVOSDK implements IUBADPlugin{
 	
 	private void setActivityListener() {
 		UBLogUtil.logI(TAG+"----->setActivityListener");
+		
 		UBSDK.getInstance().setUBActivityListener(new UBActivityListenerImpl(){
 			@Override
+			public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
+				UBLogUtil.logI(TAG+"----->onRequestPermissionResult");
+				
+				 if (requestCode == PERMISSION_REQUEST_CODE && hasAllPermissionsGranted(grantResults)) {
+					 	UBLogUtil.logI(TAG+"----->have got the request permissions");
+			        } else {
+			            // 如果用户没有授权，那么应该说明意图，引导用户去设置里面授权。
+			        	ToastUtil.showToast(mActivity,"应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。");
+			            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+			            intent.setData(Uri.parse("package:" + mActivity.getPackageName()));
+			            mActivity.startActivity(intent);
+			        }
+			}
+
+			@Override
 			public void onDestroy() {
-				mBannerContainer.removeAllViews();
-				mBannerContainer=null;
-				mBannerADView=null;
-				mBannerAD.destroy();
-				mBannerAD=null;
-				
+				UBLogUtil.logI(TAG+"----->onDestory");
+				if (mBannerAD!=null&&mBannerADView!=null) {
+					mBannerAD.destroy();
+					mBannerContainer.removeAllViews();
+					mWM.removeViewImmediate(mBannerContainer);
+					mBannerAD=null;
+					mBannerADView=null;
+					mBannerContainer=null;
+				}
 				mInterstitialAD=null;
-				
-				super.onDestroy();
 			}
 		});
 	}
 
 	private void loadADParams() {
 		UBLogUtil.logI(TAG+"----->loadADParams");
+		
 		mVIVOAppID = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
-		mVIVOBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Banner_ID");
-		mVIVOInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Interstitial_ID");
-		mVIVONativeID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Native_ID");
 		
 		mBannerADPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Banner_Position"));
+		mVIVOBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Banner_ID");
+		mVIVOInterstitialID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Interstitial_ID");
 	}
 	
 	private void initAD() {
@@ -94,50 +120,54 @@ public class ADVIVOSDK implements IUBADPlugin{
 		mBannerADListener = new IAdListener() {
 			@Override
 			public void onAdShow() {
-				UBLogUtil.logI(TAG+"----->showBanner----->onADShow");
+				UBLogUtil.logI(TAG+"----->Banner AD show success!");
 				if (mUBADCallback!=null) {
+					mUBADCallback.onShow(ADType.AD_TYPE_BANNER,"banner ad show success");
 					mUBADCallback.onComplete(ADType.AD_TYPE_BANNER,"banner ad show success");
 				}
+				isInitBannerADSuccess=true;
 			}
 			
 			@Override
 			public void onAdReady() {
-				UBLogUtil.logI(TAG+"----->showBanner----->onAdReady");
-				
+				UBLogUtil.logI(TAG+"----->Banner AD ready");
+				isInitBannerADSuccess=true;
 			}
 			
 			@Override
 			public void onAdFailed(VivoAdError adError) {
-				UBLogUtil.logI(TAG+"----->showBanner----->onAdFailed");
+				UBLogUtil.logI(TAG+"----->Banner AD show Failed!----->msg="+adError.getErrorMsg());
 				if (mUBADCallback!=null) {
 					mUBADCallback.onFailed(ADType.AD_TYPE_BANNER,"banner ad show failed:msg="+adError.getErrorMsg());
 				}
+				isInitBannerADSuccess=false;
 			}
 			
 			@Override
 			public void onAdClosed() {
-				UBLogUtil.logI(TAG+"----->showBanner----->onAdClosed");
+				UBLogUtil.logI(TAG+"----->Banner AD closed!");
 				mBannerContainer.setVisibility(View.GONE);
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClosed(ADType.AD_TYPE_BANNER,"banner ad closed");
 				}
+				isInitBannerADSuccess=false;
 			}
 			
 			@Override
 			public void onAdClick() {
-				UBLogUtil.logI(TAG+"----->showBanner----->onAdClick");
+				UBLogUtil.logI(TAG+"----->Banner AD click!");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClick(ADType.AD_TYPE_BANNER,"banner ad click");
 				}
+				isInitBannerADSuccess=true;
 			}
 		};
 		
 //		InterstitialAD
 		mInterstitialADListener = new IAdListener() {
-			
 			@Override
 			public void onAdShow() {
-				UBLogUtil.logI(TAG+"----->showInterstitial----->onAdShow");
+				UBLogUtil.logI(TAG+"----->Interstitial AD show Success!");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onShow(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad show success!");
 				}
@@ -145,7 +175,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 			
 			@Override
 			public void onAdReady() {
-				UBLogUtil.logI(TAG+"----->showInterstitial----->onAdReady");
+				UBLogUtil.logI(TAG+"----->Interstitial AD ready");
 				if (mInterstitialAD!=null) {
 					mInterstitialAD.showAd();
 				}
@@ -153,8 +183,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 			
 			@Override
 			public void onAdFailed(VivoAdError adError) {
-				UBLogUtil.logI(TAG+"----->showInterstitial----->onAdFailed");
-				
+				UBLogUtil.logI(TAG+"----->Interstitial AD show Failed!----->msg="+adError.getErrorMsg());
 				if (mUBADCallback!=null) {
 					mUBADCallback.onFailed(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad show failed:msg="+adError.getErrorMsg());
 				}
@@ -162,7 +191,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 			
 			@Override
 			public void onAdClosed() {
-				UBLogUtil.logI(TAG+"----->showInterstitial----->onAdClosed");
+				UBLogUtil.logI(TAG+"----->Interstitial AD closed!");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClosed(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad closed!");
 				}
@@ -170,7 +199,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 			
 			@Override
 			public void onAdClick() {
-				UBLogUtil.logI(TAG+"----->showInterstitial----->onAdClick");
+				UBLogUtil.logI(TAG+"----->Interstitial AD click!");
 				if (mUBADCallback!=null) {
 					mUBADCallback.onClick(ADType.AD_TYPE_INTERSTITIAL,"interstitial ad click!");
 				}
@@ -260,25 +289,34 @@ public class ADVIVOSDK implements IUBADPlugin{
 				}
 			}
 		});
-		
 	}
 	
+	private boolean isFirstShowBannerAD=true;
+	private boolean isInitBannerADSuccess=false;
 	protected void showBannerAD() {	
 		UBLogUtil.logI(TAG+"----->showBannerAD");
-		if (mBannerADView==null) {
-			mBannerAD = new VivoBannerAd(mActivity,mVIVOBannerID,mBannerADListener);
-//			设置Banner显示关闭按钮
-			mBannerAD.setShowClose(false);
-//			设置刷新频率
-			mBannerAD.setRefresh(30);
-//			获取Banner的视图view
-			mBannerADView = mBannerAD.getAdView();
-			
-			mBannerContainer.addView(mBannerADView);
+		
+		if (isFirstShowBannerAD) {
 			ADHelper.addBannerView(mWM,mBannerContainer,mBannerADPosition);
+			isFirstShowBannerAD=false;
 		}
-//		mBannerContainer.removeAllViews();
-//		mBannerContainer.addView(mBannerADView);
+		
+		if (!isInitBannerADSuccess) {
+			mBannerAD=new VivoBannerAd(mActivity,mVIVOBannerID,mBannerADListener);
+			UBLogUtil.logI(TAG+"----->new mBannerAD");
+			if (mBannerAD!=null) {
+				//设置刷新时间间隔				
+				mBannerAD.setRefresh(20);
+				//是否显示关闭按钮
+				mBannerAD.setShowClose(true);
+				mBannerADView=mBannerAD.getAdView();
+			}
+			
+			if (mBannerADView!=null) {
+				mBannerContainer.removeAllViews();
+				mBannerContainer.addView(mBannerADView);
+			}
+		}
 		mBannerContainer.setVisibility(View.VISIBLE);
 	}
 	/**
@@ -343,4 +381,42 @@ public class ADVIVOSDK implements IUBADPlugin{
 	private void hideRewardVideoAD() {
 		UBLogUtil.logI(TAG+"----->hideRewardVideo");
 	}
+	
+    /************************************************************动态权限相关************************************************************/
+	private final int PERMISSION_REQUEST_CODE=1024;//权限请求的code
+    /**
+     * ----------非常重要----------
+     * Android6.0以上的权限适配简单示例：
+     * 如果targetSDKVersion >= 23，那么必须要申请到所需要的权限，再调用广告SDK，否则不会有广告返回。
+     * Demo代码里是一个基本的权限申请示例，请开发者根据自己的场景合理地编写这部分代码来实现权限申请。
+     * 注意：下面的`checkSelfPermission`和`requestPermissions`方法都是在Android6.0的SDK中增加的API，如果您的App还没有适配到Android6.0以上，则不需要调用这些方法，直接调用广点通SDK即可。
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkAndRequestPermission() {
+        List<String> lackedPermission = new ArrayList<String>();
+        if (!(mActivity.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (!(mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        // 权限都已经有了，那么直接调用SDK
+        if (lackedPermission.size() == 0) {
+            UBLogUtil.logI(TAG+"----->have got the request permissions");
+        } else {
+            // 请求所缺少的权限，在onRequestPermissionsResult中再看是否获得权限，如果获得权限就可以调用SDK，否则不要调用SDK。
+            String[] requestPermissions = new String[lackedPermission.size()];
+            lackedPermission.toArray(requestPermissions);
+            mActivity.requestPermissions(requestPermissions, PERMISSION_REQUEST_CODE);
+        }
+    }
+    
+    private boolean hasAllPermissionsGranted(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
