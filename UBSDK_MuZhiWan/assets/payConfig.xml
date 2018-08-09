@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payconfig>
+    <product productID="101"  productName="1元宝" amount="0.1" payType="1">
+	    <billing billingID="47033" billingName="更多主题"  billingPrice="4.9"/>
+	    <paymethoditems>
+	    	<paymethoditem payID="1" payName="支付宝"  payDesc=""/>
+	    </paymethoditems>   
+	    <orderinfo orderID="1000" amount="0.1" productName="1元宝" productDesc="1元宝"  ext="ext" />     
+	</product>
+</payconfig>

@@ -1,31 +1,22 @@
-package com.ubsdk.huawei.plugin;
+package com.ubsdk.muzhiwan.plugin;
 
 import java.lang.reflect.Method;
 
-import com.umbrella.game.ubsdk.iplugin.IUBPayPlugin;
-import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
-import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.config.UBSDKConfig;
+import com.umbrella.game.ubsdk.iplugin.IUBSettingPlugin;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
 
-public class HuaWeiPayPlugin implements IUBPayPlugin{
-	private final String TAG=HuaWeiPayPlugin.class.getSimpleName();
+public class MuZhiWanSettingPlugin implements IUBSettingPlugin{
+	private final String TAG=MuZhiWanSettingPlugin.class.getSimpleName();
+	
 	private Activity mActivity;
-	private HuaWeiPayPlugin(Activity activity){
+	private MuZhiWanSettingPlugin(Activity activity){
 		this.mActivity=activity;
 	}
-
-	@Override
-	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
-		UBLogUtil.logI(TAG+"----->pay");
-		try {
-			HuaWeiSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
+	
 	@Override
 	public boolean isSupportMethod(String methodName,Object[] args) {
         UBLogUtil.logI(TAG+"----->isSupportMethod");
@@ -63,6 +54,49 @@ public class HuaWeiPayPlugin implements IUBPayPlugin{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+	
+	@Override
+	public void gamePause() {
+		UBLogUtil.logI(TAG+"----->gamePause");
+		MuZhiWanSDK.getInstance().gamePause();
+	}
+
+	@Override
+	public void exit() {
+		UBLogUtil.logI(TAG+"----->exit");
+		MuZhiWanSDK.getInstance().exit();
+	}
+
+	@Override
+	public int getPlatformID() {
+		UBLogUtil.logI(TAG+"----->getPlatformID");
+		return 0;
+	}
+
+	@Override
+	public String getPlatformName() {
+		UBLogUtil.logI(TAG+"----->getPlatformName");
+		String platformName="muzhiwan";
+		try {
+			platformName = UBSDKConfig.getInstance().getUBChannel().getUbPlatformName();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return platformName;
+		}
+		return platformName;
+	}
+
+	@Override
+	public int getSubPlatformID() {
+		UBLogUtil.logI(TAG+"----->getSubPlatformID");
+		return 0;
+	}
+
+	@Override
+	public String getExtrasConfig(String extras) {
+		UBLogUtil.logI(TAG+"----->getExtrasConfig");
 		return null;
 	}
 }

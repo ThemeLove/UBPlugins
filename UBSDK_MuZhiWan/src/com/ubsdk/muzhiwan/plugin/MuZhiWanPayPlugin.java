@@ -1,4 +1,4 @@
-package com.ubsdk.huawei.plugin;
+package com.ubsdk.muzhiwan.plugin;
 
 import java.lang.reflect.Method;
 
@@ -9,18 +9,17 @@ import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
 
-public class HuaWeiPayPlugin implements IUBPayPlugin{
-	private final String TAG=HuaWeiPayPlugin.class.getSimpleName();
+public class MuZhiWanPayPlugin implements IUBPayPlugin{
+	private final String TAG=MuZhiWanPayPlugin.class.getSimpleName();
 	private Activity mActivity;
-	private HuaWeiPayPlugin(Activity activity){
+	private MuZhiWanPayPlugin(Activity activity){
 		this.mActivity=activity;
 	}
-
 	@Override
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
 		try {
-			HuaWeiSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
+			MuZhiWanSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

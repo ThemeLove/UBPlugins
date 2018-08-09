@@ -1,31 +1,20 @@
-package com.ubsdk.huawei.plugin;
+package com.ubsdk.muzhiwan.plugin;
 
 import java.lang.reflect.Method;
 
-import com.umbrella.game.ubsdk.iplugin.IUBPayPlugin;
-import com.umbrella.game.ubsdk.plugintype.pay.UBOrderInfo;
-import com.umbrella.game.ubsdk.plugintype.user.UBRoleInfo;
+import com.umbrella.game.ubsdk.iplugin.IUBUserPlugin;
+import com.umbrella.game.ubsdk.plugintype.user.UBUserInfo;
 import com.umbrella.game.ubsdk.utils.UBLogUtil;
 
 import android.app.Activity;
 
-public class HuaWeiPayPlugin implements IUBPayPlugin{
-	private final String TAG=HuaWeiPayPlugin.class.getSimpleName();
-	private Activity mActivity;
-	private HuaWeiPayPlugin(Activity activity){
-		this.mActivity=activity;
+public class MuZhiWanUserPlugin implements IUBUserPlugin{
+	private final String TAG=MuZhiWanUserPlugin.class.getSimpleName();
+	private Activity mActivtiy;
+	private MuZhiWanUserPlugin(Activity activity){
+		this.mActivtiy=activity;
+		MuZhiWanSDK.getInstance().init();
 	}
-
-	@Override
-	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo ubOrderInfo) {
-		UBLogUtil.logI(TAG+"----->pay");
-		try {
-			HuaWeiSDK.getInstance().pay(ubRoleInfo,ubOrderInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public boolean isSupportMethod(String methodName,Object[] args) {
         UBLogUtil.logI(TAG+"----->isSupportMethod");
@@ -64,5 +53,28 @@ public class HuaWeiPayPlugin implements IUBPayPlugin{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public void login() {
+		UBLogUtil.logI(TAG+"----->login");
+		MuZhiWanSDK.getInstance().login();
+	}
+
+	@Override
+	public void logout() {
+		UBLogUtil.logI(TAG+"----->logout");
+		MuZhiWanSDK.getInstance().logout();
+	}
+
+	@Override
+	public UBUserInfo getUserInfo() {
+		UBLogUtil.logI(TAG+"----->getUserInfo");
+		return null;
+	}
+
+	@Override
+	public void setGameDataInfo(Object obj, int dataType) {
+		UBLogUtil.logI(TAG+"----->setGameDataInfo");
 	}
 }

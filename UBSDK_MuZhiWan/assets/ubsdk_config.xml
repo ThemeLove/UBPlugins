@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+<param name="MeiZu_AppID" value="3194768" />
+<param name="MeiZu_AppKey" value="799dbf67e35841028df83495a1eb84e4" />
+<param name="MeiZu_AppSecret" value="7Oknf5UaAlUce0JPnk0dgChQW2jnRP8v"/>
+
+<param name="UB_GameID" value="1123" />
+<param name="UB_GameDebug" value="true" />
+<param name="UB_GameOrientation" value="portrait" />
+<param name="UB_GameMainActivityName" value="com.umbrella.boomdots"/>
+
+<param name="UB_PlatformID" value="80" />
+<param name="UB_PlatformName" value="muzhiwan"/>
+<param name="UB_SubPlatformID" value="0" />
+<param name="UB_ChannelID" value="1" />
+<param name="UB_SubChannelID" value="1" />
+<plugins>
+	<plugin name="com.ubsdk.muzhiwan.plugin.MuZhiWanUserPlugin" type="1" />
+	<plugin name="com.ubsdk.muzhiwan.plugin.MuZhiWanPayPlugin"  type="2"/>
+	<plugin name="com.ubsdk.muzhiwan.plugin.MuZhiWanSettingPlugin"  type="3"/>
+</plugins>
+<applications>
+</applications>
+</config>
