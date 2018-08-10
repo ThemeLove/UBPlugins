@@ -8,7 +8,6 @@ import com.muzhiwan.sdk.core.MzwSdkController;
 import com.muzhiwan.sdk.core.callback.MzwInitCallback;
 import com.muzhiwan.sdk.core.callback.MzwLoignCallback;
 import com.muzhiwan.sdk.core.callback.MzwPayCallback;
-import com.muzhiwan.sdk.service.IMzwExitGameCallBack;
 import com.muzhiwan.sdk.service.MzwOrder;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.config.UBSDKConfig;
@@ -31,8 +30,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
 
@@ -260,7 +257,9 @@ public class MuZhiWanSDK {
 	
 	public void exit(){
 		UBLogUtil.logI(TAG+"----->exit");
-		MzwSdkController.getInstance().exitGame(new IMzwExitGameCallBack() {
+		UBSDK.getInstance().getUBExitCallback().noImplement();
+		
+		/*MzwSdkController.getInstance().exitGame(new IMzwExitGameCallBack() {
 			
 			@Override
 			public IBinder asBinder() {
@@ -271,9 +270,9 @@ public class MuZhiWanSDK {
 			public void onResult(int code, String msg) throws RemoteException {
 				
 			}
-		});
-		
+		});*/
 	}
+	
 	public void gamePause(){
 		UBLogUtil.logI(TAG+"----->gamePause");
 	}
@@ -296,7 +295,6 @@ public class MuZhiWanSDK {
 			login();
 			return;
 		}
-		
 		final String tm=System.currentTimeMillis()+"";
 		
 		if (mPayConfig.getPayType()==PayType.PAY_TYPE_NORMAL) {
