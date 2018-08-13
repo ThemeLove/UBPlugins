@@ -334,9 +334,7 @@ public class UBSDK_AD_YYB_MainActivity extends Activity implements OnClickListen
 //    	屏蔽系统返回键
 //        super.onBackPressed();
     }
-    
-    
-    
+	
     @Override
 	public void onAttachedToWindow() {
 		UBSDK.getInstance().onAttachedToWindow();
