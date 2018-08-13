@@ -120,7 +120,7 @@ public class VIVOSDK {
 	
 	public void pay(UBRoleInfo ubRoleInfo, final UBOrderInfo ubOrderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
-		HashMap<String, PayConfig> mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
+		HashMap<String, PayConfig> mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml",true);
 		if (mPayConfigMap!=null&&!TextUtil.isEmpty(ubOrderInfo.getGoodsID())) {
 			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
 		}

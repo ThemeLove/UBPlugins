@@ -85,7 +85,7 @@ public class OPPOSDK {
 	
 	public void pay(UBRoleInfo ubRoleInfo,UBOrderInfo ubOrderInfo){
 		UBLogUtil.logI(TAG+"----->pay");
-		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
+		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml",true);
 		if (mPayConfigMap!=null&&!TextUtil.isEmpty(ubOrderInfo.getGoodsID())) {
 			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
 			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
