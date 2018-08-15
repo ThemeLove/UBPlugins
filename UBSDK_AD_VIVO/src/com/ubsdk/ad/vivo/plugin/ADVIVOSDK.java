@@ -37,7 +37,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 	private final String TAG=ADVIVOSDK.class.getSimpleName();
 	private int [] supportedADTypeArray=new int[]{ADType.AD_TYPE_BANNER,ADType.AD_TYPE_INTERSTITIAL,ADType.AD_TYPE_SPLASH};
 	private Activity mActivity;
-	private String mVIVOAppID;
+	private String mADVIVOAppID;
 	private String mVIVOBannerID;
 	private String mVIVOInterstitialID;
 	private IAdListener mBannerADListener;
@@ -102,7 +102,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 	private void loadADParams() {
 		UBLogUtil.logI(TAG+"----->loadADParams");
 		
-		mVIVOAppID = UBSDKConfig.getInstance().getParamMap().get("VIVO_AppID");
+		mADVIVOAppID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_AppID");
 		
 		mBannerADPosition = Integer.parseInt(UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Banner_Position"));
 		mVIVOBannerID = UBSDKConfig.getInstance().getParamMap().get("AD_VIVO_Banner_ID");
@@ -207,7 +207,7 @@ public class ADVIVOSDK implements IUBADPlugin{
 		};
 		
 //		初始化VIVO广告sdk
-		VivoAdManager.getInstance().init(mActivity, mVIVOAppID);
+		VivoAdManager.getInstance().init(mActivity, mADVIVOAppID);
 	}
 	
 	@Override

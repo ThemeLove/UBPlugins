@@ -1,6 +1,6 @@
 package com.ubsdk.ad.vivo;
 
-import com.jd.game.onetpet.vivo.R;
+import com.umbrella.boomdots.vivo.R;
 import com.umbrella.game.ubsdk.UBSDK;
 import com.umbrella.game.ubsdk.callback.UBADCallback;
 import com.umbrella.game.ubsdk.callback.UBInitCallback;

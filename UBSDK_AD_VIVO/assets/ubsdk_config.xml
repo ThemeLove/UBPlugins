@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-<!-- <param name="VIVO_AppID" value="2fc58425695e5ab299ebee06af69d1d9" />
-<param name="AD_VIVO_Banner_ID" value="ac18823f12b4ca6c6f209f7aed75cdc9" />
-<param name="AD_VIVO_Interstitial_ID" value="bccda9553ca678d19c36558dc04d7936" />
-<param name="AD_VIVO_Splash_ID" value="8b7bcc89a946b6ef5bf5b7210d76c4b8"/>
-<param name="AD_VIVO_RewardVideo_ID" value="7edb857ef29adef00c0cd2d8a0b0bc60"/>
-<param name="AD_VIVO_Banner_Position" value="1"/> -->
-
-<param name="VIVO_AppID" value="b220712c388141d6a5cb944980c3f57b" />
-<param name="AD_VIVO_Splash_App_Name" value="碰碰球" />
-<param name="AD_VIVO_Splash_App_Desc" value="休闲益智首选" />
-
+<!-- demo数据 -->
+<!-- <param name="AD_VIVO_AppID" value="b220712c388141d6a5cb944980c3f57b" />
 <param name="AD_VIVO_Banner_ID" value="646f81ed5f4f4e57a9d426905c88ffef" />
 <param name="AD_VIVO_Interstitial_ID" value="9edf613fe0c44bfab5fb29362117251c" />
 <param name="AD_VIVO_Splash_ID" value="58a469f76d9a4a53aa651b875c4e2775"/>
 <param name="AD_VIVO_RewardVideo_ID" value="8b4baa87708a403eaed3c59614174882"/>
+<param name="AD_VIVO_Banner_Position" value="1"/> -->
+
+<param name="AD_VIVO_Splash_App_Name" value="碰碰球" />
+<param name="AD_VIVO_Splash_App_Desc" value="休闲益智首选" />
+
+<!-- 碰碰球数据 -->
+<param name="AD_VIVO_AppID" value="931cdef6b0a740eeb2801a20ba1aa9d0" />
+<param name="AD_VIVO_Banner_ID" value="93de28b7f93749258200674ee19a8992" />
+<param name="AD_VIVO_Interstitial_ID" value="25d8e8daa4dc45c89fb1b56964b30ac1" />
+<param name="AD_VIVO_Splash_ID" value="d40e7ac7527b4562ba2898068504bd12"/>
+<param name="AD_VIVO_RewardVideo_ID" value="1980925418314c229f9dea308c878e3b"/>
 <param name="AD_VIVO_Banner_Position" value="1"/>
 
 <param name="UB_GameID" value="1123" />
