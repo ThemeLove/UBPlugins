@@ -62,8 +62,14 @@ public class LenovoSDK {
 	}
 	
 	public void login(){
-		UBLogUtil.logI(TAG+"----->login:success----->empty implemention");
-		UBSDK.getInstance().getUBLoginCallback().onSuccess(new UBUserInfo());
+		UBLogUtil.logI(TAG+"----->login:success----->simulation empty implementation");
+		UBUserInfo ubUserInfo = new UBUserInfo();
+		ubUserInfo.setUid("123456");
+		ubUserInfo.setUserName("ubsdktest");
+		ubUserInfo.setToken("123456ABCDEFG");
+		ubUserInfo.setExtra("extra");
+//		成功回调
+		UBSDK.getInstance().getUBLoginCallback().onSuccess(ubUserInfo);
 	}
 	
 	public void exit() {

@@ -136,7 +136,7 @@ public class MeiZuSDK {
 	private String mCpOrderID="";
 	public void pay(UBRoleInfo ubRoleInfo, UBOrderInfo orderInfo) {
 		UBLogUtil.logI(TAG+"----->pay");
-		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("");
+		mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml",true);
 		if (mPayConfigMap!=null) {
 			UBLogUtil.logI(TAG+"----->mPayConfigMap="+mPayConfigMap.toString());
 			mPayConfig = mPayConfigMap.get(orderInfo.getGoodsID());

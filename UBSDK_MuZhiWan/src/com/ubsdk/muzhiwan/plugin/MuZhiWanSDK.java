@@ -283,7 +283,7 @@ public class MuZhiWanSDK {
 		UBLogUtil.logI(TAG+"----->pay");
 		UBLogUtil.logI(TAG+"----->pay----->ubRoleInfo="+ubRoleInfo+",ubOrderInfo="+ubOrderInfo);
 		
-		HashMap<String, PayConfig> mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml");
+		HashMap<String, PayConfig> mPayConfigMap = UBPayConfigModel.getInstance().loadStorePayConfig("payConfig.xml",true);
 		if (mPayConfigMap!=null&&!TextUtils.isEmpty(ubOrderInfo.getGoodsID())) {
 			mPayConfig = mPayConfigMap.get(ubOrderInfo.getGoodsID());
 		}
