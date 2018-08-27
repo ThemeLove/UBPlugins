@@ -3,19 +3,18 @@
 <param name="AD_YYB_Banner_Position" value="1"/>
 
 <!-- 测试数据 -->
-
-<param name="AD_YYB_APP_ID" value="1101152570"/>
-<param name="AD_YYB_Banner_ID" value="9079537218417626401" />
-<param name="AD_YYB_Interstitial_ID" value="8575134060152130849" />
-<param name="AD_YYB_Splash_ID" value="8863364436303842593"/>
-<param name="AD_YYB_RewardVideo_ID" value="5090421627704602"/>
-
-
-<!--  碰碰球参数 -->
 <!-- <param name="AD_YYB_APP_ID" value="1101152570"/>
 <param name="AD_YYB_Banner_ID" value="9079537218417626401" />
 <param name="AD_YYB_Interstitial_ID" value="8575134060152130849" />
 <param name="AD_YYB_Splash_ID" value="8863364436303842593"/>
+<param name="AD_YYB_RewardVideo_ID" value="5090421627704602"/> -->
+
+
+<!--  碰碰球参数 -->
+<param name="AD_YYB_APP_ID" value="1107718281"/>
+<param name="AD_YYB_Banner_ID" value="2090931808783334" />
+<param name="AD_YYB_Interstitial_ID" value="5090830838085455" />
+<!-- <param name="AD_YYB_Splash_ID" value="8863364436303842593"/>
 <param name="AD_YYB_RewardVideo_ID" value="5090421627704602"/> -->
 
 <param name="UB_GameID" value="1123" />
