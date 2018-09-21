@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hms_game_auto_hide_notice" priority="LT">"拖到此处隐藏"</string>
+    <string name="hms_game_floatwindow_click_fail_toast" priority="translator">"请尝试打开“手机管家”或“设置”，开启华为游戏中心的 “关联启动” 权限，并重试。"</string>
+    <string name="hms_game_hide_guide_btn_cancel" priority="LT">"取消"</string>
+    <string name="hms_game_hide_guide_btn_confirm" priority="LT">"隐藏"</string>
+    <string name="hms_game_hide_guide_content_nosensor" priority="LT">"浮标隐藏后，重启应用可重新显示浮标。是否隐藏？"</string>
+    <string name="hms_game_hide_guide_content_sensor" priority="LT">"浮标隐藏后，翻转设备可重新显示浮标。是否隐藏？"</string>
+    <string name="hms_game_hide_guide_noremind" priority="LT">"不再提示"</string>
+    <string name="hms_game_hide_guide_title" priority="LT">"隐藏浮标"</string>
+    <string name="hms_game_login_notice" priority="LT">"欢迎，华为用户 %1$s"</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hms_game_auto_hide_notice" priority="LT">Drag here to hide</string>
+    <string name="hms_game_floatwindow_click_fail_toast" priority="LT">Enable Secondary launch for HUAWEI GameCenter in Phone Manager or Settings and try again.</string>
+    <string name="hms_game_hide_guide_btn_cancel" priority="LT">CANCEL</string>
+    <string name="hms_game_hide_guide_btn_confirm" priority="LT">HIDE</string>
+    <string name="hms_game_hide_guide_content_nosensor" priority="LT">After balloons are hidden, you will need to relaunch the app to show them again.</string>
+    <string name="hms_game_hide_guide_content_sensor" priority="LT">After balloons are hidden, flip your device to show them again</string>
+    <string name="hms_game_hide_guide_noremind" priority="LT">Don\'t remind me again</string>
+    <string name="hms_game_hide_guide_title" priority="LT">Hide balloons</string>
+    <string name="hms_game_login_notice" priority="LT">Welcome %1$s</string>
+</resources>
