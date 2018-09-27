@@ -13,6 +13,7 @@ public class HuaWeiUserPlugin implements IUBUserPlugin{
 	private Activity mActivity;
 	private HuaWeiUserPlugin(Activity activity){
 		this.mActivity=activity;
+		HuaWeiSDK.getInstance().init();
 	}
 	
 	

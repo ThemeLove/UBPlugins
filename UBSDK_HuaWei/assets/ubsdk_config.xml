@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 
-<!-- 米大师支付比例为1元/10  -->
-<param name="Midas_Pay_Rate" value="10"/>
-<!-- 米大师沙箱appKey -->
-<!-- <param name="Midas_AppKey" value="M2UDM1HzkYtlEWPU"/> -->
-
-<!-- 米大师现网appKey -->
-<param name="Midas_AppKey" value="3i7J41JcdPQIdZSnNkhUxFtxVnjaD39H"/>
+<param name="HuaWei_AppID" value="100373123"/>
+<param name="HuaWei_CPID" value="890086000102153480"/>
+<param name="HuaWei_PayPrivateKey" value="MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDMX8rjLZ7wOjpCYP8gYIBpCtlzX8RD+LVlfbOAQ/Ngft9Rgl7p5el6WvMgm7kXZZRGS+wtAXaaQErrGqiwBDqwI5T5/YAL+y+HpLdr0tvTYM90UgA4GRcAv5f8msP/wfdRXREoRljVBFdM+XzpgVRO1VQk+PMWbgQmQ8RjrqlGpdkTf1S5es85Bgwbq13U2dY/7x8nq0m9JLSIXuwkbd6CK97lxEsOq9fnaDA7U6Lh8VeYOEufVYO7JkKjY7hDo4X34olCZArTjBJ1yYDjvtb/CMabDOytlPu7/kXF0bvmSuUtwzDI0W3m4HkeJgkuh4bPzfnsBuuG44KuHQjPGoHvAgMBAAECggEABgbDGEzVlXbaFe//ReiikLZhsB3AT1LLookA3ITkbdF/60rhWptNda6t4aXF4PM9Wo9NkQwsf6LqsqEQHVSamGwMLgz0FCZdge3w/Kx0j/iYVXE/kWfn/j0oEapMokOJc+w/H8VnRCzDGEF5Ffea0VJID2kJ3fzzgV9ZMKlLU4pt676lK+caIh5idNEn0mL4CZbFtkcpTq0BnLmG7SILsut8QGJpwkEQOqX5CleDpU+2L9Fjq5esBZM14uCYvh8dRkWSqYWu/4Qf+X3m33dv79oABk4Ex1jLO6+3rOpEJsShM+awselAytxm+l05hkX3NgdickxQHCo4UYzdgk/57QKBgQDr389PZOzZC8nXjfuOuEjtKEts6r9ZZ6bAM3BXp4QdxLrqCG+H8pV1c1nc1ImPZFQ0ilBvWnBt4jamMpqK6KfISiWebw88jGL9RPJxVexBd/lqO1yyg10eOqSVKQ72gHq9JL/uwbWtvA/TTJ8xQ8ztZ5xSMO3ytOWhE76NPpV8fQKBgQDdz+2hgdLGhi/gJI5ocOlYS0MVyH8aSFX57mGLdW6kuhrk2lQlpVnQgjQfCKlbgv9uOkX7iN+Smi4kef6t9KslayAUm4PlgApZy5UbsUig4b6i38gxgYHF/oq48MFOGmZh2stooS3OU5ccR0Q5rkHapk9l71Ks2eVxTFHB8wN/2wKBgQDgHbHe4ChjOl44H8ILo3I3VHgGLy5NBr1cFgQCZTqVBl4LDKTcaVQ1WrrhplhmFJAls94lT6tP3QbL93z7y3/QQRNpbGDvyPwtZZtusJNgyVwE4g5713FczZ+f0nlTIlR87zQm6Yt0XiIzRLRlnORUFoRjW/ZbDCK7YAVIM1TaCQKBgQCeGFB/9986PnQrJwMVb7zxgJstEH1/RyV4gS6nTqjw4fC/QtoNBwCv+82YfPzwy7qxXvl4YcMwY5IVz5n1dNjzT5pK9dkZn5xBCjiZx09D1AKjZirzFiJf85/+VyMAPxLQFjk6tv7F+5BNyIHZNtmbNUSMG/rqVlgR29q+CS5qVwKBgQCO9/hNeTcPrGK6cXvVCCeROjYUN8xH9JsiXsazG7ZAV2MqyMmVetvjj9TBRtpgeR6v+fCARRRDeNfrK4u3QWUN46hosI1D+pC/dmCUoAEg8JMW0Av2UL5ZPlPKPbHoE6izPobzyqBAjj2UBaRcbPZf9na7FklAPrn3gBkPSUpbaQ=="/>
+<param name="HuaWei_PayPublicKey" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzF/K4y2e8Do6QmD/IGCAaQrZc1/EQ/i1ZX2zgEPzYH7fUYJe6eXpelrzIJu5F2WURkvsLQF2mkBK6xqosAQ6sCOU+f2AC/svh6S3a9Lb02DPdFIAOBkXAL+X/JrD/8H3UV0RKEZY1QRXTPl86YFUTtVUJPjzFm4EJkPEY66pRqXZE39UuXrPOQYMG6td1NnWP+8fJ6tJvSS0iF7sJG3egive5cRLDqvX52gwO1Oi4fFXmDhLn1WDuyZCo2O4Q6OF9+KJQmQK04wSdcmA477W/wjGmwzsrZT7u/5FxdG75krlLcMwyNFt5uB5HiYJLoeGz8357AbrhuOCrh0IzxqB7wIDAQAB"/>
+<param name="HuaWei_DevelopName" value="南京疯手数字传媒有限公司"/>
 
 <param name="UB_GameID" value="1123" />
 <param name="UB_GameDebug" value="true" />
@@ -22,9 +20,9 @@
 <plugins>
 	<plugin name="com.ubsdk.huawei.plugin.HuaWeiUserPlugin" type="1" />
 	<plugin name="com.ubsdk.huawei.plugin.HuaWeiPayPlugin"  type="2"/>
-	<plugin name="com.ubsdk.huawei.plugin.HauWeiSettingPlugin"  type="3"/>
+	<plugin name="com.ubsdk.huawei.plugin.HuaWeiSettingPlugin"  type="3"/>
 </plugins>
 <applications>
-<!-- 	<application name="com.ubsdk.yyb.plugin.YYBApplication"/> -->
+	<application name="com.ubsdk.huawei.plugin.HuaWeiApplication"/>
 </applications>
 </config>
